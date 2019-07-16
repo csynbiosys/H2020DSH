@@ -42,8 +42,8 @@ inputs.model=model;
 %SIMULATION
 inputs.ivpsol.ivpsolver='cvodes';
 inputs.ivpsol.senssolver='cvodes';
-inputs.ivpsol.rtol=1e-3;
-inputs.ivpsol.atol=1e-6;
+inputs.ivpsol.rtol=1e-9;
+inputs.ivpsol.atol=1e-9;
 inputs.ivpsol.ivp_maxnumsteps=1e5;
 
 
