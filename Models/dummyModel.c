@@ -9,18 +9,14 @@
 
 	/* *** Definition of the states *** */
 
-#define	L_RFP Ith(y,0)
-#define	T_GFP Ith(y,1)
-#define	IPTGi Ith(y,2)
-#define	aTci  Ith(y,3)
+#define	RFP_s Ith(y,0)
+#define	GFP_s Ith(y,1)
 #define iexp amigo_model->exp_num
 
 	/* *** Definition of the sates derivative *** */
 
-#define	dL_RFP Ith(ydot,0)
-#define	dT_GFP Ith(ydot,1)
-#define	dIPTGi Ith(ydot,2)
-#define	daTci  Ith(ydot,3)
+#define	dRFP_s Ith(ydot,0)
+#define	dGFP_s Ith(ydot,1)
 
 	/* *** Definition of the parameters *** */
 
@@ -49,10 +45,8 @@ int amigoRHS(realtype t, N_Vector y, N_Vector ydot, void *data){
 
 	/* *** Equations *** */
 
-	dL_RFP=1/0.1386*(kL_p_m0+(kL_p_m/(1+pow(T_GFP/theta_T*(1/(1+pow(aTci/theta_aTc,n_aTc))),n_T))))-0.0165*L_RFP;
-	dT_GFP=1/0.1386*(kT_p_m0+(kT_p_m/(1+pow(L_RFP/theta_L*(1/(1+pow(IPTGi/theta_IPTG,n_IPTG))),n_L))))-0.0165*T_GFP;
-	dIPTGi=k_iptg*(u_IPTG-IPTGi)-0.0165*IPTGi;
-	daTci=k_aTc*(u_aTc-aTci)-0.0165*aTci;
+	dRFP_s=1/0.1386*(kL_p_m0+(kL_p_m/(1+pow(GFP_s/theta_T*(1/(1+pow(u_aTc/theta_aTc,n_aTc))),n_T))))-0.0165*RFP_s;
+	dGFP_s=1/0.1386*(kT_p_m0+(kT_p_m/(1+pow(RFP_s/theta_L*(1/(1+pow(u_IPTG/theta_IPTG,n_IPTG))),n_L))))-0.0165*GFP_s;
 
 	return(0);
 
@@ -74,10 +68,8 @@ int amigoSensRHS(int Ns, realtype t, N_Vector y, N_Vector ydot, int iS, N_Vector
 
 }
 
-#define	 L_RFP (amigo_model->sim_results[0][j]) 
-#define	 T_GFP (amigo_model->sim_results[1][j]) 
-#define	 IPTGi (amigo_model->sim_results[2][j]) 
-#define	 aTci  (amigo_model->sim_results[3][j]) 
+#define	 RFP_s (amigo_model->sim_results[0][j]) 
+#define	 GFP_s (amigo_model->sim_results[1][j]) 
 
 
 
@@ -100,8 +92,8 @@ void amigoRHS_get_OBS(void* data){
 			 for (j = 0; j < amigo_model->n_times; ++j){
 
 				t=amigo_model->t[j];
-				RFP = L_RFP;
-				GFP = T_GFP;
+				RFP=RFP_s;
+				GFP=GFP_s;
 
 			}
 
@@ -115,8 +107,8 @@ void amigoRHS_get_OBS(void* data){
 			 for (j = 0; j < amigo_model->n_times; ++j){
 
 				t=amigo_model->t[j];
-				RFP = L_RFP;
-				GFP = T_GFP;
+				RFP=RFP_s;
+				GFP=GFP_s;
 
 			}
 
@@ -130,8 +122,8 @@ void amigoRHS_get_OBS(void* data){
 			 for (j = 0; j < amigo_model->n_times; ++j){
 
 				t=amigo_model->t[j];
-				RFP = L_RFP;
-				GFP = T_GFP;
+				RFP=RFP_s;
+				GFP=GFP_s;
 
 			}
 
@@ -145,8 +137,8 @@ void amigoRHS_get_OBS(void* data){
 			 for (j = 0; j < amigo_model->n_times; ++j){
 
 				t=amigo_model->t[j];
-				RFP = L_RFP;
-				GFP = T_GFP;
+				RFP=RFP_s;
+				GFP=GFP_s;
 
 			}
 
@@ -160,8 +152,8 @@ void amigoRHS_get_OBS(void* data){
 			 for (j = 0; j < amigo_model->n_times; ++j){
 
 				t=amigo_model->t[j];
-				RFP = L_RFP;
-				GFP = T_GFP;
+				RFP=RFP_s;
+				GFP=GFP_s;
 
 			}
 
@@ -175,8 +167,8 @@ void amigoRHS_get_OBS(void* data){
 			 for (j = 0; j < amigo_model->n_times; ++j){
 
 				t=amigo_model->t[j];
-				RFP = L_RFP;
-				GFP = T_GFP;
+				RFP=RFP_s;
+				GFP=GFP_s;
 
 			}
 
@@ -190,8 +182,8 @@ void amigoRHS_get_OBS(void* data){
 			 for (j = 0; j < amigo_model->n_times; ++j){
 
 				t=amigo_model->t[j];
-				RFP = L_RFP;
-				GFP = T_GFP;
+				RFP=RFP_s;
+				GFP=GFP_s;
 
 			}
 
@@ -203,10 +195,8 @@ void amigoRHS_get_OBS(void* data){
 
 }
 
-#define	 L_RFP (amigo_model->sens_results[0][j][k]) 
-#define	 T_GFP (amigo_model->sens_results[1][j][k]) 
-#define	 IPTGi (amigo_model->sens_results[2][j][k]) 
-#define	 aTci  (amigo_model->sens_results[3][j][k]) 
+#define	 RFP_s (amigo_model->sens_results[0][j][k]) 
+#define	 GFP_s (amigo_model->sens_results[1][j][k]) 
 
 
 
@@ -230,8 +220,8 @@ void amigoRHS_get_sens_OBS(void* data){
 				 for (k = 0; k < amigo_model->n_times; ++k){
 
 				t=amigo_model->t[k];
-					RFP = L_RFP;
-					GFP = T_GFP;
+					RFP=RFP_s;
+					GFP=GFP_s;
 				}
 			}
 		 break;
@@ -245,8 +235,8 @@ void amigoRHS_get_sens_OBS(void* data){
 				 for (k = 0; k < amigo_model->n_times; ++k){
 
 				t=amigo_model->t[k];
-					RFP = L_RFP;
-					GFP = T_GFP;
+					RFP=RFP_s;
+					GFP=GFP_s;
 				}
 			}
 		 break;
@@ -260,8 +250,8 @@ void amigoRHS_get_sens_OBS(void* data){
 				 for (k = 0; k < amigo_model->n_times; ++k){
 
 				t=amigo_model->t[k];
-					RFP = L_RFP;
-					GFP = T_GFP;
+					RFP=RFP_s;
+					GFP=GFP_s;
 				}
 			}
 		 break;
@@ -275,8 +265,8 @@ void amigoRHS_get_sens_OBS(void* data){
 				 for (k = 0; k < amigo_model->n_times; ++k){
 
 				t=amigo_model->t[k];
-					RFP = L_RFP;
-					GFP = T_GFP;
+					RFP=RFP_s;
+					GFP=GFP_s;
 				}
 			}
 		 break;
@@ -290,8 +280,8 @@ void amigoRHS_get_sens_OBS(void* data){
 				 for (k = 0; k < amigo_model->n_times; ++k){
 
 				t=amigo_model->t[k];
-					RFP = L_RFP;
-					GFP = T_GFP;
+					RFP=RFP_s;
+					GFP=GFP_s;
 				}
 			}
 		 break;
@@ -305,8 +295,8 @@ void amigoRHS_get_sens_OBS(void* data){
 				 for (k = 0; k < amigo_model->n_times; ++k){
 
 				t=amigo_model->t[k];
-					RFP = L_RFP;
-					GFP = T_GFP;
+					RFP=RFP_s;
+					GFP=GFP_s;
 				}
 			}
 		 break;
@@ -320,8 +310,8 @@ void amigoRHS_get_sens_OBS(void* data){
 				 for (k = 0; k < amigo_model->n_times; ++k){
 
 				t=amigo_model->t[k];
-					RFP = L_RFP;
-					GFP = T_GFP;
+					RFP=RFP_s;
+					GFP=GFP_s;
 				}
 			}
 		 break;

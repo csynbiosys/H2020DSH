@@ -1,41 +1,68 @@
 
-model?
+model_name='modelVarun';
+model.AMIGOjac = 0;                                                         
+model.input_model_type='charmodelC';                                        
+model.n_st=6;                                                               
+                                                          
+model.n_stimulus=2;                                                         
+model.stimulus_names=char('u_IPTG','u_aTc');                                
 
-model.AMIGOjac = 0;                                                         % Compute Jacobian 0 = No, 1 = yes
-model.input_model_type='charmodelC';                                        % Model introduction: 'charmodelC'|'c_model'|'charmodelM'|'matlabmodel'|'sbmlmodel'|'blackboxmodel'|'blackboxcost                             
-model.n_st=7;                                                               % Number of states      
-model.n_par=18;                                                             % Number of model parameters 
-model.n_stimulus=2;                                                         % Number of inputs, stimuli or control variables   
-model.stimulus_names=char('u_IPTG','u_aTc');                                % Name of stimuli or control variables
-model.st_names=char('L_molec','T_molec','T_AU','L_AU','IPTGi','aTci','sviol');     % Names of the states                                              
+model.st_names=char('L_RFP','T_GFP','IPTGi','aTci','mrnaRFP','mrnaGFP');     
+
 model.par_names=char('g_m','kL_p_m0','kL_p_m','theta_T','theta_aTc','n_aTc','n_T','g_p',...
                      'kT_p_m0','kT_p_m','theta_L','theta_IPTG','n_IPTG','n_L',...
                      'sc_T_molec',...
                      'sc_L_molec',...
                      'k_iptg',...
-                     'k_aTc');                                 % Names of the parameters    
-                 
-model.eqns=...                                                              % Equations describing system dynamics. Time derivatives are regarded 'd'st_name''
-               char('dL_molec = 1/g_m*(kL_p_m0 + (kL_p_m/(1+(T_molec/theta_T*(1/(1+(aTci/theta_aTc)^n_aTc)))^n_T)))-g_p*L_molec',...
-                    'dT_molec = 1/g_m*(kT_p_m0 + (kT_p_m/(1+(L_molec/theta_L*(1/(1+(IPTGi/theta_IPTG)^n_IPTG)))^n_L)))-g_p*T_molec',...
-                    'dT_AU = sc_T_molec*dT_molec',...
-                    'dL_AU = sc_L_molec*dL_molec',...
-                    'dIPTGi = k_iptg*(u_IPTG-IPTGi)-g_p*IPTGi',...
-                    'daTci = k_aTc*(u_aTc-aTci)-g_p*aTci');
+                     'k_aTc');                                 
+               
+model.eqns=char('dL_RFP   = sc_L_molec * ( mrnaRFP^n_mrnaRFP/(mrnaRFP^n_mrnaRFP+k_mrnaRFP^n_mrnaRFP) -  L_RFP)',...
+                'dT_GFP   = sc_T_molec * ( mrnaGFP^n_mrnaGFP/(mrnaGFP^n_mrnaGFP+k_mrnaGFP^n_mrnaGFP) -  T_GFP)',...
+                'dIPTGi   = k_iptg * (u_IPTG-IPTGi)',...
+                'daTci    = k_aTc  * (u_aTc-aTci)',...
+                'dmrnaRFP = g_mR * (  (1/(1+(T_GFP/theta_T)^n_T)) * (1/(1+(aTci/theta_aTc)^n_aTc))    - mrnaRFP )', ...
+                'dmrnaGFP = g_mG * (  (1/(1+(L_RFP/theta_L)^n_L)) * (1/(1+(IPTGi/theta_IPTG)^n_IPTG)) - mrnaGFP )');
+            
+% model.eqns=char('dL_RFP = sc_L_molec* mrnaRFP - g_pR * L_RFP',...
+%                 'dT_GFP = sc_T_molec* mrnaGFP  - g_pG * T_GFP',...
+%                 'dIPTGi = k_iptg*(u_IPTG-IPTGi)',...
+%                 'daTci  = k_aTc*(u_aTc-aTci)',...
+%                 'dmrnaRFP = kL_p_m0 + kL_p_m/  ( 1+( T_GFP/theta_T * (1+(aTci/theta_aTc  )^n_aTc))^n_T)   -g_mR*mrnaRFP',...
+%                 'dmrnaGFP = kT_p_m0 + kT_p_m/  ( 1+( L_RFP/theta_L * (1+(IPTGi/theta_IPTG)^n_IPTG))^n_L)  -g_mG*mrnaGFP');
+            
+% model.eqns=char('dL_RFP = sc_L_molec* mrnaRFP - g_pR',...
+%                 'dT_GFP = sc_T_molec* mrnaGFP  - g_pG',...
+%                 'dIPTGi = k_iptg*(u_IPTG-IPTGi)',...
+%                 'daTci  = k_aTc*(u_aTc-aTci)',...
+%                 'dmrnaRFP = kL_p_m0 + (kL_p_m/(1+(T_GFP/theta_T*(1/(1+(aTci/theta_aTc)^n_aTc)))^n_T))-g_mR*L_RFP',...
+%                 'dmrnaGFP = kT_p_m0 + (kT_p_m/(1+(L_RFP/theta_L*(1/(1+(IPTGi/theta_IPTG)^n_IPTG)))^n_L))-g_mG*T_GFP');
 
-%==================
-% PARAMETER VALUES
-% =================
+%% Parameters
+PARS=importdata([model_name 'pars.csv']);
+model.par_names=char(char(PARS.textdata));                                
+model.par=PARS.data(:,1)';
+model.n_par=length(model.par);   
 
-% dummy parameter values set to the mid point of the range of each individual parameter value
-% model.par=[0.1386,5.0000025,500.0005,40,0.213428215,3,3,0.01650,15.000005,500.0005,0.0222,0.00505,3,3,505,505,0.0505,0.0505]; % Parameter values set to the average of global_theta_guess min, max
-                 
-% Parameters from Eva's report (9/11/2018 16:13) on PE carried out using experiments 2, 19
-% and 15. 
-                 
-model.par=[0.1386,4.2083e-01,2.5235e+01,40,3.7453e-01,1.0415e+00,1.6342e+00,0.01650,...
-    1.1161e+02,1.0645e+03,0.0222,6.4438e-01,3.2915e+00,1.1361e+00,...
-    2.8962e-03,...
-    3.5841e-01,...
-    7.1516e-02,...
-    7.8176e-03];
+%% Model execution
+model.names_type='custom';
+model.AMIGOsensrhs=0;
+
+model.odes_file=['Models/' model_name '.c'];
+model.mexfile=['Models/' model_name 'CostMex'];
+model.exe_type='costMex';
+model.overwrite_model=1;
+model.compile_model=0;
+
+model.cvodes_include=[];
+model.debugmode=0;
+model.shownetwork=0;
+inputs.model=model;
+
+%SIMULATION
+inputs.ivpsol.ivpsolver='cvodes';
+inputs.ivpsol.senssolver='cvodes';
+inputs.ivpsol.rtol=1e-9;
+inputs.ivpsol.atol=1e-9;
+inputs.ivpsol.ivp_maxnumsteps=1e5;
+inputs.ivpsol.max_step_size=1;
+
