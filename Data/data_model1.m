@@ -63,4 +63,8 @@ inputs.PEsol.global_theta_guess=best_global_theta(param_including_vector);
 inputs.PEsol.global_theta_max=global_theta_max(param_including_vector);
 inputs.PEsol.global_theta_min=global_theta_min(param_including_vector);
 
-                  
+       
+%% COST FUNCTION RELATED DATA
+inputs.PEsol.PEcost_type='llk';                     
+inputs.PEsol.llk_type='homo_var';                   
+inputs.ivpsol.nthreads=8;           

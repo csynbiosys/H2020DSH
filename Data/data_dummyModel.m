@@ -43,6 +43,12 @@ end
 
 inputs.model=model;
 inputs.exps=exps;
+
+
+%% COST FUNCTION RELATED DATA
+inputs.PEsol.PEcost_type='llk';                     
+inputs.PEsol.llk_type='homo_var';                   
+inputs.ivpsol.nthreads=8;
   
 
 

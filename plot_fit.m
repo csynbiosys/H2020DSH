@@ -34,18 +34,20 @@ for iexp=1:length(inputs.exps.exp_data)
     counter=counter+1;
     subplot(8,9,counter);
     yyaxis left
-      stairs(inputs.exps.t_con{iexp},[inputs.exps.u{iexp}(:,2)])
-      ylim([-10 110])
+    %       stairs(inputs.exps.t_con{iexp},[inputs.exps.u{iexp}(:,2)])
+    stairs(inputs.exps.t_con{iexp},[inputs.exps.u{iexp}(2,:) inputs.exps.u{iexp}(2,end)])
+    ylim([-10 110])
     yyaxis right
-    stairs(inputs.exps.t_con{iexp},[inputs.exps.u{iexp}(:,1)])
+    %     stairs(inputs.exps.t_con{iexp},[inputs.exps.u{iexp}(:,1)])
+    stairs(inputs.exps.t_con{iexp},[inputs.exps.u{iexp}(1,:) inputs.exps.u{iexp}(1,end)])
     ylim([-0.1 1.1])
-%     stairs(inputs.exps.t_con{iexp},[inputs.exps.u{iexp}(1,:) inputs.exps.u{iexp}(1,end)],'b--')
-%     hold on;
-%     stairs(inputs.exps.t_con{iexp},[inputs.exps.u{iexp}(2,:) inputs.exps.u{iexp}(2,end)],'m--')
+    %     stairs(inputs.exps.t_con{iexp},[inputs.exps.u{iexp}(1,:) inputs.exps.u{iexp}(1,end)],'b--')
+    %     hold on;
+    %     stairs(inputs.exps.t_con{iexp},[inputs.exps.u{iexp}(2,:) inputs.exps.u{iexp}(2,end)],'m--')
     hold on;
-%     plot(inputs.exps.t_s{iexp},outputs.simulation{iexp}(:,3),'b')
-%     hold on;
-%     plot(inputs.exps.t_s{iexp}(1,:),outputs.simulation{iexp}(:,4),'m')
+    %     plot(inputs.exps.t_s{iexp},outputs.simulation{iexp}(:,3),'b')
+    %     hold on;
+    %     plot(inputs.exps.t_s{iexp}(1,:),outputs.simulation{iexp}(:,4),'m')
     title(['Inducers ' num2str(iexp)])
     xlim([0 inputs.exps.t_f{iexp}]);
     if logicBased,ylim([-0.1 1.1]);end
