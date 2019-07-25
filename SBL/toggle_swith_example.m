@@ -4,7 +4,7 @@ clc
 close all
 %% read data for the model
 
-display_plots   = 0; 
+display_plots   = 0;
 export_to_amigo = 1;
 
 dir_name  = 'Data';
@@ -128,12 +128,20 @@ end
 %%
 
 %simulateSBLresults(Phi,fit_res_diff,model,display_plots)
+%parpool(4);
 
-%if export_to_amigo
-SBLModel=SBLModel2AMIGOModel(fit_res_diff,Phi,model);
+MODELS={{fit_res_diff,Phi,model},{fit_res_diff,Phi,model},{fit_res_diff,Phi,model}};
+RES={};
 
-[inputs privstruct]=gen_AMIGOSetupFromSBL(SBLModel,'experimental_data_exp1to1_noise000.csv','SBLModel')
-
-[inputs,privstruct,res_ssm]=fit_SBLModel(inputs,privstruct);
+parfor i=1:length(MODELS)
     
+    SBLModel=SBLModel2AMIGOModel(MODELS{i},'SBL');
+    
+    [inputs privstruct]=gen_AMIGOSetupFromSBL(SBLModel,'experimental_data_exp1to1_noise000.csv','SBLModel');
+    
+    [inputs,privstruct,res_ssm]=fit_SBLModel(inputs,privstruct);
+    RES={inputs,privstruct,res_ssm};
+    
+end
+
 
