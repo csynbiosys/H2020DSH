@@ -5,7 +5,7 @@ function [model_char, state_names, param_vec, param_names, obs_names, obs] = gen
 
 
 % adding parameters
-stat_num = size(model.state_names,2);
+state_num = size(model.state_names,2);
 % the model equations are stored here as a cell array
 model_char = {};
 % the parameteres of the model are stored here as a vector
@@ -16,7 +16,7 @@ obs_names = {};
 obs = {};
 param_str = 'p%d_%d';
 
-for k=1:stat_num
+for k=1:state_num
     
     % converting dictionary function to model string
     dict_str  = cellfun(@(x) replace(func2str(x),{'@(x,p)ones(size(x,1),1)','@(x,u)ones(size(x,1),1)','@(x,u)','@(x,p)','@(x)'},{'1','1','','',''}),Phi{k},'UniformOutput',false)';
@@ -36,7 +36,7 @@ for k=1:stat_num
         
         rhs_str = sprintf('d%s=',model.state_names{k});
         % replace the variable names in the equations as well
-        for z=1:stat_num    
+        for z=1:state_num    
             dict_str = strrep(dict_str,sprintf('x%d',z),model.state_names{z});
             dict_str = strrep(dict_str,sprintf('x%d',z+2),model.input_names{z});
         end

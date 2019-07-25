@@ -1,12 +1,10 @@
-function [AMIGOModel] = SBLModel2AMIGOModel(fit_res_diff,Phi,model,model_name)
+function [AMIGOModel] = SBLModel2AMIGOModel(fit_res_diff,Phi,SBLModel,model_name)
 
-SBLModel=model;
 fit_res = fit_res_diff;
 
 %=======================
 % MODEL RELATED DATA   %
 %=======================
-clear model;
 
 % the model will be converted to a C file for faster simulations
 AMIGOModel.input_model_type = 'charmodelM';
