@@ -2,8 +2,6 @@ function [inputs,privstruct] = gen_AMIGOSetupFromSBL(file)
 
 AMIGOModel=SBLModel2AMIGOModel();
 
-
-
 exps=load_data(file);
 
 inputs.model=AMIGOModel;

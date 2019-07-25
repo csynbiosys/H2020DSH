@@ -4,6 +4,7 @@ load('toggle_switch_sbl_output','input_data','fit_res_diff','Phi','model');
 %load('amigo_inputs_toggle_switch,'
 SBLModel=model;
 fit_res = fit_res_diff;
+
 %=======================
 % MODEL RELATED DATA   %
 %=======================
@@ -31,6 +32,7 @@ AMIGOModel.stimulus_names = char(SBLModel.input_names);
 model_name='SBLModel';
 
 AMIGOModel.eqns = model_char;
+
 AMIGOModel.st_names = st_names;
 
 AMIGOModel.par = param_vec;

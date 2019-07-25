@@ -20,18 +20,19 @@ for iexp=1:N_EXPERIMENTS
     exps.exp_type{iexp} = 'fixed';
     
     st_names=regexprep(DATA.textdata(READOUT_COLS),'READOUT_','')
-    obs_names = regexprep(DATA.textdata(READOUT_COLS),'READOUT_','');
+    obs_names = char(regexprep(DATA.textdata(READOUT_COLS),'READOUT_',''));
+    for i 1:
+    st_names=char(regexprep(DATA.textdata(READOUT_COLS),'READOUT_',''));
     
-    for jobs=1:length(obs_names)
-        obs_names{jobs}=[obs_names{jobs} '_o'];
-    end
     
-    exps.obs_names{iexp}=char(obs_names);
+    
     exps.obs{iexp}=[];
     
     for jobs=1:exps.n_obs{iexp}
         
-        exps.obs{iexp} =[exps.obs{iexp}; [obs_names{jobs} '=' st_names{jobs}]];
+        exps.obs{iexp} =[exps.obs{iexp}; [exps.obs_names{iexp}(jobs,:) '_o=' exps.obs_names{iexp}(jobs,:)]];
+        
+        exps.obs_names{iexp}(jobs,:)=[exps.obs_names{iexp}(jobs,:) '_o'];
         
     end
    
