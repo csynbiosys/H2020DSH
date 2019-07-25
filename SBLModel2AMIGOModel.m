@@ -1,7 +1,5 @@
-function [AMIGOModel] = SBLModel2AMIGOModel( )
+function [AMIGOModel] = SBLModel2AMIGOModel(input_data,fit_res_diff,Phi,model)
 
-load('toggle_switch_sbl_output','input_data','fit_res_diff','Phi','model');
-%load('amigo_inputs_toggle_switch,'
 SBLModel=model;
 fit_res = fit_res_diff;
 
