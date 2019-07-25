@@ -21,6 +21,8 @@ for k=1:stat_num
     % converting dictionary function to model string
     dict_str  = cellfun(@(x) replace(func2str(x),{'@(x,p)ones(size(x,1),1)','@(x,u)ones(size(x,1),1)','@(x,u)','@(x,p)','@(x)'},{'1','1','','',''}),Phi{k},'UniformOutput',false)';
     dict_str  = cellfun(@(x) regexprep(x,{'x\(:,(\d)\)','u\(:,(\d)\)'},{'x$1','u$1'}),dict_str,'UniformOutput',false);
+    % removing matlab operators
+    dict_str  = regexprep(dict_str,{'.\^','.\*','./'},{'\^','\*','/'});
     
     if isempty(model.state_names)
         state_names{k} = sprintf('x%d',k);
