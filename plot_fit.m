@@ -38,15 +38,15 @@ for iexp=1:length(inputs.exps.exp_data)
     hold on;
     
     yyaxis right
-        plot(inputs.exps.t_s{iexp},outputs.observables{iexp}(:,2),'k-','LineWidth',1.5)
-        hold on;
-        plot(inputs.exps.t_s{iexp},...
-            outputs.observables{iexp}(:,2)+inputs.exps.error_data{iexp}(:,2),...
-            'g','LineWidth',1)
-        hold on;
-        plot(inputs.exps.t_s{iexp},...
-            outputs.observables{iexp}(:,2)-inputs.exps.error_data{iexp}(:,2),...
-            'g','LineWidth',1)
+    plot(inputs.exps.t_s{iexp},outputs.observables{iexp}(:,2),'k-','LineWidth',1.5)
+    hold on;
+    plot(inputs.exps.t_s{iexp},...
+        outputs.observables{iexp}(:,2)+inputs.exps.error_data{iexp}(:,2),...
+        'g','LineWidth',1)
+    hold on;
+    plot(inputs.exps.t_s{iexp},...
+        outputs.observables{iexp}(:,2)-inputs.exps.error_data{iexp}(:,2),...
+        'g','LineWidth',1)
     ylim([0 2800])
     
     title(['Reporters ' num2str(iexp)])
@@ -56,38 +56,28 @@ for iexp=1:length(inputs.exps.exp_data)
     
     counter=counter+1;
     subplot(8,9,counter);
-        yyaxis left
-        %       stairs(inputs.exps.t_con{iexp},[inputs.exps.u{iexp}(:,2)])
-       plot(inputs.exps.t_con{iexp},[inputs.exps.u{iexp}(2,:) ])
-        ylim([-10 110])
-        yyaxis right
-        %     stairs(inputs.exps.t_con{iexp},[inputs.exps.u{iexp}(:,1)])
-        plot(inputs.exps.t_con{iexp}, inputs.exps.u{iexp}(1,:) )
-        ylim([-0.1 1.1])
-        %     stairs(inputs.exps.t_con{iexp},[inputs.exps.u{iexp}(1,:) inputs.exps.u{iexp}(1,end)],'b--')
-        %     hold on;
-        %     stairs(inputs.exps.t_con{iexp},[inputs.exps.u{iexp}(2,:) inputs.exps.u{iexp}(2,end)],'m--')
-        hold on;
-        %     plot(inputs.exps.t_s{iexp},outputs.simulation{iexp}(:,3),'b')
-        %     hold on;
-        %     plot(inputs.exps.t_s{iexp}(1,:),outputs.simulation{iexp}(:,4),'m')
-        title(['Inducers ' num2str(iexp)])
-    xlim([0 inputs.exps.t_f{iexp}]);
-    if logicBased,ylim([-0.1 1.1]);end
-    
-    switch model_name
-        
-        case 'modelVarun'
-            counter=counter+1;
-            subplot(8,9,counter);
-            plot(inputs.exps.t_s{iexp}(1,:),outputs.simulation{iexp}(:,5),'r')
-            hold on;
-            plot(inputs.exps.t_s{iexp}(1,:),outputs.simulation{iexp}(:,6),'g')
-            title(['mRNA ' num2str(iexp)])
-            ylim([-0.1 1.1]);
-            xlim([0 inputs.exps.t_f{iexp}]);
-            
+    yyaxis left
+    try
+        stairs(inputs.exps.t_con{iexp},[inputs.exps.u{iexp}(1,:)])
+    catch
+        stairs(inputs.exps.t_con{iexp},[inputs.exps.u{iexp}(1,:) inputs.exps.u{iexp}(1,end)])
     end
+    ylim([-0.1 1.1])
+    xlim([0 inputs.exps.t_f{iexp}]);
+    
+    yyaxis right
+    try
+        stairs(inputs.exps.t_con{iexp},[inputs.exps.u{iexp}(2,:)],'LineWidth',1.5)
+    catch
+        stairs(inputs.exps.t_con{iexp},[inputs.exps.u{iexp}(2,:) inputs.exps.u{iexp}(2,end)])
+    end
+    ylim([-10 110])
+    yyaxis right
+    title(['Inducers ' num2str(iexp)])
+    xlim([0 inputs.exps.t_f{iexp}]);
+    
+    
+  
     
 end
 
