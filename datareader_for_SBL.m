@@ -1,8 +1,7 @@
 %% ZAT ICL March 2019
-function input_data = datareader_for_SBL(dir_name,file_name)
+function input_data = datareader_for_SBL(file)
 
-
-T = readtable([dir_name '/' file_name]);
+T = readtable(file);
 % capitalize variable names 
 T.Properties.VariableNames = upper(T.Properties.VariableNames);
 input_idx_vec = ~cellfun(@isempty,regexp(T.Properties.VariableNames,'TR_\w+'));

@@ -32,7 +32,7 @@ for iexp=1:N_EXPERIMENTS
     exps.u_interp{iexp} = 'step';
     exps.t_con{iexp} = TIME';
     exps.n_steps{iexp} = length(TIME)-1;
-    exps.u{iexp} = DATA.data(index,STIMULI_COLS);
+    exps.u{iexp} = DATA.data(index,STIMULI_COLS)';
     exps.data_type = 'real';
     exps.noise_type = 'homo'; 
     exps.exp_data{iexp} = DATA.data(index,READOUT_COLS);
@@ -50,5 +50,7 @@ inputs.PEsol.PEcost_type='llk';
 inputs.PEsol.llk_type='homo_var';                   
 inputs.ivpsol.nthreads=8;
   
+
+
 
 
