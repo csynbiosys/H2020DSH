@@ -5,7 +5,7 @@ close all
 %% read data for the model
 
 display_plots   = 0; %0: no, 1:yes
-export_to_amigo = 1;
+export_to_amigo = 0;
 
 dir_name  = 'data';
 file_name = 'experimental_data_7exps_noise000.csv';%'toggle_experimental_data.csv';
@@ -132,6 +132,6 @@ simulateSBLresults(Phi,fit_res_diff,model,display_plots)
 if export_to_amigo
     from_sbl_to_amigo_interface
 else
-    save('toggle_switch_sbl_output','Phi','fit_res_diff','model','input_data')
+    save([dir_name '/toggle_switch_sbl_output'],'Phi','fit_res_diff','model','input_data')
 end
 
