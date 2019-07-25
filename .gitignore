@@ -1,6 +1,4 @@
 
 *.asv
 *.m~
-Models/SBL3CostMex.mexw64
-Models/SBL1CostMex.mexw64
-Models/SBL3CostMex.mexw64
+Models/*.mexw64
