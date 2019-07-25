@@ -16,7 +16,7 @@ AMIGOModel.names_type = 'custom';
 AMIGOModel.n_st = size(SBLModel.state_names,2);
 % total number of parameters is given by the non zero dictionaries
 sum_par = 0;
-for k=1:size(fit_res,2)
+for k=1:size(fit_res,1)
     sum_par = sum_par + size([fit_res(k).non_zero_dict{:}],2);
 end
 AMIGOModel.n_par = sum_par;
