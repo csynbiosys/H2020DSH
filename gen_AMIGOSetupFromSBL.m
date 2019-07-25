@@ -8,7 +8,6 @@ inputs.model=AMIGOModel;
 
 inputs.exps=exps;
 
-
 %% PATHS RELATED DATA
 name = sprintf('SBLModel');
 inputs.pathd.results_folder = name; % Folder to keep results (in Results) for a given problem
@@ -19,7 +18,7 @@ inputs.pathd.runident='run_1';      % [] Identifier required in order not to ove
 inputs.ivpsol=get_solver_settings();
 
 %% Compile
-AMIGO_Prep(inputs)
+[inputs privstruct]=AMIGO_Prep(inputs);
 
 
 end
