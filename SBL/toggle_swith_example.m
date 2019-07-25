@@ -106,7 +106,7 @@ for sparsity_case=1:size(sparsity_vec,2)
     
     for k=1:state_num
         % use manual tresholding
-        zero_th = 1e-6;
+        zero_th = 1e-4;
         model_num = 1;
         % select non zero dictionaries
         fit_res_diff(k,sparsity_case) = calc_zero_th(fit_res_diff(k,sparsity_case),zero_th,display_plots,model_num);
