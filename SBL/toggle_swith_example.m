@@ -132,10 +132,10 @@ end
 
 MODELS={{fit_res_diff,Phi,model},{fit_res_diff,Phi,model},{fit_res_diff,Phi,model}};
 RES={};
-
+clear mex;
 parfor i=1:length(MODELS)
     
-    SBLModel=SBLModel2AMIGOModel(MODELS{i},'SBL');
+    SBLModel=SBLModel2AMIGOModel(MODELS{i}{:},['SBL' num2str(i)]);
     
     [inputs privstruct]=gen_AMIGOSetupFromSBL(SBLModel,'experimental_data_exp1to1_noise000.csv','SBLModel');
     
