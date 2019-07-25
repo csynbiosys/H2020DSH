@@ -125,22 +125,17 @@ for k=1:state_num
     assert(numel(idx)<2)
     fit_res_diff(k).non_zero_dict{1}(idx) = [];
 end
-%%
-
-%simulateSBLresults(Phi,fit_res_diff,model,display_plots)
-%parpool(4);
 
 MODELS={{fit_res_diff,Phi,model},{fit_res_diff,Phi,model},{fit_res_diff,Phi,model}};
 RES={};
 clear mex;
+
 parfor i=1:length(MODELS)
     
     SBLModel=SBLModel2AMIGOModel(MODELS{i}{:},['SBL' num2str(i)]);
-    
     [inputs privstruct]=gen_AMIGOSetupFromSBL(SBLModel,'experimental_data_exp1to1_noise000.csv','SBLModel');
-    
     [inputs,privstruct,res_ssm]=fit_SBLModel(inputs,privstruct);
-    RES={inputs,privstruct,res_ssm};
+    RES{i}={inputs,privstruct,res_ssm};
     
 end
 
