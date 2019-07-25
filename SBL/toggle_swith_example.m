@@ -130,7 +130,7 @@ end
 simulateSBLresults(Phi,fit_res_diff,model,display_plots)
 
 if export_to_amigo
-    from_sbl_to_amigo_interface
+    SBLModel2AMIGOModel(input_data,fit_res_diff,Phi,model)
 else
     save([dir_name '/toggle_switch_sbl_output'],'Phi','fit_res_diff','model','input_data')
 end
