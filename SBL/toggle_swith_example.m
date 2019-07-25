@@ -138,7 +138,7 @@ for sparsity_case=1:size(sparsity_vec,2)
    
 end
 
-% exporint the model variants
+%% exporint the model variants
 
 
 RES={};
