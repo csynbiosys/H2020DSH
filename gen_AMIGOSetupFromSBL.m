@@ -1,19 +1,16 @@
-function [inputs,privstruct] = gen_AMIGOSetupFromSBL(file)
+function [inputs,privstruct] = gen_AMIGOSetup(AMIGOModel,DataFile,model_name)
 
-AMIGOModel=SBLModel2AMIGOModel();
-
-exps=load_data(file);
+exps=load_data(DataFile);
 
 inputs.model=AMIGOModel;
 
 inputs.exps=exps;
 
 %% PATHS RELATED DATA
-name = sprintf('SBLModel');
+name = sprintf(model_name);
 inputs.pathd.results_folder = name; % Folder to keep results (in Results) for a given problem
 inputs.pathd.short_name = name;     % To identify figures and reports for a given problem
 inputs.pathd.runident='run_1';      % [] Identifier required in order not to overwrite previous results
-
 
 inputs.ivpsol=get_solver_settings();
 

@@ -36,7 +36,6 @@ x=res_ssm.xbest;
 
 inputs.model.par(inputs.PEsol.index_global_theta)=x;
 
-
 end
 
 function [f,g,r]=davidObj(x,inputs,privstruct,INITIALU)

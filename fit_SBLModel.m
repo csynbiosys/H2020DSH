@@ -1,4 +1,4 @@
-function[inputs,privstruct,res_ssm]=fit_SBLModel(inputs,privstruct,INITIALU)
+function[inputs,privstruct,res_ssm]=fit_SBLModel(inputs,privstruct)
 
 vguess= inputs.PEsol.global_theta_guess;
 
@@ -6,8 +6,8 @@ inputs.ivpsol.nthread=8;
 
 problem.x_0=vguess;
 
-problem.x_U=vguess.*10;
-problem.x_L=vguess./10;
+problem.x_U=vguess.*100;
+problem.x_L=vguess./100;
 
 problem.f=@davidObj;
 
@@ -20,7 +20,7 @@ inputs.nlpsol.eSS.maxtime=inf;
 inputs.nlpsol.eSS.local.solver='fmincon';
 inputs.nlpsol.eSS.local.finish=0;
 
-[res_ssm]=ess_kernel(problem,inputs.nlpsol.eSS,inputs,privstruct,INITIALU);
+[res_ssm]=ess_kernel(problem,inputs.nlpsol.eSS,inputs,privstruct);
 
 x=res_ssm.xbest;
 
@@ -29,7 +29,7 @@ inputs.model.par(inputs.PEsol.index_global_theta)=x;
 
 end
 
-function [f,g,r]=davidObj(x,inputs,privstruct,INITIALU)
+function [f,g,r]=davidObj(x,inputs,privstruct)
 
 inputs.model.par(inputs.PEsol.index_global_theta)=x(1:length(inputs.PEsol.index_global_theta));
 
