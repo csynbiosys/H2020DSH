@@ -1,4 +1,4 @@
-function [AMIGOModel] = SBLModel2AMIGOModel(input_data,fit_res_diff,Phi,model)
+function [AMIGOModel] = SBLModel2AMIGOModel(fit_res_diff,Phi,model,model_name)
 
 SBLModel=model;
 fit_res = fit_res_diff;
@@ -25,9 +25,7 @@ AMIGOModel.n_stimulus = size(SBLModel.input{1},2);
 
 AMIGOModel.stimulus_names = char(SBLModel.input_names);
 % how model names will be named
-[model_char, st_names, param_vec, param_names, obs_names, obs] = generate_model_char(fit_res,Phi,SBLModel);
-
-model_name='SBLModel';
+[model_char, st_names, param_vec, param_names] = generate_model_char(fit_res,Phi,SBLModel);
 
 AMIGOModel.eqns = model_char;
 

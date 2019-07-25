@@ -5,9 +5,12 @@ vguess= inputs.PEsol.global_theta_guess;
 inputs.ivpsol.nthread=8;
 
 problem.x_0=vguess;
-
-problem.x_U=vguess.*100;
-problem.x_L=vguess./100;
+problem.x_U=vguess;
+problem.x_U(problem.x_U>0)=problem.x_U(problem.x_U>0).*100;
+problem.x_U(problem.x_U<=0)=0;
+problem.x_L=vguess;
+problem.x_L(problem.x_L<0)=problem.x_L(problem.x_L<0).*100;
+problem.x_L(problem.x_L>=0)=0;
 
 problem.f=@davidObj;
 

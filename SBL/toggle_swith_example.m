@@ -103,7 +103,7 @@ toc;
 
 for k=1:state_num
     % use manual tresholding
-    zero_th = 1e-4;
+    zero_th = 1e-6;
     % select non zero dictionaries
     fit_res_diff(k) = calc_zero_th(fit_res_diff(k),zero_th,display_plots);
     % report signal fit
@@ -130,9 +130,10 @@ end
 %simulateSBLresults(Phi,fit_res_diff,model,display_plots)
 
 %if export_to_amigo
-SBLModel=SBLModel2AMIGOModel(input_data,fit_res_diff,Phi,model);
+SBLModel=SBLModel2AMIGOModel(fit_res_diff,Phi,model);
 
 [inputs privstruct]=gen_AMIGOSetupFromSBL(SBLModel,'experimental_data_exp1to1_noise000.csv','SBLModel')
-    [inputs,privstruct,res_ssm]=fit_SBLModel(inputs,privstruct);
+
+[inputs,privstruct,res_ssm]=fit_SBLModel(inputs,privstruct);
     
 

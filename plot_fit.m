@@ -12,7 +12,7 @@ for iexp=1:length(inputs.exps.exp_data)
     subplot(8,9,counter);
     plot1.MarkerEdgeAlpha = .4;
     
-    yyaxis left
+    yyaxis leftplo
     plot1=scatter(inputs.exps.t_s{iexp},inputs.exps.exp_data{iexp}(:,1),'r.');
     plot1.MarkerFaceAlpha = .4;
     plot1.MarkerEdgeAlpha = .4;
