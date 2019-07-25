@@ -4,11 +4,11 @@ clc
 close all
 %% read data for the model
 
-display_plots   = 0; %0: no, 1:yes
-export_to_amigo = 0;
+display_plots   = 0; 
+export_to_amigo = 1;
 
-dir_name  = 'data';
-file_name = 'experimental_data_7exps_noise000.csv';%'toggle_experimental_data.csv';
+dir_name  = 'Data';
+file_name = 'experimental_data_7exps_noise000.csv';
 
 exp_idx = [1];
 input_data = datareader_for_SBL(dir_name,file_name);
