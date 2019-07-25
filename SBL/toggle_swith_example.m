@@ -5,8 +5,9 @@ close all
 
 %% read data for the model
 
-display_plots  = 1;
-save_results = 1;
+display_plots  = 0;
+save_results = 0;
+
 
 dir_name  = 'Data';
 file_name = 'experimental_data_7exps_noise000.csv';
@@ -65,9 +66,7 @@ for sparsity_case=1:size(sparsity_vec,2)
         for state = 1:state_num
             Phi_val{state,l} = cell2mat(cellfun(@(f) f(x,p),Phi{state},'UniformOutput',false));
         end
-        
-        
-        
+   
         %% build a linear regression struct, i.e. y = A*x
         for k=1:state_num
             sbl_diff(k).name = sprintf('diff_%s',model.state_names{k});
@@ -77,9 +76,7 @@ for sparsity_case=1:size(sparsity_vec,2)
         end
         
     end
-    
-    
-    
+        
     %% generate nonnegconstraints
     % param_num = size(A,2);
     for k=1:state_num
@@ -92,6 +89,7 @@ for sparsity_case=1:size(sparsity_vec,2)
         sbl_config(k).nonneg{1} = constraint_idx;
         %% estimate only the selected states
         sbl_config(k).selected_states = 1:size(model.dydt,2);
+
     end
     
     
@@ -131,9 +129,9 @@ for sparsity_case=1:size(sparsity_vec,2)
         assert(numel(idx)<2)
         fit_res_diff(k,sparsity_case).non_zero_dict{1}(idx) = [];
     end
-    
+   
     simulateSBLresults(Phi,fit_res_diff(:,sparsity_case),model,display_plots)
-    
+ 
     if save_results
         save([dir_name '/toggle_switch_sbl_output'],'Phi','fit_res_diff','model','input_data')
     end
@@ -147,7 +145,7 @@ clear mex;
 
 for sparsity_case=1:size(sparsity_vec,2)
  
-        SBLModel = SBLModel2AMIGOModel(input_data,fit_res_diff(:,sparsity_case),Phi,model,['SBL' num2str(sparsity_case)]);
+        SBLModel = SBLModel2AMIGOModel(fit_res_diff(:,sparsity_case),Phi,model,['SBL' num2str(sparsity_case)]);
         
         [inputs privstruct]=gen_AMIGOSetupFromSBL(SBLModel,'experimental_data_exp1to1_noise000.csv','SBLModel');
         

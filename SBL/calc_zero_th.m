@@ -1,8 +1,8 @@
-function fit_res = calc_zero_th(fit_res,fix_zero_th,disp_plot)
+function fit_res = calc_zero_th(fit_res,fix_zero_th,disp_plot,model_num)
 % calc_zero_th - computes the zero threshold and the non_zero_dict for each state, additionally it shows the
 % zero_th - residual error plot (if disp_plot = True)
-% 
-% 
+%
+%
 mode = 'SMV';
 
 if strcmpi(mode,'SMV')
@@ -18,7 +18,7 @@ if strcmpi(mode,'SMV')
             assert(size_diff >= 0);
             offset = 1+size_diff;
             tmp_A = fit_res.A{exp_idx}(offset:end,:);
-        else 
+        else
             tmp_A = fit_res.A{exp_idx};
         end
         A = [A; tmp_A];
@@ -77,23 +77,35 @@ for k = 1:state_num
     end
     
     % max peak in the diff vec is the change in error
-    [~,ch_idx] = max(diff(fit_error_value{k}));
-    ch_idx = ch_idx;
-    zero_th(k) = zth_vec(ch_idx);
-    sprintf('state: x_%d zero_th: %g dict_num: %d (%g%%)',state(k),zero_th(k),dict_num{k}(ch_idx),dict_num{k}(ch_idx)/size(A,2)*100)
     if disp_plot
-        figure()
+        figure();
         title(sprintf('Zero threshold vs fit error and dict num for x_%d (%s)',state,fit_res.name))
         yyaxis left
         loglog(zth_vec,dict_num{k},'LineWidth',1.5);
-        text(zero_th(k),dict_num{k}(ch_idx),['\leftarrow' sprintf('zeroth: %f',zero_th(k))])
+    end
+    
+    [~,ch_idx] = sort(diff(fit_error_value{k}),'descend');
+    
+    if ~isempty(fix_zero_th)
+        [~,fix_idx] = min(abs(zth_vec-fix_zero_th));
+        ch_idx = [fix_idx, ch_idx];
+    end
+    
+    for z=1:model_num
+        cut_idx = ch_idx(z);
+        zero_th(k) = zth_vec(cut_idx);
+        sprintf('state: x_%d zero_th: %g dict_num: %d (%g%%)',state(k),zero_th(k),dict_num{k}(cut_idx),dict_num{k}(cut_idx)/size(A,2)*100)
+        if disp_plot
+            text(zero_th(k),dict_num{k}(cut_idx),['\leftarrow' sprintf('M%d: zeroth: %f',z,zero_th(k))])
+        end
+    end
+    if disp_plot
         yyaxis right
         loglog(zth_vec,fit_error_value{k},'LineWidth',1.5)
         legend('Non zero param','Fit error','Location','Best')
         xlabel('Zero threshold')
-        
-        
     end
+    
     % overwrite the computed thereshold with the externally provided one
     if ~isempty(fix_zero_th)
         zero_th = fix_zero_th;
