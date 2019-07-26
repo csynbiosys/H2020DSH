@@ -3,17 +3,20 @@ clear variables
 clc
 close all
 
-%% read data for the model
-
+%% config
+% turn on/off plots
 display_plots  = 0;
+% save results to a mat file
 save_results = 0;
 
+%% read data for the model
 
 dir_name  = 'Data';
 file_name = 'experimental_data_7exps_noise000.csv';
 
 exp_idx = [1];
-input_data = datareader_for_SBL(dir_name,file_name);
+fid =1;
+input_data = datareader_for_SBL(dir_name,file_name,exp_idx,fid);
 
 %%
 
@@ -30,7 +33,6 @@ model.input_names = input_data.input_names;
 sparsity_vec = [0.02 0.2 2];
 %% for each sparsity
 for sparsity_case=1:size(sparsity_vec,2)
-    
     %% for each dataset
     for l=1:exp_num
         if display_plots
@@ -60,25 +62,25 @@ for sparsity_case=1:size(sparsity_vec,2)
         x = [input_data.states{exp_id}  input_data.inputs{exp_id}];
         % extra (not estimated) parameters
         p = [];
-        Phi_val = cell(state_num,1);
+        % the dicionaries is evaluated for all states and datasets
+        Phi_val = cell(state_num,exp_num);
         
         
         for state = 1:state_num
             Phi_val{state,l} = cell2mat(cellfun(@(f) f(x,p),Phi{state},'UniformOutput',false));
         end
    
-        %% build a linear regression struct, i.e. y = A*x
+        %% build a linear regression struct, i.e. y = A*x for each states and data sets
         for k=1:state_num
             sbl_diff(k).name = sprintf('diff_%s',model.state_names{k});
             sbl_diff(k).A{l} = Phi_val{k,l};
             sbl_diff(k).y{l} = model.dydt{l}(:,k);
-            sbl_diff(k).std = model.variance{l};
+            sbl_diff(k).std{l} = model.variance{l};
         end
         
     end
         
-    %% generate nonnegconstraints
-    % param_num = size(A,2);
+    %% generate nonneg constraints
     for k=1:state_num
         constraint_idx= [];
         for z=2:size(Phi{k},2)
@@ -87,12 +89,10 @@ for sparsity_case=1:size(sparsity_vec,2)
             end
         end
         sbl_config(k).nonneg{1} = constraint_idx;
-        %% estimate only the selected states
+        % estimate only the selected states
         sbl_config(k).selected_states = 1:size(model.dydt,2);
 
     end
-    
-    
     %% run SBL
     tic;
     for k=1:state_num
@@ -102,8 +102,6 @@ for sparsity_case=1:size(sparsity_vec,2)
     end
     toc;
     %% reporting
-    % turn on/off plots
-    
     for k=1:state_num
         % use manual tresholding
         zero_th = 1e-4;
@@ -113,13 +111,6 @@ for sparsity_case=1:size(sparsity_vec,2)
         % report signal fit
         signal_fit_error_diff(k,sparsity_case) = fit_report(fit_res_diff(k,sparsity_case),display_plots);
     end
-    
-    %% Print out models
-    % green - correct dict found (OK)
-    % red   - missing dict
-    % black - false  dict
-    % printOutModel(fit_res_diff,Morig,Phi,[])
-    
     %% simulate the reconstructed ODE
     
     % zero out the constant term
@@ -131,12 +122,13 @@ for sparsity_case=1:size(sparsity_vec,2)
     end
    
     simulateSBLresults(Phi,fit_res_diff(:,sparsity_case),model,display_plots)
- 
+    %% save results 
     if save_results
         save([dir_name '/toggle_switch_sbl_output'],'Phi','fit_res_diff','model','input_data')
     end
    
 end
+
 
 %% exporint the model variants
 
@@ -155,6 +147,7 @@ for sparsity_case=2:size(sparsity_vec,2)
             
 
 end
+
 
 
 
