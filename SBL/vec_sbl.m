@@ -94,7 +94,10 @@ for iter=1:1:max_iter
         h = h + R;
     end
     tic;
-    opt= optimize(F,h,opts)
+    opt= optimize(F,h,opts);
+    if opt.problem ~=0
+        opt
+    end
     toc;
     W = double(W);
     pre_W = W;
@@ -132,5 +135,6 @@ fit_res.experiment_num = model.experiment_num;
 fit_res.zero_dict = [];
 fit_res.non_zero_dict = [];
 fit_res.sbl_param = [];
+fit_res.valid_model = true;
 
 disp('end')

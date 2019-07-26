@@ -1,4 +1,4 @@
-function simulateSBLresults(Phi,fit_results,model,display_plots)
+function [valid_model] = simulateSBLresults(Phi,fit_results,model,display_plots)
 
 %% zero out constants
 % for k=1:size(fit_results.selected_states,2)
@@ -8,6 +8,8 @@ state_num = size(model.state_names,2);
 
 experiment_num = 1;
 x0_maxValue    = 50;
+
+valid_model = true;
 
 %% generate set of initial condiations
 x0_vec = lhsu(zeros(state_num,1),repmat(x0_maxValue,state_num),experiment_num);
@@ -35,9 +37,16 @@ for z = 1:experiment_num
         try
             [t_sbl,x_sbl]   = ode15s(@ode_rhs_from_phi,t_span,x0_vec(z,:),ode_solver_opts,Phi,fit_results,model);
             x_sbl_sum   = [ x_sbl_sum;   x_sbl];
-            disp('ODE simulation OK')
+            
+             [warnMsg, warnId] = lastwarn;
+             if strcmp(warnId,'MATLAB:ode15s:IntegrationTolNotMet')
+                 error('integration error')
+             end
+               disp('ODE simulation OK')
+
         catch ME
             disp('reconstracted ODE integration failed');
+            valid_model = false;
         end
         
     end

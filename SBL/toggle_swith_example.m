@@ -14,7 +14,7 @@ save_results = 0;
 dir_name  = 'Data';
 file_name = 'experimental_data_7exps_noise000.csv';
 
-exp_idx = [1];
+exp_idx = [1 2 3];
 fid =1;
 input_data = datareader_for_SBL(dir_name,file_name,exp_idx,fid);
 
