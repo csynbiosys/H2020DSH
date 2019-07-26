@@ -5,6 +5,7 @@
 clear variables
 clc
 close all
+noise=0;
 
 %%  loop config
 loop_iter = 2;
@@ -54,12 +55,18 @@ for loop = 1:loop_iter
             imported_to_amigo = imported_to_amigo +1;
         end
         
-        %% Optimize Model
+        %% Step 4: Run parameter estimation in Amigo
+        logger(fid,sprintf('loop iter: %d, running parameter est in Amigo',loop))
         [inputs,privstruct,res_ssm]=fit_SBLModel(inputs,privstruct);
         RES{sparsity_case}={inputs,privstruct,res_ssm};
         
-        %% Make OED
+        %% Step 5: Run OED
+        logger(fid,sprintf('loop iter: %d, running the OED',loop))
         EXPOED=OED4SBL(RES{sparsity_case}{1},120,10,5);
+        
+        %% Step 6: generate new set of data
+        logger(fid,sprintf('loop iter: %d, generating new set of data',loop))
+        gen_pseudo_data(inputs.exps,2,noise,['experimental_data_loop_' num2str(loo) '.csv']);
         
     end
     
@@ -68,14 +75,10 @@ for loop = 1:loop_iter
         break
     end
     
-    %% Step 4: Run parameter estimation in Amigo
-    logger(fid,sprintf('loop iter: %d, running parameter est in Amigo',loop))
     
-    %% Step 5: Run OED
-    logger(fid,sprintf('loop iter: %d, running the OED',loop))
     
-    %% Step 6: generate new set of data
-    logger(fid,sprintf('loop iter: %d, generating new set of data',loop))
+
+  
     
     data_file_name = '';
     

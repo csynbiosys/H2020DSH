@@ -38,7 +38,6 @@ feval(inputs.model.mexfunction,'cost_LSQ');
 
 f=outputs.f;
 r=outputs.w_res;
-%disp(f);
 g=[];
 
 if(f==0),f=Inf;end
