@@ -43,8 +43,9 @@ for loop = 1:loop_iter
     RES={};
     clear mex;
     
+    
     imported_to_amigo = 0;
-    for sparsity_case=1:size(sbl_config.sparsity_vec,2)
+    for sparsity_case=3:size(sbl_config.sparsity_vec,2)
         
         if all([fit_res_diff(:,sparsity_case).valid_model] == true)
             SBLModel = SBLModel2AMIGOModel(fit_res_diff(:,sparsity_case),Phi,model,['SBL' num2str(sparsity_case)]);
@@ -53,10 +54,15 @@ for loop = 1:loop_iter
             imported_to_amigo = imported_to_amigo +1;
         end
         
-        %         [inputs,privstruct,res_ssm]=fit_SBLModel(inputs,privstruct);
-        %         RES={inputs,privstruct,res_ssm};
+        %% Optimize Model
+        [inputs,privstruct,res_ssm]=fit_SBLModel(inputs,privstruct);
+        RES{sparsity_case}={inputs,privstruct,res_ssm};
+        
+        %% Make OED
+        EXPOED=OED4SBL(RES{sparsity_case}{1},120,10,5);
         
     end
+    
     if imported_to_amigo == 0
         logger(fid,sprintf('loop iter: %d, there is no valid model to work with, LOOP STOPS',loop))
         break
@@ -65,11 +71,8 @@ for loop = 1:loop_iter
     %% Step 4: Run parameter estimation in Amigo
     logger(fid,sprintf('loop iter: %d, running parameter est in Amigo',loop))
     
-    
     %% Step 5: Run OED
     logger(fid,sprintf('loop iter: %d, running the OED',loop))
-    
-    
     
     %% Step 6: generate new set of data
     logger(fid,sprintf('loop iter: %d, generating new set of data',loop))
@@ -77,4 +80,5 @@ for loop = 1:loop_iter
     data_file_name = '';
     
     logger(fid,sprintf('loop iter: %d is DONE',loop))
+    
 end % end of loop for
