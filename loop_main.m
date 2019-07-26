@@ -10,11 +10,13 @@ close all
 loop_iter = 2;
 fid = 1; % display on the screen
 
+do_struct_id_check = 1;
+
 %% SBL config
 sbl_config.display_plots  = 0;
 sbl_config.save_results_to_mat = 0;
 % generating different model structures
-sbl_config.sparsity_vec = [0.02 0.2 2];
+sbl_config.sparsity_vec = [0.2 2];
 
 %% first dataset
 data_dir_name = 'Data';
@@ -37,7 +39,24 @@ for loop = 1:loop_iter
     
     [Phi,fit_res_diff,model]  = toggle_switch_SBL(input_data,sbl_config);
     
-    %% Step 3: Build an Amigo model
+    
+    %% Step 3: Run Strike-goldd
+    if do_struct_id_check
+        logger(fid,sprintf('loop iter: %d, running Strike-goldd',loop))
+        for sparsity_case=1:size(sbl_config.sparsity_vec,2)
+            
+            sbl_model_file_name = from_SBL_to_Strike_GOLDD(fit_res_diff(:,sparsity_case),model,Phi,input_data,sparsity_case,data_dir_name);
+            
+            valid_model = RunModelCheck_in_loop(sbl_model_file_name,fid);
+            
+            if ~valid_model
+                for state=1:size(fit_res_diff,1)
+                    fit_res_diff(state,sparsity_case).valid_model = false;
+                end
+            end
+        end
+    end
+    %% Step 4: Build an Amigo model
     logger(fid,sprintf('loop iter: %d, building an Amigo model',loop))
     
     RES={};
@@ -53,8 +72,8 @@ for loop = 1:loop_iter
             imported_to_amigo = imported_to_amigo +1;
         end
         
-        %         [inputs,privstruct,res_ssm]=fit_SBLModel(inputs,privstruct);
-        %         RES={inputs,privstruct,res_ssm};
+        [inputs,privstruct,res_ssm]=fit_SBLModel(inputs,privstruct);
+        RES={inputs,privstruct,res_ssm};
         
     end
     if imported_to_amigo == 0
@@ -62,16 +81,16 @@ for loop = 1:loop_iter
         break
     end
     
-    %% Step 4: Run parameter estimation in Amigo
+    %% Step 5: Run parameter estimation in Amigo
     logger(fid,sprintf('loop iter: %d, running parameter est in Amigo',loop))
     
     
-    %% Step 5: Run OED
+    %% Step 6: Run OED
     logger(fid,sprintf('loop iter: %d, running the OED',loop))
     
     
     
-    %% Step 6: generate new set of data
+    %% Step 7: generate new set of data
     logger(fid,sprintf('loop iter: %d, generating new set of data',loop))
     
     data_file_name = '';

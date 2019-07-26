@@ -1,4 +1,4 @@
-function from_SBL_to_Strike_GOLDD(fit_res,model,Phi,input_data,model_num)
+function fileName = from_SBL_to_Strike_GOLDD(fit_res,model,Phi,input_data,model_num,data_dir_name)
 % SBL <-> Strike-Goldd interface
 % ZAT ICL Jul 2019
 
@@ -61,5 +61,5 @@ ics = [];
 known_ics = zeros(1,state_num);
 
 %% save the model in a mat file
-fileName = ['SBL_' fit_res.name '_' num2str(model_num) '_strike_goldd.mat'];
-save(fileName,'x','h','u','p','f','ics','known_ics');
+fileName = ['SBL_' fit_res.name '_' num2str(model_num) '_strike_goldd'];
+save([data_dir_name '/' fileName '.mat'],'x','h','u','p','f','ics','known_ics');
