@@ -13,6 +13,7 @@ function [ output_args ] = OED4SBL(inputs,duration,stepDuration)
     inputs.exps.exp_y0{iexp}=inputs.exps.exp_y0{1};                                
     inputs.exps.t_f{iexp}=duration;                                 
     inputs.exps.n_s{iexp}=duration/5+1;                             
+    inputs.exps.t_s{iexp}=0:5:(duration);
     
     %% OED of the input
     inputs.exps.u_type{iexp}='od';
@@ -21,6 +22,9 @@ function [ output_args ] = OED4SBL(inputs,duration,stepDuration)
     inputs.exps.t_con{iexp}=0:stepDuration:(duration);                
     inputs.exps.u_min{iexp}= [0*ones(1,inputs.exps.n_steps{iexp}); 0*ones(1,inputs.exps.n_steps{iexp})]+1e-7;
     inputs.exps.u_max{iexp}=[1*ones(1,inputs.exps.n_steps{iexp}); 100*ones(1,inputs.exps.n_steps{iexp})];
+    inputs.exps.u{iexp}=inputs.exps.u_min{iexp};
+    inputs.exps.exp_data{iexp}=ones(inputs.exps.n_obs{iexp},inputs.exps.n_s{iexp});
+    inputs.exps.error_data{iexp}=ones(inputs.exps.n_obs{iexp},inputs.exps.n_s{iexp});
     
     
     inputs.exps.noise_type='hetero_proportional';           % Experimental noise type: Homoscedastic: 'homo'|'homo_var'(default)
@@ -41,7 +45,8 @@ function [ output_args ] = OED4SBL(inputs,duration,stepDuration)
     inputs.nlpsol.eSS.local.nl2sol.maxfeval =     500;     % max number of function evaluation    
     
 
-        
+    inputs.model.exe_type='standard';
+    
     [inputs,privstruct]=AMIGO_Prep(inputs);
     
     results = AMIGO_OED(inputs);

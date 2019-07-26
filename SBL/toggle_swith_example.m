@@ -136,6 +136,8 @@ RES={};
 clear mex;
 
 for sparsity_case=2:size(sparsity_vec,2)
+    
+
  
         SBLModel = SBLModel2AMIGOModel(fit_res_diff(:,sparsity_case),Phi,model,['SBL' num2str(sparsity_case)]);
         
