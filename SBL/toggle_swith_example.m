@@ -18,9 +18,7 @@ exp_idx = [1];
 fid =1;
 input_data = datareader_for_SBL(dir_name,file_name,exp_idx,fid);
 
-%%
-
-% generating the dictionary functions
+%% generating the dictionary functions
 Phi = build_toggle_switch_dict();
 
 state_num = input_data.state_num;
@@ -31,6 +29,7 @@ model.state_names = input_data.state_names;
 model.input_names = input_data.input_names;
 
 sparsity_vec = [0.02 0.2 2];
+
 %% for each sparsity
 for sparsity_case=1:size(sparsity_vec,2)
     %% for each dataset
@@ -143,9 +142,8 @@ for sparsity_case=2:size(sparsity_vec,2)
         [inputs privstruct]=gen_AMIGOSetupFromSBL(SBLModel,'experimental_data_exp1to1_noise000.csv','SBLModel');
         
         [inputs,privstruct,res_ssm]=fit_SBLModel(inputs,privstruct);
-        RES={inputs,privstruct,res_ssm};
-            
-
+        
+        RES={inputs,privstruct,res_ssm};     
 end
 
 

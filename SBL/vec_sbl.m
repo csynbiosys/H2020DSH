@@ -29,7 +29,7 @@ else
 end
 
 
-lambda = mean(sbl_params.std,1);
+lambda = mean(sbl_params.std{1},1);
 
 
 RR = [];
