@@ -20,7 +20,6 @@ input_data.input_names = [token_input{input_idx_vec}];
 token_state = regexp(T.Properties.VariableNames,'^READOUT_(\w+)','once','tokens');
 input_data.state_names = [token_state{output_idx_vec}];
 
-
 %% finding the column indices
 
 time_idx = find(time_idx_vec==1);
@@ -39,13 +38,10 @@ end
 
 exp_idx = find(exp_id_vec ==1);
 assert(numel(exp_idx) == 1)
-
 %% parsing the data into experiments
 
-% determining the number of experiments
+% reordering the experiments
 exp_ids = unique(sort(table2array(T(:,exp_idx))));
-
-% generated experiment names
 
 % generating data cells from experiments
 for k=1:size(exp_ids,1)
@@ -69,17 +65,20 @@ for k=1:size(exp_ids,1)
     end
     
 end
-
 %% selecting experiments
-assert(max(selected_experiments) <= max(exp_ids))
+if ~isempty(selected_experiments)
+    assert(max(selected_experiments) <= max(exp_ids),'you have selected an expID that is larger than the maximum available in the datafile')
+    assert(isempty(setdiff(selected_experiments,exp_ids)),'you have selected an expID that does not exist in the datafile')
+    
+    input_data.inputs = input_data.inputs(selected_experiments);
+    input_data.states = input_data.states(selected_experiments);
+    input_data.input_std = input_data.input_std(selected_experiments);
+    input_data.tspan = input_data.tspan(selected_experiments);
+end
 
-input_data.inputs = input_data.inputs{selected_experiments};
-input_data.states = input_data.states{selected_experiments};
-input_data.input_std = input_data.input_std{selected_experiments};
-input_data.tspan = input_data.tspan{selected_experiments};
+exp_num = size(input_data.tspan,2);
 
-
-logger(logger_fid,sprintf('file: %s was successfully imported',file_name))
+logger(logger_fid,sprintf('file: %s was successfully imported | %d  experiments was selected',file_name,exp_num))
 
 
 
