@@ -5,10 +5,11 @@ function fit_res = vec_sbl(sbl_params,config,model)
 % algorithms behavior is configured by config struct
 
 % 
+ param_num = size(sbl_params.A{1},2);
+
+
 if strcmpi(config.mode,'SMV')
-    state_num = size(sbl_params.y{1},2);
-    param_num = size(sbl_params.A{1},2);
-    
+    state_num = 1;
     Dictionary = [];
     y = [];
     for exp_idx = 1:model.experiment_num
@@ -54,7 +55,6 @@ w_estimate=cell(max_iter,1);
 
 pre_W = [];
 for iter=1:1:max_iter
-    fprintf('iter num: %d\n',iter)
     yalmip('clear');
     W = sdpvar(param_num,state_num,1,'full');
     if isfield(config,'subconv')
@@ -98,7 +98,9 @@ for iter=1:1:max_iter
     if opt.problem ~=0
         opt
     end
-    toc;
+    e_time = toc;
+    fprintf('SBL iter: %d/%d took %g sec\n',iter,config.max_iter,e_time)
+    
     W = double(W);
     pre_W = W;
     w_estimate{iter}= W;
@@ -137,4 +139,4 @@ fit_res.non_zero_dict = [];
 fit_res.sbl_param = [];
 fit_res.valid_model = true;
 
-disp('end')
+% disp('end')

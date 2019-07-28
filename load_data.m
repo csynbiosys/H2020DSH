@@ -37,7 +37,7 @@ for iexp=1:N_EXPERIMENTS
    
     exps.t_f{iexp} = TIME(end);
     exps.n_s{iexp} = length(TIME);
-    exps.t_s{iexp} = TIME;
+    exps.t_s{iexp} = TIME';
     exps.u_interp{iexp} = 'step';
     exps.t_con{iexp} = TIME';
     exps.n_steps{iexp} = length(TIME)-1;
@@ -49,7 +49,6 @@ for iexp=1:N_EXPERIMENTS
     exps.exp_y0{iexp} = exps.exp_data{iexp}(1,:);
 
 end
-
 
 end
 

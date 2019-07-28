@@ -42,10 +42,10 @@ for z = 1:experiment_num
              if strcmp(warnId,'MATLAB:ode15s:IntegrationTolNotMet')
                  error('integration error')
              end
-               disp('ODE simulation OK')
+               fprintf('ODE simulation OK\n')
 
         catch ME
-            disp('reconstracted ODE integration failed');
+            fprintf('reconstracted ODE integration failed\n');
             valid_model = false;
         end
         

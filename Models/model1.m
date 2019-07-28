@@ -32,7 +32,7 @@ model.odes_file=['Models/' model_name '.c'];
 model.mexfile=['Models/' model_name 'CostMex'];
 model.exe_type='costMex';
 model.overwrite_model=1;
-model.compile_model=0;
+model.compile_model=1;
 
 model.cvodes_include=[];
 model.debugmode=0;

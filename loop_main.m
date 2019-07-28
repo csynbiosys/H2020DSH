@@ -5,6 +5,7 @@
 clear variables
 clc
 close all
+noise=0;
 
 %%  loop config
 loop_iter = 2;
@@ -63,37 +64,39 @@ for loop = 1:loop_iter
     clear mex;
     
     imported_to_amigo = 0;
-    for sparsity_case=1:size(sbl_config.sparsity_vec,2)
-        
+    for sparsity_case=size(sbl_config.sparsity_vec,2):size(sbl_config.sparsity_vec,2)
+        % check model validity (valid model has a well defined ODE and struct ID)
         if all([fit_res_diff(:,sparsity_case).valid_model] == true)
             SBLModel = SBLModel2AMIGOModel(fit_res_diff(:,sparsity_case),Phi,model,['SBL' num2str(sparsity_case)]);
             
             [inputs privstruct]=gen_AMIGOSetupFromSBL(SBLModel,'experimental_data_exp1to1_noise000.csv','SBLModel');
             imported_to_amigo = imported_to_amigo +1;
+            
+            %% Step 5: Run parameter estimation in Amigo
+            logger(fid,sprintf('loop iter: %d, running parameter est in Amigo',loop))
+            
+            [inputs,privstruct,res_ssm]=fit_SBLModel(inputs,privstruct);
+            RES{sparsity_case}={inputs,privstruct,res_ssm};
+            
+            %% Step 6: Run OED
+            logger(fid,sprintf('loop iter: %d, running the OED',loop))
+            
+            EXPOED=OED4SBL(RES{sparsity_case}{1},120,10,5);
+            
+            %% Step 7: generate new set of data
+            logger(fid,sprintf('loop iter: %d, generating new set of data',loop))
+            
+            data_file_name = ['experimental_data_loop_' num2str(loo) '.csv'];
+            
+            gen_pseudo_data(inputs.exps,2,noise,data_file_name);
         end
-        
-        [inputs,privstruct,res_ssm]=fit_SBLModel(inputs,privstruct);
-        RES={inputs,privstruct,res_ssm};
-        
     end
+    
     if imported_to_amigo == 0
         logger(fid,sprintf('loop iter: %d, there is no valid model to work with, LOOP STOPS',loop))
         break
     end
     
-    %% Step 5: Run parameter estimation in Amigo
-    logger(fid,sprintf('loop iter: %d, running parameter est in Amigo',loop))
-    
-    
-    %% Step 6: Run OED
-    logger(fid,sprintf('loop iter: %d, running the OED',loop))
-    
-    
-    
-    %% Step 7: generate new set of data
-    logger(fid,sprintf('loop iter: %d, generating new set of data',loop))
-    
-    data_file_name = '';
-    
     logger(fid,sprintf('loop iter: %d is DONE',loop))
+    
 end % end of loop for

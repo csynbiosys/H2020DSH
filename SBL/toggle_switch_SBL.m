@@ -19,6 +19,7 @@ end
 
 %% for each sparsity
 for sparsity_case=1:size(sparsity_vec,2)
+    fprintf('runnging sparsity case: %d/%d\n',sparsity_case,size(sparsity_vec,2))
     %% for each dataset
     for exp_idx=1:exp_num
         if config.display_plots
@@ -80,6 +81,7 @@ for sparsity_case=1:size(sparsity_vec,2)
     %% run sbl
     tic;
     for state=1:state_num
+        fprintf('runnging SBL on state: %d/%d\n',state,state_num)
         sbl_config(state).max_iter = 10;
         sbl_config(state).mode = 'SMV';
         fit_res_diff(state,sparsity_case) = vec_sbl(sbl_diff(state),sbl_config(state),model);
@@ -91,7 +93,7 @@ for sparsity_case=1:size(sparsity_vec,2)
         zero_th = 1e-4;
         model_num = 1;
         % seexp_idxect non zero dictionaries
-        fit_res_diff(state,sparsity_case) = calc_zero_th(fit_res_diff(state,sparsity_case),zero_th,config.display_plots,model_num);
+        fit_res_diff(state,sparsity_case) = calc_zero_th(fit_res_diff(state,sparsity_case),zero_th,config.display_plots,state,model_num);
         % report signal fit
         signal_fit_error_diff(state,sparsity_case) = fit_report(fit_res_diff(state,sparsity_case),config.display_plots);
     end

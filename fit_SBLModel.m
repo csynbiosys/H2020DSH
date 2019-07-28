@@ -2,8 +2,6 @@ function[inputs,privstruct,res_ssm]=fit_SBLModel(inputs,privstruct)
 
 vguess= inputs.PEsol.global_theta_guess;
 
-inputs.ivpsol.nthread=8;
-
 problem.x_0=vguess;
 problem.x_U=vguess;
 problem.x_U(problem.x_U>0)=problem.x_U(problem.x_U>0).*100;
@@ -40,7 +38,6 @@ feval(inputs.model.mexfunction,'cost_LSQ');
 
 f=outputs.f;
 r=outputs.w_res;
-%disp(f);
 g=[];
 
 if(f==0),f=Inf;end

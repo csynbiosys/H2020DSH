@@ -1,4 +1,4 @@
-function fit_res = calc_zero_th(fit_res,fix_zero_th,disp_plot,model_num)
+function fit_res = calc_zero_th(fit_res,fix_zero_th,disp_plot,case_name,model_num)
 % calc_zero_th - computes the zero threshold and the non_zero_dict for each state, additionally it shows the
 % zero_th - residual error plot (if disp_plot = True)
 %
@@ -6,9 +6,6 @@ function fit_res = calc_zero_th(fit_res,fix_zero_th,disp_plot,model_num)
 mode = 'SMV';
 
 if strcmpi(mode,'SMV')
-    state_num = size(fit_res.y{1},2);
-    param_num = size(fit_res.A{1},2);
-    
     A = [];
     y = [];
     for exp_idx = 1:fit_res.experiment_num
@@ -29,14 +26,13 @@ else
 end
 
 
-
-if isfield(fit_res,'selected_states')
-    state_num = size(fit_res.selected_states,2);
-    selected_states = fit_res.selected_states;
-else
-    state_num = size(fit_res.y{1},2);
-    selected_states = 1:state_num;
-end
+% if isfield(fit_res,'selected_states')
+%     state_num = size(fit_res.selected_states,2);
+%     selected_states = fit_res.selected_states;
+% else
+%     state_num = size(fit_res.y{1},2);
+%     selected_states = 1:state_num;
+% end
 
 state_num = 1;
 selected_states = 1:state_num;
@@ -94,7 +90,7 @@ for k = 1:state_num
     for z=1:model_num
         cut_idx = ch_idx(z);
         zero_th(k) = zth_vec(cut_idx);
-        sprintf('state: x_%d zero_th: %g dict_num: %d (%g%%)',state(k),zero_th(k),dict_num{k}(cut_idx),dict_num{k}(cut_idx)/size(A,2)*100)
+        fprintf('state: x_%d zero_th: %g dict_num: %d (%g%%)\n',case_name,zero_th(k),dict_num{k}(cut_idx),dict_num{k}(cut_idx)/size(A,2)*100)
         if disp_plot
             text(zero_th(k),dict_num{k}(cut_idx),['\leftarrow' sprintf('M%d: zeroth: %f',z,zero_th(k))])
         end
