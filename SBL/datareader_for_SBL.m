@@ -2,7 +2,7 @@
 function input_data = datareader_for_SBL(dir_name,file_name,selected_experiments,logger_fid)
 
 %% read into a table
-T = readtable([dir_name '/' file_name]);
+T = readtable([dir_name filesep file_name]);
 % capitalize variable names
 T.Properties.VariableNames = upper(T.Properties.VariableNames);
 % find the columnds

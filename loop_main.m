@@ -69,7 +69,7 @@ for loop = 1:loop_iter
         if all([fit_res_diff(:,sparsity_case).valid_model] == true)
             SBLModel = SBLModel2AMIGOModel(fit_res_diff(:,sparsity_case),Phi,model,['SBL' num2str(sparsity_case)]);
             
-            [inputs privstruct]=gen_AMIGOSetupFromSBL(SBLModel,'experimental_data_exp1to1_noise000.csv','SBLModel');
+            [inputs privstruct]=gen_AMIGOSetupFromSBL(SBLModel,data_file_name,'SBLModel');
             imported_to_amigo = imported_to_amigo +1;
             
             %% Step 5: Run parameter estimation in Amigo
@@ -88,7 +88,7 @@ for loop = 1:loop_iter
             
             data_file_name = ['experimental_data_loop_' num2str(loo) '.csv'];
             
-            gen_pseudo_data(inputs.exps,2,noise,data_file_name);
+            gen_pseudo_data(inputs.exps,2,noise,[data_dir_name filesep data_file_name]);
         end
     end
     
