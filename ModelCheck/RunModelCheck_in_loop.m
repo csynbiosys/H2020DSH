@@ -5,7 +5,6 @@ valid_model = true;
 
 SetUpStructuralIdent(model);
 addpath([pwd,'/ModelCheck/STRIKE-GOLDD'])
-% cd('..')
 cd([pwd,'/ModelCheck/STRIKE-GOLDD']);
 STRIKE_GOLDD
 siRES = load(['results/id_results_',model,'_',date,'.mat']);

@@ -8,8 +8,8 @@ model = load(['ModelCheck/STRIKE-GOLDD/models/',sgModel,'.mat']);
 
 
 % Generate a new options file with the model to be analised
-fil = fopen([pwd,'/ModelCheck/STRIKE-GOLDD/options.m'], 'w');
-fprintf(fil, 'function [modelname,paths,opts,submodels,prev_ident_pars] = options() \n');
+fil = fopen([pwd,'/ModelCheck/STRIKE-GOLDD/models/options_for_SBL.m'], 'w');
+fprintf(fil, 'function [modelname,paths,opts,submodels,prev_ident_pars] = options_for_SBL() \n');
 fprintf(fil, '\n');
 fprintf(fil, ['modelname = ''',sgModel,'''; \n']);
 fprintf(fil, '\n');
@@ -80,20 +80,3 @@ if a<b
 end
 
 end
-
-
-
-
-
-
-
-
-
-
-
-
-% SBL_diff_RFPdiff_GFP_2_strike_goldd
-
-
-
-

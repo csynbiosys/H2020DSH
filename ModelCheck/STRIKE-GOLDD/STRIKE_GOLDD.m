@@ -28,7 +28,7 @@ global x f p maxstates u unidflag
 if nargin > 0
     [modelname,paths,opts,submodels,prev_ident_pars] = run(varargin{1});
 else
-    [modelname,paths,opts,submodels,prev_ident_pars] = options;
+    [modelname,paths,opts,submodels,prev_ident_pars] = options_for_SBL();
 end
 maxstates = opts.maxstates;
 addpath(genpath(paths.meigo));
