@@ -1,6 +1,6 @@
 function [modelname,paths,opts,submodels,prev_ident_pars] = options() 
 
-modelname = 'SBL_diff_RFP_Odiff_GFP_O_2_strike_goldd'; 
+modelname = 'SBL_diff_RFPdiff_GFP_2_strike_goldd'; 
 
 paths.meigo     = 'D:/H2020DSH/ModelCheck/jrbanga_-meigo64-33e109c94b25/jrbanga_-meigo64-33e109c94b25/MEIGO'; 
 paths.models    = strcat(pwd,filesep,'models'); 

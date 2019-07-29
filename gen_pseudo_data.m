@@ -91,12 +91,12 @@ end
 
 obs_names=cell(1,n_obs);
 for i=1:n_obs
-    obs_names{i}=['READOUT_' inputs.exps.obs_names{1}(i,:)];
+    obs_names{i}=['READOUT_' strrep(inputs.exps.obs_names{1}(i,:),'_o','')];
 end
 
 std_names=cell(1,n_obs);
 for i=1:n_obs
-    std_names{i}=['STD_' inputs.exps.obs_names{1}(i,:)];
+    std_names{i}=['STD_' strrep(inputs.exps.obs_names{1}(i,:),'_o','')];
 end
 
 T=array2table(MAT,'VariableNames',{'Experiment','Time',stimuli_names{:},obs_names{:},std_names{:}});

@@ -82,7 +82,7 @@ for loop = 1:loop_iter
             RES{sparsity_case}={inputs,privstruct,res_ssm};
             
             %% Step 6: Run OED
-            logger(fid,sprintf('loop iter: %d, running the OED',loop))
+            logger(fid,sprintf('loop iter: %d, running the OED',loop));
             
             EXPOED=OED4SBL(RES{sparsity_case}{1},120,10,5,['SBL' num2str(sparsity_case)]);
             
