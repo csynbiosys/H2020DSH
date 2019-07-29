@@ -82,14 +82,15 @@ for loop = 1:loop_iter
             %% Step 6: Run OED
             logger(fid,sprintf('loop iter: %d, running the OED',loop))
             
-            EXPOED=OED4SBL(RES{sparsity_case}{1},120,10,5);
+            EXPOED=OED4SBL(RES{sparsity_case}{1},120,10,5,['SBL' num2str(sparsity_case)]);
             
             %% Step 7: generate new set of data
             logger(fid,sprintf('loop iter: %d, generating new set of data',loop))
             
             data_file_name = ['experimental_data_loop_' num2str(loo) '.csv'];
             
-            gen_pseudo_data(inputs.exps,2,noise,[data_dir_name filesep data_file_name]);
+            gen_pseudo_data(EXPOED.exps,1:length(inputs.exps.exp_y0),...
+                noise,[data_dir_name filesep data_file_name]);
         end
     end
     
