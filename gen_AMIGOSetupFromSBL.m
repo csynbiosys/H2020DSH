@@ -36,10 +36,10 @@ end
 function PESol=set_parameter_bounds(vguess)
 
 PESol.global_theta_max=vguess;
-PESol.global_theta_max(PESol.global_theta_max>0)=PESol.global_theta_max(PESol.global_theta_max>0).*100;
+PESol.global_theta_max(PESol.global_theta_max>0)=PESol.global_theta_max(PESol.global_theta_max>0).*10;
 PESol.global_theta_max(PESol.global_theta_max<=0)=0;
 PESol.global_theta_min=vguess;
-PESol.global_theta_min(PESol.global_theta_min<0)=PESol.global_theta_min(PESol.global_theta_min<0).*100;
+PESol.global_theta_min(PESol.global_theta_min<0)=PESol.global_theta_min(PESol.global_theta_min<0).*10;
 PESol.global_theta_min(PESol.global_theta_min>=0)=0;
    
 end

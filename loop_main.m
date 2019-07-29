@@ -46,6 +46,7 @@ for loop = 1:loop_iter
     if do_struct_id_check
         logger(fid,sprintf('loop iter: %d, running Strike-goldd',loop))
         for sparsity_case=1:size(sbl_config.sparsity_vec,2)
+
             
             sbl_model_file_name = from_SBL_to_Strike_GOLDD(fit_res_diff(:,sparsity_case),model,Phi,input_data,sparsity_case,data_dir_name);
             
@@ -82,7 +83,7 @@ for loop = 1:loop_iter
             RES{sparsity_case}={inputs,privstruct,res_ssm};
             
             %% Step 6: Run OED
-            logger(fid,sprintf('loop iter: %d, running the OED',loop))
+            logger(fid,sprintf('loop iter: %d, running the OED',loop));
             
             EXPOED=OED4SBL(RES{sparsity_case}{1},120,10,5,['SBL' num2str(sparsity_case)]);
             
