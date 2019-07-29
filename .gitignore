@@ -9,3 +9,6 @@ ModelCheck/STRIKE-GOLDD/results/*.mat
 ModelCheck/STRIKE-GOLDD/models/*.*
 .DS_Store
 
+Data/SBL_diff_RFPdiff_GFP_1_strike_goldd.mat
+Data/SBL_diff_RFPdiff_GFP_2_strike_goldd.mat
+ess_report.mat

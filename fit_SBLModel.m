@@ -33,9 +33,9 @@ end
 function [f,g,r]=davidObj(x,inputs,privstruct)
 
 inputs.model.par(inputs.PEsol.index_global_theta)=x(1:length(inputs.PEsol.index_global_theta));
-tic
+
 feval(inputs.model.mexfunction,'cost_LSQ');
-toc
+
 f=outputs.f;
 r=outputs.w_res;
 g=[];
