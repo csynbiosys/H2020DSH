@@ -61,6 +61,7 @@ for loop = 1:loop_iter
     logger(fid,sprintf('loop iter: %d, building an Amigo model',loop))
     
     RES={};
+    
     clear mex;
     
     imported_to_amigo = 0;
