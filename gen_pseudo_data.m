@@ -21,11 +21,11 @@ for iexp=1:exps.n_exp
     inputs.exps.t_con{iexp}=exps.t_con{iexp};
     inputs.exps.u{iexp}=exps.u{iexp};
     
-    if iexp>length(inputs.exps.exp_y0)
-        inputs.exps.exp_y0{iexp}=[exps.exp_y0{iexp}(1:2) inputs.exps.exp_y0{1}(3:4)];
-    else
-        inputs.exps.exp_y0{iexp}(1:2)=exps.exp_y0{iexp}(1:2);
+    if iexp>7
+        inputs.exps.exp_y0{iexp}=[exps.exp_y0{iexp}(1:2) compute_steady_state(...
+            inputs.model.par,inputs.exps.u{iexp}(1,1),inputs.exps.u{iexp}(2,1))];
     end
+    
 end
 
 inputs.model.compile_model=0;

@@ -21,11 +21,12 @@ sbl_config.sparsity_vec = [0.2 2];
 
 %% first dataset
 data_dir_name = 'Data';
-% first data set
-data_file_name = 'experimental_data_7exps_noise000.csv';
 
 %% start computation
+
 for loop = 1:loop_iter
+    
+    data_file_name = ['experimental_data_loop_' num2str(loop) '.csv'];
     
     %% Step 1: generate data for SBL
     logger(fid,sprintf('loop iter: %d, generating SBL data',loop))
@@ -66,6 +67,7 @@ for loop = 1:loop_iter
     
     imported_to_amigo = 0;
     for sparsity_case=size(sbl_config.sparsity_vec,2):size(sbl_config.sparsity_vec,2)
+        
         % check model validity (valid model has a well defined ODE and struct ID)
         if all([fit_res_diff(:,sparsity_case).valid_model] == true)
             SBLModel = SBLModel2AMIGOModel(fit_res_diff(:,sparsity_case),Phi,model,['SBL' num2str(sparsity_case)]);
@@ -87,10 +89,12 @@ for loop = 1:loop_iter
             %% Step 7: generate new set of data
             logger(fid,sprintf('loop iter: %d, generating new set of data',loop))
             
-            data_file_name = ['experimental_data_loop_' num2str(loop) '.csv'];
+            data_file_name = ['experimental_data_loop_' num2str(loop+1) '.csv'];
             
             gen_pseudo_data(EXPOED.exps,1:length(EXPOED.exps.exp_y0),...
                 noise,[data_dir_name filesep data_file_name]);
+            
+            
         end
     end
     
