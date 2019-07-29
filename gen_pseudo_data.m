@@ -6,24 +6,23 @@ function gen_pseudo_data(exps,exps_vec,noise,file)
 inputs.exps.n_exp=exps.n_exp;
 
 for iexp=1:exps.n_exp
-    
-    inputs.exps.exp_type{iexp} = exps.exp_type{iexp};
-    inputs.exps.obs_names{iexp}=exps.obs_names{iexp};
-    inputs.exps.obs{iexp} =exps.obs{iexp};
-    inputs.exps.n_obs{iexp}=exps.n_obs{iexp};
-    inputs.exps.t_f{iexp} = exps.t_f{iexp};
-    inputs.exps.n_s{iexp} = exps.n_s{iexp};
-    inputs.exps.t_s{iexp} = exps.t_s{iexp};
-    inputs.exps.exp_data{iexp} = nan(inputs.exps.n_obs{iexp},inputs.exps.n_s{iexp});
-    inputs.exps.error_data{iexp} =exps.error_data{iexp};
-    inputs.exps.u_interp{iexp}=exps.u_interp{iexp};
-    inputs.exps.n_steps{iexp}=exps.n_steps{iexp};
-    inputs.exps.t_con{iexp}=exps.t_con{iexp};
-    inputs.exps.u{iexp}=exps.u{iexp};
-    
+   
     if iexp>7
-        inputs.exps.exp_y0{iexp}=[exps.exp_y0{iexp}(1:2) compute_steady_state(...
-            inputs.model.par,inputs.exps.u{iexp}(1,1),inputs.exps.u{iexp}(2,1))];
+        inputs.exps.exp_type{iexp} = exps.exp_type{iexp};
+        inputs.exps.obs_names{iexp}=exps.obs_names{iexp};
+        inputs.exps.obs{iexp} =exps.obs{iexp};
+        inputs.exps.n_obs{iexp}=exps.n_obs{iexp};
+        inputs.exps.t_f{iexp} = exps.t_f{iexp};
+        inputs.exps.n_s{iexp} = exps.n_s{iexp};
+        inputs.exps.t_s{iexp} = exps.t_s{iexp};
+        inputs.exps.exp_data{iexp} = nan(inputs.exps.n_obs{iexp},inputs.exps.n_s{iexp});
+        inputs.exps.error_data{iexp} =exps.error_data{iexp};
+        inputs.exps.u_interp{iexp}=exps.u_interp{iexp};
+        inputs.exps.n_steps{iexp}=exps.n_steps{iexp};
+        inputs.exps.t_con{iexp}=exps.t_con{iexp};
+        inputs.exps.u{iexp}=exps.u{iexp};
+        [IC1,IC2]=compute_steady_state(inputs.model.par,inputs.exps.u{iexp}(1,1),inputs.exps.u{iexp}(2,1));
+        inputs.exps.exp_y0{iexp}=[exps.exp_y0{iexp}(1:2) IC1 IC2];
     end
     
 end

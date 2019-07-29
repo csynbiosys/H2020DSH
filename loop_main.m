@@ -11,7 +11,7 @@ noise=0;
 loop_iter = 2;
 fid = 1; % display on the screen
 
-do_struct_id_check = 1;
+do_struct_id_check = 0;
 
 %% SBL config
 sbl_config.display_plots  = 0;
@@ -31,14 +31,14 @@ for loop = 1:loop_iter
     %% Step 1: generate data for SBL
     logger(fid,sprintf('loop iter: %d, generating SBL data',loop))
     
-    % select the experiments to be considered
-    exp_idx = [1];
-    % load data from a file
+    
+    
+    %% load data from a file
+    exp_idx = 1:7;
     input_data = datareader_for_SBL(data_dir_name,data_file_name,exp_idx,fid);
     
     %% Step 2: Run SBL
     logger(fid,sprintf('loop iter: %d, running SBL',loop))
-    
     [Phi,fit_res_diff,model]  = toggle_switch_SBL(input_data,sbl_config);
     
     
@@ -46,7 +46,6 @@ for loop = 1:loop_iter
     if do_struct_id_check
         logger(fid,sprintf('loop iter: %d, running Strike-goldd',loop))
         for sparsity_case=1:size(sbl_config.sparsity_vec,2)
-
             
             sbl_model_file_name = from_SBL_to_Strike_GOLDD(fit_res_diff(:,sparsity_case),model,Phi,input_data,sparsity_case,data_dir_name);
             
@@ -94,7 +93,6 @@ for loop = 1:loop_iter
             
             gen_pseudo_data(EXPOED.exps,1:length(EXPOED.exps.exp_y0),...
                 noise,[data_dir_name filesep data_file_name]);
-            
             
         end
     end
