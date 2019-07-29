@@ -1,5 +1,5 @@
 addpath([pwd '/Data'])
 addpath([pwd '/SBL'])
-path([pwd '/AMIGO'])
+addpath([pwd '/AMIGO'])
 addpath([pwd '/ModelCheck'])
 addpath(genpath([pwd '/Models']))

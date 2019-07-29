@@ -4,10 +4,10 @@ vguess= inputs.PEsol.global_theta_guess;
 
 problem.x_0=vguess;
 problem.x_U=vguess;
-problem.x_U(problem.x_U>0)=problem.x_U(problem.x_U>0).*100;
+problem.x_U(problem.x_U>0)=problem.x_U(problem.x_U>0).*10;
 problem.x_U(problem.x_U<=0)=0;
 problem.x_L=vguess;
-problem.x_L(problem.x_L<0)=problem.x_L(problem.x_L<0).*100;
+problem.x_L(problem.x_L<0)=problem.x_L(problem.x_L<0).*10;
 problem.x_L(problem.x_L>=0)=0;
 
 problem.f=@davidObj;
@@ -33,9 +33,9 @@ end
 function [f,g,r]=davidObj(x,inputs,privstruct)
 
 inputs.model.par(inputs.PEsol.index_global_theta)=x(1:length(inputs.PEsol.index_global_theta));
-
+tic
 feval(inputs.model.mexfunction,'cost_LSQ');
-
+toc
 f=outputs.f;
 r=outputs.w_res;
 g=[];
