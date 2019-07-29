@@ -1,11 +1,11 @@
 
-function gen_pseudo_data(exps,exps_vec,noise,file)
+function [observables,error_data] = gen_pseudo_data(exps,exps_vec,noise,file)
 
 [inputs,privstruct,INITIALU]=compile('model1');
 
-inputs.exps.n_exp=exps.n_exp;
+inputs.exps.n_exp=max(exps_vec);
 
-for iexp=1:exps.n_exp
+for iexp=1:inputs.exps.n_exp
    
     if iexp>7
         inputs.exps.exp_type{iexp} = exps.exp_type{iexp};
@@ -40,11 +40,16 @@ tempInputs=inputs;
 
 MAT=[];
 
+error_data={};
+observables= outputs.observables;
 for iexp=1:length(outputs.observables)
     
+    error_data{iexp}=randn(size(outputs.observables{iexp})).*noise.*outputs.observables{iexp};
+    
     if any(exps_vec==iexp)
-        outputs.observables{iexp}=outputs.observables{iexp}+...
-            randn(size(outputs.observables{iexp})).*noise.*outputs.observables{iexp};
+        
+        outputs.observables{iexp}=outputs.observables{iexp}+error_data{iexp};
+            
         outputs.observables{iexp}(outputs.observables{iexp}<0)=0;
     else
         outputs.observables{iexp}=inputs.exps.exp_data{iexp};
@@ -73,13 +78,16 @@ for iexp=1:length(outputs.observables)
     
     if any(exps_vec==iexp)
         mat(:,2+n_stimuli+1:2+n_stimuli+n_obs)=outputs.observables{iexp};
+        mat(:,2+n_stimuli+n_obs+1:2+n_stimuli+n_obs+n_obs)=noise.*outputs.observables{iexp};
     else
         mat(:,2+n_stimuli+n_obs+1:2+n_stimuli+n_obs+n_obs)=inputs.exps.error_data{iexp};
     end
     
     MAT=[MAT;mat];
     
-    
+    if(iexp>7)
+        inputs.exps.error_data{iexp}=error_data{iexp};
+    end
 end
 
 stimuli_names=cell(1,n_stimuli);

@@ -26,7 +26,7 @@ inputs.nlpsol.eSS.local.finish=0;
 x=res_ssm.xbest;
 
 inputs.model.par(inputs.PEsol.index_global_theta)=x;
-
+inputs.PEsol.global_theta_guess=x;
 
 end
 
