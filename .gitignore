@@ -1,7 +1,6 @@
 
 *.asv
 *.m~
-*.mat
 
 Models/*.mexw64
 Models/*.mexmaci64
