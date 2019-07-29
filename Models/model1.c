@@ -106,8 +106,8 @@ void amigoRHS_get_OBS(void* data){
 			}
 
 		 break;
-		#define	 RFP amigo_model->obs_results[0][j] 
-		#define	 GFP amigo_model->obs_results[1][j] 
+		#define	 RFP_o amigo_model->obs_results[0][j] 
+		#define	 GFP_o amigo_model->obs_results[1][j] 
 
 		 case 1:
 
@@ -115,14 +115,14 @@ void amigoRHS_get_OBS(void* data){
 			 for (j = 0; j < amigo_model->n_times; ++j){
 
 				t=amigo_model->t[j];
-				RFP = L_RFP;
-				GFP = T_GFP;
+				RFP_o=RFP;
+				GFP_o=GFP;
 
 			}
 
 		 break;
-		#define	 RFP amigo_model->obs_results[0][j] 
-		#define	 GFP amigo_model->obs_results[1][j] 
+		#define	 RFP_o amigo_model->obs_results[0][j] 
+		#define	 GFP_o amigo_model->obs_results[1][j] 
 
 		 case 2:
 
@@ -130,14 +130,14 @@ void amigoRHS_get_OBS(void* data){
 			 for (j = 0; j < amigo_model->n_times; ++j){
 
 				t=amigo_model->t[j];
-				RFP = L_RFP;
-				GFP = T_GFP;
+				RFP_o=RFP;
+				GFP_o=GFP;
 
 			}
 
 		 break;
-		#define	 RFP amigo_model->obs_results[0][j] 
-		#define	 GFP amigo_model->obs_results[1][j] 
+		#define	 RFP_o amigo_model->obs_results[0][j] 
+		#define	 GFP_o amigo_model->obs_results[1][j] 
 
 		 case 3:
 
@@ -145,14 +145,14 @@ void amigoRHS_get_OBS(void* data){
 			 for (j = 0; j < amigo_model->n_times; ++j){
 
 				t=amigo_model->t[j];
-				RFP = L_RFP;
-				GFP = T_GFP;
+				RFP_o=RFP;
+				GFP_o=GFP;
 
 			}
 
 		 break;
-		#define	 RFP amigo_model->obs_results[0][j] 
-		#define	 GFP amigo_model->obs_results[1][j] 
+		#define	 RFP_o amigo_model->obs_results[0][j] 
+		#define	 GFP_o amigo_model->obs_results[1][j] 
 
 		 case 4:
 
@@ -160,14 +160,14 @@ void amigoRHS_get_OBS(void* data){
 			 for (j = 0; j < amigo_model->n_times; ++j){
 
 				t=amigo_model->t[j];
-				RFP = L_RFP;
-				GFP = T_GFP;
+				RFP_o=RFP;
+				GFP_o=GFP;
 
 			}
 
 		 break;
-		#define	 RFP amigo_model->obs_results[0][j] 
-		#define	 GFP amigo_model->obs_results[1][j] 
+		#define	 RFP_o amigo_model->obs_results[0][j] 
+		#define	 GFP_o amigo_model->obs_results[1][j] 
 
 		 case 5:
 
@@ -175,14 +175,14 @@ void amigoRHS_get_OBS(void* data){
 			 for (j = 0; j < amigo_model->n_times; ++j){
 
 				t=amigo_model->t[j];
-				RFP = L_RFP;
-				GFP = T_GFP;
+				RFP_o=RFP;
+				GFP_o=GFP;
 
 			}
 
 		 break;
-		#define	 RFP amigo_model->obs_results[0][j] 
-		#define	 GFP amigo_model->obs_results[1][j] 
+		#define	 RFP_o amigo_model->obs_results[0][j] 
+		#define	 GFP_o amigo_model->obs_results[1][j] 
 
 		 case 6:
 
@@ -190,8 +190,23 @@ void amigoRHS_get_OBS(void* data){
 			 for (j = 0; j < amigo_model->n_times; ++j){
 
 				t=amigo_model->t[j];
-				RFP = L_RFP;
-				GFP = T_GFP;
+				RFP_o=RFP;
+				GFP_o=GFP;
+
+			}
+
+		 break;
+		#define	 RFP_o amigo_model->obs_results[0][j] 
+		#define	 GFP_o amigo_model->obs_results[1][j] 
+
+		 case 7:
+
+
+			 for (j = 0; j < amigo_model->n_times; ++j){
+
+				t=amigo_model->t[j];
+				RFP_o=RFP;
+				GFP_o=GFP;
 
 			}
 
@@ -238,90 +253,105 @@ void amigoRHS_get_sens_OBS(void* data){
 
 		 case 1:
 
-		#define	 RFP amigo_model->sens_obs[0][j][k] 
-		#define	 GFP amigo_model->sens_obs[1][j][k] 
+		#define	 RFP_o amigo_model->sens_obs[0][j][k] 
+		#define	 GFP_o amigo_model->sens_obs[1][j][k] 
 
 			 for (j = 0; j < amigo_model->n_total_x; ++j){
 				 for (k = 0; k < amigo_model->n_times; ++k){
 
 				t=amigo_model->t[k];
-					RFP = L_RFP;
-					GFP = T_GFP;
+					RFP_o=RFP;
+					GFP_o=GFP;
 				}
 			}
 		 break;
 
 		 case 2:
 
-		#define	 RFP amigo_model->sens_obs[0][j][k] 
-		#define	 GFP amigo_model->sens_obs[1][j][k] 
+		#define	 RFP_o amigo_model->sens_obs[0][j][k] 
+		#define	 GFP_o amigo_model->sens_obs[1][j][k] 
 
 			 for (j = 0; j < amigo_model->n_total_x; ++j){
 				 for (k = 0; k < amigo_model->n_times; ++k){
 
 				t=amigo_model->t[k];
-					RFP = L_RFP;
-					GFP = T_GFP;
+					RFP_o=RFP;
+					GFP_o=GFP;
 				}
 			}
 		 break;
 
 		 case 3:
 
-		#define	 RFP amigo_model->sens_obs[0][j][k] 
-		#define	 GFP amigo_model->sens_obs[1][j][k] 
+		#define	 RFP_o amigo_model->sens_obs[0][j][k] 
+		#define	 GFP_o amigo_model->sens_obs[1][j][k] 
 
 			 for (j = 0; j < amigo_model->n_total_x; ++j){
 				 for (k = 0; k < amigo_model->n_times; ++k){
 
 				t=amigo_model->t[k];
-					RFP = L_RFP;
-					GFP = T_GFP;
+					RFP_o=RFP;
+					GFP_o=GFP;
 				}
 			}
 		 break;
 
 		 case 4:
 
-		#define	 RFP amigo_model->sens_obs[0][j][k] 
-		#define	 GFP amigo_model->sens_obs[1][j][k] 
+		#define	 RFP_o amigo_model->sens_obs[0][j][k] 
+		#define	 GFP_o amigo_model->sens_obs[1][j][k] 
 
 			 for (j = 0; j < amigo_model->n_total_x; ++j){
 				 for (k = 0; k < amigo_model->n_times; ++k){
 
 				t=amigo_model->t[k];
-					RFP = L_RFP;
-					GFP = T_GFP;
+					RFP_o=RFP;
+					GFP_o=GFP;
 				}
 			}
 		 break;
 
 		 case 5:
 
-		#define	 RFP amigo_model->sens_obs[0][j][k] 
-		#define	 GFP amigo_model->sens_obs[1][j][k] 
+		#define	 RFP_o amigo_model->sens_obs[0][j][k] 
+		#define	 GFP_o amigo_model->sens_obs[1][j][k] 
 
 			 for (j = 0; j < amigo_model->n_total_x; ++j){
 				 for (k = 0; k < amigo_model->n_times; ++k){
 
 				t=amigo_model->t[k];
-					RFP = L_RFP;
-					GFP = T_GFP;
+					RFP_o=RFP;
+					GFP_o=GFP;
 				}
 			}
 		 break;
 
 		 case 6:
 
-		#define	 RFP amigo_model->sens_obs[0][j][k] 
-		#define	 GFP amigo_model->sens_obs[1][j][k] 
+		#define	 RFP_o amigo_model->sens_obs[0][j][k] 
+		#define	 GFP_o amigo_model->sens_obs[1][j][k] 
 
 			 for (j = 0; j < amigo_model->n_total_x; ++j){
 				 for (k = 0; k < amigo_model->n_times; ++k){
 
 				t=amigo_model->t[k];
-					RFP = L_RFP;
-					GFP = T_GFP;
+					RFP_o=RFP;
+					GFP_o=GFP;
+				}
+			}
+		 break;
+
+		 case 7:
+
+		#define	 RFP_o amigo_model->sens_obs[0][j][k] 
+		#define	 GFP_o amigo_model->sens_obs[1][j][k] 
+
+			 for (j = 0; j < amigo_model->n_total_x; ++j){
+				 for (k = 0; k < amigo_model->n_times; ++k){
+
+				t=amigo_model->t[k];
+					RFP_o=RFP;
+					GFP_o=GFP;
 				}
 			}
 		 break;
