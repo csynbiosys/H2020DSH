@@ -19,7 +19,7 @@ for iexp=1:N_EXPERIMENTS
     exps.n_obs{iexp} = length(READOUT_COLS);
     exps.exp_type{iexp} = 'fixed';
     
-    st_names=regexprep(DATA.textdata(READOUT_COLS),'READOUT_','')
+    st_names=regexprep(DATA.textdata(READOUT_COLS),'READOUT_','');
     obs_names = regexprep(DATA.textdata(READOUT_COLS),'READOUT_','');
     
     for jobs=1:length(obs_names)

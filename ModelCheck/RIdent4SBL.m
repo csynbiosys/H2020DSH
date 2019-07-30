@@ -27,8 +27,8 @@ inputs.nlpsol.eSS.ndiverse = 30;
 inputs.nlpsol.eSS.dim_refset = 6;
 inputs.nlpsol.eSS.local.n1=0;
 inputs.nlpsol.eSS.local.n2=0;
-inputs.nlpsol.eSS.local.solver = 'fmincon'; 
-inputs.nlpsol.eSS.local.finish =0;
+inputs.nlpsol.eSS.local.solver = 0; 
+inputs.nlpsol.eSS.local.finish ='fmincon';
 inputs.nlpsol.eSS.maxtime=100;
 inputs.plotd.plotlevel='noplot';
 

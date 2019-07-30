@@ -1,14 +1,8 @@
 function[inputs,privstruct,res_ssm]=fit_SBLModel(inputs,privstruct)
 
-vguess= inputs.PEsol.global_theta_guess;
-
-problem.x_0=vguess;
-problem.x_U=vguess;
-problem.x_U(problem.x_U>0)=problem.x_U(problem.x_U>0).*10;
-problem.x_U(problem.x_U<=0)=0;
-problem.x_L=vguess;
-problem.x_L(problem.x_L<0)=problem.x_L(problem.x_L<0).*10;
-problem.x_L(problem.x_L>=0)=0;
+problem.x_U=inputs.PEsol.global_theta_max;
+problem.x_L=inputs.PEsol.global_theta_min;
+problem.x_0=inputs.PEsol.global_theta_guess;
 
 problem.f=@davidObj;
 
