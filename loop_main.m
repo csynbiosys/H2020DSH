@@ -94,9 +94,9 @@ for loop = 1:loop_iter
             
             %% Step 7: generate new set of data
             logger(fid,sprintf('loop iter: %d, generating new set of data',loop))
-            data_file_name = ['experimental_data_loop_' num2str(loop+1) '.csv'];
+
             [observables,error_data]=gen_pseudo_data(EXPOED.exps,length(EXPOED.exps.exp_y0),...
-                noise,[data_dir_name filesep data_file_name]);         
+                noise,[data_dir_name filesep 'experimental_data_loop_' num2str(loop+1) '.csv']);         
             EXPOED.exps.error_data{end}=error_data{end};
             EXPOED.exps.exp_data{end}=observables{end}+error_data{end};
             
