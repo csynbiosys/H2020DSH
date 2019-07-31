@@ -57,7 +57,7 @@ function [inputs] = OED4SBL(inputs,duration,stepDuration,samplingTime,model_name
     inputs.exps.u_interp{iexp}='step';
     inputs.exps.n_steps{iexp}=(duration)/stepDuration;
     inputs.exps.t_con{iexp}=0:stepDuration:(duration);
-    inputs.exps.u{iexp}=[inputs.exps.u{iexp} results.oed.u{results.oed.n_exp}];
+    inputs.exps.u{iexp}=[results.oed.u{results.oed.n_exp} results.oed.u{results.oed.n_exp}(:,end)];
     
     
 end
