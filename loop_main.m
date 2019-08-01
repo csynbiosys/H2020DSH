@@ -94,21 +94,32 @@ for loop = 1:loop_iter
             
             %% Step 7: generate new set of data
             logger(fid,sprintf('loop iter: %d, generating new set of data',loop))
-
-            [observables,error_data]=gen_pseudo_data(EXPOED.exps,1:length(EXPOED.exps.exp_y0),...
-                noise,[data_dir_name filesep 'experimental_data_loop_' num2str(loop+1) '.csv']);         
-            EXPOED.exps.error_data{end}=error_data{end};
-            EXPOED.exps.exp_data{end}=observables{end}+error_data{end};
+            
+            switch sparsity_case
+                %% Keep results
+                case 1
+                    [observables,error_data]=gen_pseudo_data(EXPOED.exps,1:length(EXPOED.exps.exp_y0),...
+                        noise,[data_dir_name filesep 'experimental_data_loop_' num2str(loop+1) '.csv']);
+                    EXPOED.exps.error_data{end}=error_data{end};
+                    EXPOED.exps.exp_data{end}=observables{end}+error_data{end};
+                    [observables,error_data]=gen_pseudo_data(EXPOED.exps,1:length(EXPOED.exps.exp_y0),...
+                        noise,[data_dir_name filesep 'experimental_data_' num2str(sparsity_case) '_loop_' num2str(loop+1) '.csv']);
+                    
+                case 2
+                    [observables,error_data]=gen_pseudo_data(EXPOED.exps,1:length(EXPOED.exps.exp_y0),...
+                        noise,[data_dir_name filesep 'experimental_data_' num2str(sparsity_case) '_loop_' num2str(loop+1) '.csv']);
+                    EXPOED.exps.error_data{end}=error_data{end};
+                    EXPOED.exps.exp_data{end}=observables{end}+error_data{end};
+            end
             
             %% Robust identifiability analysis after OED
             resRIDENT2=RIdent4SBL(EXPOED,model_name);
             
-
-            %% Keep results
             RES{loop}{sparsity_case}={inputs,privstruct,res_ssm,GRANK,resRIDENT1,resRIDENT2};
             
         end
     end
+    
     
     if imported_to_amigo == 0
         logger(fid,sprintf('loop iter: %d, there is no valid model to work with, LOOP STOPS',loop))
@@ -118,4 +129,5 @@ for loop = 1:loop_iter
     logger(fid,sprintf('loop iter: %d is DONE',loop))
     
     save('results')
-end 
+    
+end
