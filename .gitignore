@@ -18,3 +18,6 @@ Data/experimental_data_loop_1.txt
 Data/experimental_data_loop_3.csv
 Data/experimental_data_loop_2.csv
 *.mat
+*.mat
+Data/SBL_diff_RFPdiff_GFP_1_strike_goldd.mat
+Data/SBL_diff_RFPdiff_GFP_2_strike_goldd.mat

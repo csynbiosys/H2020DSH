@@ -2,7 +2,8 @@
 %% Load experimental data. This data are derived, using the script ExtractionAllExperimentalData/ExtractionStructure_AllData_final.m,
 % starting from data used in the paper  Lugagne et al.
 % The data derives from 26 experiments, 6 calibration and 20 control
-load Data/AllDataLugagne_Final.mat;
+SBL_workdir;
+load(fullfile(SBL_work_dir,'Examples/ToggleSwitch/TrueModel/AllDataLugagne_Final.mat'));
 
 %% Initial guesses for theta
 global_theta_min = inputs.model.par.*0.2;
@@ -23,7 +24,7 @@ Y0 = 1e-3.*ones(length(exps_indexTraining),model.n_st);
 
 exps.n_exp = length(exps_indexTraining);
 
-ICs=importdata(['Data/ICs' model_name '.csv']);
+ICs=importdata(fullfile(SBL_work_dir,'Examples/ToggleSwitch/TrueModel', [model_name '.csv']));
 INITIALU={};
 for iexp=1:length(exps_indexTraining)
     
