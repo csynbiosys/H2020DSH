@@ -1,7 +1,8 @@
 sbl_config.loop_iter = 2;
 sbl_config.fid = 1;
 sbl_config.do_struct_id_check = 1;
-sbl_config.data_dir_name = 'Data';
+SBL_workdir;
+sbl_config.data_dir_name = fullfile(SBL_work_dir,'Data');
 sbl_config.data_file_name = ['experimental_data_loop_' num2str(1) '.csv'];
 sbl_config.exp_idx=1;
 

@@ -1,4 +1,4 @@
-function [inputs,privstruct,INITIALU] = compile(model_name)
+function [inputs,privstruct,INITIALU] = compile_example(model_name)
 
 INITIALU={};
 

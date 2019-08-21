@@ -13,9 +13,6 @@ clc;
 close all;
 noise_pseudo_data=0.05;
 
-%% Start SBL and load default settings
-SBL_init;
-
 %%
 % A number of settings is defined in the default configuration file. The
 % assertiveness of these settings is problem dependent. Settings such as
@@ -59,13 +56,23 @@ set(gcf, 'Units', 'Normalized', 'OuterPosition', [0, 0.04, 1, 0.96]);
 data_file2=fullfile(pwd,'Data','experimental_data_2.csv');
 gen_pseudo_data(modelsAfterOED{1}{1}.exps,noise_pseudo_data,data_file2,'model1');
 sbl_config.data_dir_name = 'Data';
-sbl_config.data_file_name = data_file2;
+sbl_config.data_file_name = 'experimental_data_2.csv';
 
 
-%% Second iteration
-
-sbl_config.exp_idx=1:3;
+%% Second iteration: generate and fit a family of models
+sbl_config.exp_idx=[1 2 8];
 % %% Generate and fit a new family of models
-% MODELS=SBL_gen_model_family(sbl_config,1:1);
+MODELS=SBL_gen_model_family(sbl_config);
+SBL_plotFamilyFit(MODELS);
+set(gcf, 'Units', 'Normalized', 'OuterPosition', [0, 0.04, 1, 0.96]);
 
+%% Second interation of OED for model discrimination
+
+%% 
+% Optimal experimental design for model discrimination seeks to find the
+% experiment that maximizes the predicted different between the models.
+
+modelsAfterOED=OED4SBLdiscrimination(MODELS,sbl_config);
+SBL_plotDiscriminationResult(modelsAfterOED);
+set(gcf, 'Units', 'Normalized', 'OuterPosition', [0, 0.04, 1, 0.96]);
 

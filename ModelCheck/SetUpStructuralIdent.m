@@ -2,18 +2,20 @@
 
 function [] = SetUpStructuralIdent(sgModel)
 
+SBL_workdir;
+
 % Copy STRIKE-GOLDD model into the models directory
-copyfile([pwd,'/Data/',sgModel,'*'],[pwd,'/ModelCheck/STRIKE-GOLDD/models'])
-model = load(['ModelCheck/STRIKE-GOLDD/models/',sgModel,'.mat']);
+copyfile([SBL_work_dir,'/Data/',sgModel,'*'],[SBL_work_dir,'/ModelCheck/STRIKE-GOLDD/models'])
+model = load(fullfile(SBL_work_dir,'ModelCheck/STRIKE-GOLDD/models',[sgModel '.mat']));
 
 
 % Generate a new options file with the model to be analised
-fil = fopen([pwd,'/ModelCheck/STRIKE-GOLDD/models/options_for_SBL.m'], 'w');
+fil = fopen([SBL_work_dir,'/ModelCheck/STRIKE-GOLDD/models/options_for_SBL.m'], 'w');
 fprintf(fil, 'function [modelname,paths,opts,submodels,prev_ident_pars] = options_for_SBL() \n');
 fprintf(fil, '\n');
 fprintf(fil, ['modelname = ''',sgModel,'''; \n']);
 fprintf(fil, '\n');
-g=pwd;
+g=SBL_work_dir;
 for i=1:length(g)
     if g(i)=='\'
         g(i)='/';
@@ -74,9 +76,10 @@ if a<b
     f = model.f;
     ics = model.ics;
     known_ics = model.known_ics;
-    cd([pwd,'/ModelCheck/STRIKE-GOLDD/models']);
+    temp=pwd;
+    cd([SBL_work_dir,'/ModelCheck/STRIKE-GOLDD/models']);
     save(sgModel,'f','h','ics','known_ics','p','u','x')
-    cd('../../..');
+    cd(temp);
 end
 
 end

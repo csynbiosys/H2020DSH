@@ -1,12 +1,14 @@
 function valid_model = RunModelCheck_in_loop(model,fid)
+
 % Run Structural Identifiability 
-% The current directory needs to be H2020DSH!!
 valid_model = true;
 
+SBL_workdir;
+
 SetUpStructuralIdent(model);
-addpath([pwd,'/ModelCheck/STRIKE-GOLDD'])
-cd([pwd,'/ModelCheck/STRIKE-GOLDD']);
-STRIKE_GOLDD
+addpath([SBL_work_dir,'/ModelCheck/STRIKE-GOLDD'])
+cd([SBL_work_dir,'/ModelCheck/STRIKE-GOLDD']);
+STRIKE_GOLDD;
 siRES = load(['results/id_results_',model,'_',date,'.mat']);
 current_file_sep = filesep;
 cd(['..' current_file_sep '..'])
@@ -16,6 +18,7 @@ if ~isempty(siRES.nonidentif)
     valid_model = false;
 end
 
+end
 
 
 

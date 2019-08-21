@@ -1,9 +1,9 @@
 
-function [observables,error_data] = gen_pseudo_data(exps,newExp,noise,file,model_name)
+function [observables,error_data] = gen_pseudo_data(newExp,noise,file,model_name)
 
 [inputs,privstruct,INITIALU]=compile_example(model_name);
 
-inputs.exps.n_exp=exps.n_exp+1;
+inputs.exps.n_exp=inputs.exps.n_exp+1;
 
 iexp=inputs.exps.n_exp;
 inputs.exps.exp_type{iexp} = newExp.exp_type{1};
@@ -37,9 +37,7 @@ observables= outputs.observables;
 for iexp=1:length(outputs.observables)
     
     error_data{iexp}=randn(size(outputs.observables{iexp})).*noise.*outputs.observables{iexp};
-    
-    
-    
+
     if iexp==length(outputs.observables)
         outputs.observables{iexp}=outputs.observables{iexp}+error_data{iexp};
         outputs.observables{iexp}(outputs.observables{iexp}<0)=0;
@@ -48,13 +46,11 @@ for iexp=1:length(outputs.observables)
         error_data{iexp}=inputs.exps.error_data{iexp};
     end
     
-    
     n_stimuli=inputs.model.n_stimulus;
     time=inputs.exps.t_s{iexp};
     n_obs=inputs.exps.n_obs{iexp};
     
     mat=nan(length(time),2+n_stimuli+2.*n_obs);
-    
     mat(:,1)=iexp;
     mat(:,2)=time;
     
@@ -73,13 +69,11 @@ for iexp=1:length(outputs.observables)
     mat(:,2+n_stimuli+1:2+n_stimuli+n_obs)=outputs.observables{iexp};
     mat(:,2+n_stimuli+n_obs+1:2+n_stimuli+n_obs+n_obs)=noise.*outputs.observables{iexp};
     
-    
     MAT=[MAT;mat];
     
     if(iexp>7)
         inputs.exps.error_data{iexp}=error_data{iexp};
     end
-    
     
     stimuli_names=cell(1,n_stimuli);
     
