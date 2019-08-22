@@ -24,7 +24,7 @@ Y0 = 1e-3.*ones(length(exps_indexTraining),model.n_st);
 
 exps.n_exp = length(exps_indexTraining);
 
-ICs=importdata(fullfile(SBL_work_dir,'Examples/ToggleSwitch/TrueModel', [model_name '.csv']));
+ICs=importdata(fullfile(SBL_work_dir,'Examples/ToggleSwitch/TrueModel', ['ICs' model_name '.csv']));
 INITIALU={};
 for iexp=1:length(exps_indexTraining)
     
