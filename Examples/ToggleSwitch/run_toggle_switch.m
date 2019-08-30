@@ -26,7 +26,7 @@ SBL_config_defaults;
 % As example we modify sbl_config.exp_idx for considering only experiments 1
 % and 2.
 
-sbl_config.exp_idx=1:2;
+sbl_config.exp_idx=1:3;
  
 %% Generate and fit a family of models
 
@@ -52,16 +52,16 @@ SBL_plotDiscriminationResult(modelsAfterOED);
 set(gcf, 'Units', 'Normalized', 'OuterPosition', [0, 0.04, 1, 0.96]);
 
 %% Generate new pseudo experimental data
-
-data_file2=fullfile(pwd,'Data','experimental_data_2.csv');
-gen_pseudo_data(modelsAfterOED{1}{1}.exps,noise_pseudo_data,data_file2,'model1');
-sbl_config.data_dir_name = 'Data';
-sbl_config.data_file_name = 'experimental_data_2.csv';
-
+SBL_workdir;
+data_file2_original=fullfile(SBL_work_dir,'Data',['experimental_data_loop_' num2str(1) '.csv']);
+data_file2_pseudo=fullfile(SBL_work_dir,'Data','experimental_data_2_pseudo.csv');
+add_pseudo_data(modelsAfterOED,noise_pseudo_data,data_file2_original,data_file2_pseudo,'model1');
 
 %% Second iteration: generate and fit a family of models
-sbl_config.exp_idx=[1 2 8];
+sbl_config.exp_idx=[1 2 3 8];
 % %% Generate and fit a new family of models
+sbl_config.data_dir_name = fullfile(SBL_work_dir,'Data');
+sbl_config.data_file_name = 'experimental_data_2_pseudo.csv';
 MODELS=SBL_gen_model_family(sbl_config);
 SBL_plotFamilyFit(MODELS);
 set(gcf, 'Units', 'Normalized', 'OuterPosition', [0, 0.04, 1, 0.96]);
@@ -75,4 +75,36 @@ set(gcf, 'Units', 'Normalized', 'OuterPosition', [0, 0.04, 1, 0.96]);
 modelsAfterOED=OED4SBLdiscrimination(MODELS,sbl_config);
 SBL_plotDiscriminationResult(modelsAfterOED);
 set(gcf, 'Units', 'Normalized', 'OuterPosition', [0, 0.04, 1, 0.96]);
+
+%% Generate new pseudo experimental data
+SBL_workdir;
+data_file2_original=fullfile(SBL_work_dir,'Data','experimental_data_2_pseudo.csv');
+data_file2_pseudo=fullfile(SBL_work_dir,'Data','experimental_data_3_pseudo.csv');
+add_pseudo_data(modelsAfterOED,noise_pseudo_data,data_file2_original,data_file2_pseudo,'model1');
+
+
+%% Third iteration: generate and fit a family of models
+sbl_config.exp_idx=[1 2 3 8 9];
+% %% Generate and fit a new family of models
+sbl_config.data_dir_name = fullfile(SBL_work_dir,'Data');
+sbl_config.data_file_name = 'experimental_data_3_pseudo.csv';
+MODELS=SBL_gen_model_family(sbl_config);
+SBL_plotFamilyFit(MODELS);
+set(gcf, 'Units', 'Normalized', 'OuterPosition', [0, 0.04, 1, 0.96]);
+
+
+%% Structural identifiability of the final familly of models
+
+%% 
+% 
+
+
+res=SBL_structural_identifiability(sbl_config);
+
+text()
+
+
+
+
+
 

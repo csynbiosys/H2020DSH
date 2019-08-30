@@ -16,24 +16,6 @@ input_data = datareader_for_SBL(sbl_config.data_dir_name,sbl_config.data_file_na
 logger(sbl_config.fid,sprintf('loop iter: %d, running SBL',loop))
 [Phi,fit_res_diff,model]  = toggle_switch_SBL(input_data,sbl_config);
 
-%% Step 3: Run Strike-goldd
-if sbl_config.do_struct_id_check
-    
-    logger(sbl_config.fid,sprintf('loop iter: %d, running Strike-goldd',loop))
-    
-    for sparsity_case=1:size(sbl_config.sparsity_vec,2)
-        
-        sbl_model_file_name = from_SBL_to_Strike_GOLDD(fit_res_diff(:,sparsity_case),model,Phi,input_data,sparsity_case,sbl_config.data_dir_name);
-        
-        valid_model = RunModelCheck_in_loop(sbl_model_file_name,sbl_config.fid);
-        
-        if ~valid_model
-            for state=1:size(fit_res_diff,1)
-                fit_res_diff(state,sparsity_case).valid_model = false;
-            end
-        end
-    end
-end
 
 %% Step 4: Build an Amigo model
 logger(sbl_config.fid,sprintf('loop iter: %d, building an Amigo model',loop));
@@ -57,8 +39,12 @@ for sparsity_case=1:size(sbl_config.sparsity_vec,2)
         [inputs,privstruct,res_ssm]=SBL_fitModel(inputs,privstruct,sbl_config);
         MODELS{sparsity_case}={inputs,privstruct,res_ssm};
         
+    else
+         MODELS{sparsity_case}=[];
     end
     
+end
+
 end
 
 

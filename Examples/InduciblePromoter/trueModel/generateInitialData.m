@@ -1,0 +1,1 @@
+gen_pseudo_data(0.01,'exp_data_induciblePromoter_1.csv','induciblePromoter');

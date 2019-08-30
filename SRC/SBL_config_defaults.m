@@ -11,7 +11,7 @@ sbl_config.display_plots  = 0;
 sbl_config.save_results_to_mat = 0;
 
 %% generating different model structures
-sbl_config.sparsity_vec = [0.2 2];
+sbl_config.sparsity_vec = [0.15 0.2 0.25 0.3];
 
 sbl_config.parEst.eSS.dim_refset=20;
 sbl_config.parEst.eSS.ndiverse=200;

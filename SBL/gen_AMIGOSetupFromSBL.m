@@ -11,9 +11,11 @@ inputs.pathd.results_folder = name;
 inputs.pathd.short_name = name;     
 inputs.pathd.runident='run_1';      
 
-%% Setp parameter bounds
+%% Set parameter bounds
 inputs.PEsol=set_parameter_bounds(inputs.model.par);
-
+if (isempty(inputs.model.par))
+    inputs.PEsol.id_global_theta='none';
+end
 %% Set ODE solver settings
 inputs.ivpsol=get_solver_settings();
 
@@ -43,7 +45,6 @@ PESol.global_theta_max(index_2)=vguess(index_2)./10;
 PESol.global_theta_min(index_2)=vguess(index_2).*10;
 PESol.global_theta_min(index_1)=vguess(index_1)./10;
 
-   
 end
 
 

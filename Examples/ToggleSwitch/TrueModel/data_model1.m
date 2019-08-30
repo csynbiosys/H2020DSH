@@ -17,14 +17,13 @@ inputs.pathd.short_name     = model_name';
 inputs.pathd.runident       = 'initial_setup';
 
 %% Select experiments
-exps_indexall =[1 2 3 4 5 6 12 13 19 20];
 exps_indexall =[4 5 6 12 13 19 20];
 exps_indexTraining=exps_indexall;
 Y0 = 1e-3.*ones(length(exps_indexTraining),model.n_st);
 
 exps.n_exp = length(exps_indexTraining);
 
-ICs=importdata(fullfile(SBL_work_dir,'Examples/ToggleSwitch/TrueModel', ['ICs' model_name '.csv']));
+%ICs=importdata(fullfile(SBL_work_dir,'Examples/ToggleSwitch/TrueModel', ['ICs' model_name '.csv']));
 INITIALU={};
 for iexp=1:length(exps_indexTraining)
     
@@ -47,7 +46,7 @@ for iexp=1:length(exps_indexTraining)
     exps.error_data{iexp} = Data.standard_dev{exp_indexData}';
     exps.u{iexp}(exps.u{iexp}==0)=1e-6;
     INITIALU{iexp}=[Data.Initial_IPTG{exp_indexData} Data.Initial_aTc{exp_indexData}];
-    exps.exp_y0{iexp} = ICs(exp_indexData,:);
+    exps.exp_y0{iexp} = Data.exp_data{exp_indexData}(:,1);
     exps.exp_y0{iexp}(3:4)=compute_steady_state(inputs.model.par,INITIALU{iexp}(1),INITIALU{iexp}(2)) ;
 end
 
