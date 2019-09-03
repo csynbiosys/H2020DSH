@@ -100,7 +100,7 @@ set(gcf, 'Units', 'Normalized', 'OuterPosition', [0, 0.04, 1, 0.96]);
 
 res=SBL_structural_identifiability(sbl_config);
 
-text()
+
 
 
 

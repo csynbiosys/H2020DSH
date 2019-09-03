@@ -38,11 +38,11 @@ if sbl_config.do_struct_id_check
         end
     end
     
-    figure
-    imagesc(res);
-    text(1:length(label),ones(1,length(label)),label);
-    title('Identifiability analysis');
-    xlabel('Models');
+%     figure
+%     imagesc(res);
+%     text(1:length(label),ones(1,length(label)),label);
+%     title('Identifiability analysis');
+%     xlabel('Models');
     
     
     
