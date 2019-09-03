@@ -1,0 +1,158 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>toggle_4_3</title><meta name="generator" content="MATLAB 9.1"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-09-03"><meta name="DC.source" content="toggle_4_3.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">Train a family of models</a></li><li><a href="#2">Load default setting</a></li><li><a href="#3">Configure experimental data</a></li><li><a href="#4">Generate multiple models by enforcing different sparsity coeficients.</a></li><li><a href="#5">Generate and fit a family of models</a></li><li><a href="#6">Plot the optimization results and tranjectories from the generated model family</a></li></ul></div><h2 id="1">Train a family of models</h2><pre class="codeinput">clear <span class="string">variables</span>;
+clc;
+close <span class="string">all</span>;
+noise_pseudo_data=0.05;
+</pre><h2 id="2">Load default setting</h2><pre class="codeinput">SBL_config_defaults;
+</pre><h2 id="3">Configure experimental data</h2><pre class="codeinput">sbl_config.data_dir_name = pwd;
+sbl_config.data_file_name = <span class="string">'toggleSwitch_1.csv'</span>;
+sbl_config.exp_idx=1:3;
+</pre><h2 id="4">Generate multiple models by enforcing different sparsity coeficients.</h2><pre class="codeinput">sbl_config.sparsity_vec = [0.15 0.2 0.25 0.3];
+</pre><h2 id="5">Generate and fit a family of models</h2><p>We generate a family of models with SBL and fit with AMIGO+scatter search</p><pre class="codeinput">MODELS=SBL_gen_model_family(sbl_config);
+</pre><pre class="codeoutput">03-Sep-2019 10:32:06 | loop iter: 1, generating SBL data
+03-Sep-2019 10:32:06 | file: toggleSwitch_1.csv was successfully imported | 3  experiments was selected
+03-Sep-2019 10:32:06 | loop iter: 1, running SBL
+runnging sparsity case: 1/4
+runnging SBL on state: 1/2
+SBL iter: 1/10 took 1.60624 sec
+SBL iter: 2/10 took 5.01585 sec
+SBL iter: 3/10 took 3.67753 sec
+SBL iter: 4/10 took 8.74778 sec
+SBL iter: 5/10 took 6.46558 sec
+SBL iter: 6/10 took 5.00255 sec
+SBL iter: 7/10 took 4.70746 sec
+SBL iter: 8/10 took 3.88769 sec
+SBL iter: 9/10 took 5.23664 sec
+SBL iter: 10/10 took 3.81892 sec
+runnging SBL on state: 2/2
+SBL iter: 1/10 took 1.03008 sec
+SBL iter: 2/10 took 0.801503 sec
+SBL iter: 3/10 took 0.75989 sec
+SBL iter: 4/10 took 0.736748 sec
+SBL iter: 5/10 took 0.782358 sec
+SBL iter: 6/10 took 0.760229 sec
+SBL iter: 7/10 took 0.769423 sec
+SBL iter: 8/10 took 0.774567 sec
+SBL iter: 9/10 took 0.791096 sec
+SBL iter: 10/10 took 0.792848 sec
+Elapsed time is 0.825374 seconds.
+state: x_1 zero_th: 9.49847e-05 dict_num: 6 (0.374298%)
+state: x_2 zero_th: 9.49847e-05 dict_num: 6 (0.747198%)
+ODE simulation OK
+...</pre><h2 id="6">Plot the optimization results and tranjectories from the generated model family</h2><p>The convergence curves are given scatter search. Time courses for each modeled observable are also ploted along with the experimental data.</p><pre class="codeinput">SBL_plotFamilyFit(MODELS);
+set(gcf, <span class="string">'Units'</span>, <span class="string">'Normalized'</span>, <span class="string">'OuterPosition'</span>, [0, 0.04, 1, 0.96]);
+</pre><img vspace="5" hspace="5" src="toggle_4_3_01.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_3_02.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2016b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Train a family of models
+% 
+%
+
+clear variables;
+clc;
+close all;
+noise_pseudo_data=0.05;
+
+%% Load default setting
+%  
+%
+
+SBL_config_defaults;
+
+%% Configure experimental data
+% 
+% 
+
+sbl_config.data_dir_name = pwd;
+sbl_config.data_file_name = 'toggleSwitch_1.csv';
+sbl_config.exp_idx=1:3;
+
+%% Generate multiple models by enforcing different sparsity coeficients.
+% 
+%
+
+sbl_config.sparsity_vec = [0.15 0.2 0.25 0.3];
+ 
+%% Generate and fit a family of models
+% We generate a family of models with SBL and fit with AMIGO+scatter search
+%
+
+MODELS=SBL_gen_model_family(sbl_config);
+
+%% Plot the optimization results and tranjectories from the generated model family 
+% The convergence curves are given scatter search. Time courses for each
+% modeled observable are also ploted along with the experimental
+% data. 
+%
+
+SBL_plotFamilyFit(MODELS);
+set(gcf, 'Units', 'Normalized', 'OuterPosition', [0, 0.04, 1, 0.96]);
+
+##### SOURCE END #####
+--></body></html>
