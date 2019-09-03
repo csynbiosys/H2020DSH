@@ -1,3 +1,18 @@
+
+function [inputs,privstruct,INITIALU] = plot_data_toggle()
+
+INITIALU={};
+model_name='model1';
+eval(model_name);
+eval(['data_' model_name]);
+
+[inputs privstruct]=AMIGO_Prep(inputs);
+
+plot_fit(inputs,privstruct,model_name);
+
+end
+
+
 function plot_fit(inputs,privstruct,model_name)
 
 counter=0;
@@ -9,7 +24,7 @@ for iexp=1:length(inputs.exps.exp_data)
     
     counter=counter+1;
     
-    subplot(8,9,counter);
+    subplot(4,4,counter);
     plot1.MarkerEdgeAlpha = .4;
     
     yyaxis left
@@ -28,12 +43,7 @@ for iexp=1:length(inputs.exps.exp_data)
     yyaxis left
     plot(inputs.exps.t_s{iexp},outputs.observables{iexp}(:,1),'k-','LineWidth',1.5)
     hold on
-%     plot(inputs.exps.t_s{iexp},...
-%         outputs.observables{iexp}(:,1)+inputs.exps.error_data{iexp}(:,1),...
-%         'r','LineWidth',1)
-%     plot(inputs.exps.t_s{iexp},...
-%         outputs.observables{iexp}(:,1)-inputs.exps.error_data{iexp}(:,1),...
-%         'r','LineWidth',1)
+
     ylim([0 5500])
     hold on;
     
@@ -55,7 +65,7 @@ for iexp=1:length(inputs.exps.exp_data)
     
     
     counter=counter+1;
-    subplot(8,9,counter);
+    subplot(4,4,counter);
     yyaxis left
     try
         stairs(inputs.exps.t_con{iexp},[inputs.exps.u{iexp}(1,:)])
@@ -75,9 +85,6 @@ for iexp=1:length(inputs.exps.exp_data)
     yyaxis right
     title(['Inducers ' num2str(iexp)])
     xlim([0 inputs.exps.t_f{iexp}]);
-    
-    
-  
     
 end
 

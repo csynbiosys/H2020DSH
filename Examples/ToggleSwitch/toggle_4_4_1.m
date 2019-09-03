@@ -12,7 +12,7 @@ sbl_config.data_file_name = 'toggleSwitch_1.csv';
 sbl_config.exp_idx=1:3;
 sbl_config.sparsity_vec = [0.15 0.2 0.25 0.3];
 
-%% Generate multiple models by enforcing different sparsity coeficients.
+%% Apply structural identifiability to each model found by SBL.
 % 
 %
 
