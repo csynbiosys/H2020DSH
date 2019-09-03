@@ -1,4 +1,5 @@
-function  SBL_plotFamilyFit(MODELS)
+function [AIC,BIC,Chi2,NDATA,NPARS]=SBL_get_AIC_BIC(MODELS)
+        
 
 valid_model=[];
 
@@ -11,8 +12,7 @@ for i=1:length(MODELS)
         privstruct=MODELS{i}{2};
         feval(inputs.model.mexfunction,'sim_CVODES');
         observables{i}=outputs.observables;
-        feval(inputs.model.mexfunction,'sim_CVODES');
-        observables{i}=outputs.observables;
+        feval(inputs.model.mexfunction,'cost_LSQ');
         w_res{i}=outputs.w_res;
     else
         valid_models(i)=0;
@@ -31,21 +31,27 @@ figure;
 
 labels={};
 counter=0;
+
+AIC=nan(1,length(MODELS));
+BIC=nan(1,length(MODELS));
+NPARS=nan(1,length(MODELS));
+Chi2=nan(1,length(MODELS));
+NDATA=nan(1,length(MODELS));
+
 for i=1:length(MODELS)
     
     if ~isempty(MODELS{i})
-        n_par=MODELS{i}{1}.model.n_par;
-        %AIC=2*n_par+n_data.*log(MODELS{i}{3}.f);
-        plot(MODELS{i}{3}.neval,MODELS{i}{3}.f);
-        hold on;
-        counter=counter+1;
-        labels{counter}=['MODEL ' num2str(i) ' NPars=' num2str(n_par)];
+        
+        NPARS(i)=MODELS{i}{1}.model.n_par;
+        Chi2(i)=w_res{i}'*w_res{i};
+        AIC(i)=2*NPARS(i)+Chi2(i);
+        NDATA(i)=n_data;
+        BIC(i)=NPARS(i)*log(NDATA(i))+Chi2(i);
+        
     end
-    ylabel('\chi^2');
-    xlabel('Number of function evaluations');
+    
 end
-title('Convergence curves for parameter estimation')
-legend(labels);
+
 
 end
 
