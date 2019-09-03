@@ -31,13 +31,13 @@ for i=1:length(MODELS)
     
     if ~isempty(MODELS{i})
         n_par=MODELS{i}{1}.model.n_par;
-        AIC=2*n_par+n_data.*log(MODELS{i}{3}.f);
-        plot(MODELS{i}{3}.neval,AIC);
+        %AIC=2*n_par+n_data.*log(MODELS{i}{3}.f);
+        plot(MODELS{i}{3}.neval,MODELS{i}{3}.f);
         hold on;
         counter=counter+1;
         labels{counter}=['MODEL ' num2str(i) ' NPars=' num2str(n_par)];
     end
-    ylabel('AIC');
+    ylabel('\chi^2');
     xlabel('Number of function evaluations');
 end
 title('Convergence curves for parameter estimation')
