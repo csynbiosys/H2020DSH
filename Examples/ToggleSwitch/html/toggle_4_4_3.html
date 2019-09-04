@@ -1,0 +1,168 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Compute AIC and BIC</title><meta name="generator" content="MATLAB 9.1"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-09-04"><meta name="DC.source" content="toggle_4_4_3.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Compute AIC and BIC</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Load default setting and configure experimental data</a></li><li><a href="#2">Generate multiple models by enforcing different sparsity coeficients.</a></li><li><a href="#3">Compute AIC and RANK parameters according sensitivities</a></li></ul></div><h2 id="1">Load default setting and configure experimental data</h2><pre class="codeinput">SBL_config_defaults;
+sbl_config.data_dir_name = pwd;
+sbl_config.data_file_name = <span class="string">'toggleSwitch_1.csv'</span>;
+sbl_config.exp_idx=1:3;
+</pre><h2 id="2">Generate multiple models by enforcing different sparsity coeficients.</h2><pre class="codeinput">sbl_config.sparsity_vec = [0.15 0.2 0.25 0.3];
+MODELS=SBL_gen_model_family(sbl_config);
+</pre><pre class="codeoutput">04-Sep-2019 16:29:18 | loop iter: 1, generating SBL data
+04-Sep-2019 16:29:19 | file: toggleSwitch_1.csv was successfully imported | 3  experiments was selected
+04-Sep-2019 16:29:19 | loop iter: 1, running SBL
+runnging sparsity case: 1/4
+runnging SBL on state: 1/2
+SBL iter: 1/10 took 1.94349 sec
+SBL iter: 2/10 took 5.06938 sec
+SBL iter: 3/10 took 3.58893 sec
+SBL iter: 4/10 took 9.0163 sec
+SBL iter: 5/10 took 6.58484 sec
+SBL iter: 6/10 took 5.36329 sec
+SBL iter: 7/10 took 5.28986 sec
+SBL iter: 8/10 took 4.26016 sec
+SBL iter: 9/10 took 5.87006 sec
+SBL iter: 10/10 took 4.08217 sec
+runnging SBL on state: 2/2
+SBL iter: 1/10 took 1.09697 sec
+SBL iter: 2/10 took 0.93785 sec
+SBL iter: 3/10 took 0.93058 sec
+SBL iter: 4/10 took 0.823432 sec
+SBL iter: 5/10 took 0.872488 sec
+SBL iter: 6/10 took 0.838435 sec
+SBL iter: 7/10 took 1.03326 sec
+SBL iter: 8/10 took 0.906233 sec
+SBL iter: 9/10 took 0.877044 sec
+SBL iter: 10/10 took 0.885248 sec
+Elapsed time is 0.932269 seconds.
+state: x_1 zero_th: 9.49847e-05 dict_num: 6 (0.374298%)
+state: x_2 zero_th: 9.49847e-05 dict_num: 6 (0.747198%)
+ODE simulation OK
+...</pre><h2 id="3">Compute AIC and RANK parameters according sensitivities</h2><pre class="codeinput">[AIC,BIC,Chi2,NDATA,NPARS]=SBL_get_AIC_BIC(MODELS);
+[~,index]=sort(AIC);
+LRANK4SBL(MODELS,sbl_config,index(1))
+</pre><pre class="codeoutput">
+
+*********************************** 
+     AMIGO2, Copyright @CSIC      
+     AMIGO2_R2019a [March 2019]      
+*********************************** 
+
+*Date: 04-Sep-2019
+
+------&gt;Pre processing....this may take a few seconds.
+
+
+------&gt;Checking inputs....
+------&gt; Generating C code ...
+
+
+------&gt; Mexing files....
+
+Building with 'MinGW64 Compiler (C)'.
+D:\AMIGO2_R2019a\Kernel\IVP_solvers\cvodes\C_src4Amigo\src\src_amigo\simulate_amigo_model.c: In function 'simulate_amigo_model':
+D:\AMIGO2_R2019a\Kernel\IVP_solvers\cvodes\C_src4Amigo\src\src_amigo\simulate_amigo_model.c:278:11: warning: passing argument 1 of 'mexPrintf' from incompatible pointer type
+ mexPrintf(stderr,"\nSolver failed at flag = CVode(cvode_mem, tout, y, &amp;t, CV_TSTOP_RETURN);. . .\n");                                            
+           ^
+In file included from D:\AMIGO2_R2019a\Kernel\IVP_solvers\cvodes\C_src4Amigo\include\include_amigo/simulate_amigo_model.h:4:0,
+                 from D:\AMIGO2_R2019a\Kernel\IVP_solvers\cvodes\C_src4Amigo\src\src_amigo\simulate_amigo_model.c:1:
+C:\Program Files\MATLAB\R2016b/extern/include/mex.h:184:27: note: expected 'const char *' but argument is of type 'struct FILE *'
+ LIBMWMEX_API_EXTERN_C int mexPrintf(
+                           ^
+
+D:\AMIGO2_R2019a\Kernel\IVP_solvers\cvodes\C_src4Amigo\src\src_interface\interface_with_matlab.c: In function 'mexFunction':
+...</pre><img vspace="5" hspace="5" src="toggle_4_4_3_01.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_02.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_03.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_04.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_05.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_06.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_07.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_08.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_09.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_10.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_11.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_12.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_13.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_14.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_15.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_16.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_17.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_18.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_19.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_20.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_21.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_22.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_23.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_24.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_25.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_26.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_27.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_28.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_29.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_30.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_31.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_32.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_33.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_34.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_35.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_36.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_37.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_38.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_39.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_40.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_41.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_42.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_43.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_44.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2016b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Compute AIC and BIC
+% 
+%
+
+%% Load default setting and configure experimental data
+%  
+%
+
+SBL_config_defaults;
+sbl_config.data_dir_name = pwd;
+sbl_config.data_file_name = 'toggleSwitch_1.csv';
+sbl_config.exp_idx=1:3;
+
+%% Generate multiple models by enforcing different sparsity coeficients.
+% 
+%
+
+sbl_config.sparsity_vec = [0.15 0.2 0.25 0.3];
+MODELS=SBL_gen_model_family(sbl_config);
+
+%% Compute AIC and RANK parameters according sensitivities
+%
+
+[AIC,BIC,Chi2,NDATA,NPARS]=SBL_get_AIC_BIC(MODELS);
+[~,index]=sort(AIC);
+LRANK4SBL(MODELS,sbl_config,index(1))
+
+##### SOURCE END #####
+--></body></html>
