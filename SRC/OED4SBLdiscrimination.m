@@ -1,4 +1,4 @@
-function[res]=OED4SBLdiscrimination(MODELS,sbl_config)
+function[res]=OED4SBLdiscrimination(MODELS,sbl_config,compare_indices)
 
 
 valid_model=[];
@@ -38,7 +38,7 @@ problem.x_0=problem.x_0(:);
 
 problem.f=@SBL_discriminationFobj;
 
-[res_ssm]=ess_kernel(problem,sbl_config.modelDiscrimination.eSS,MODELS);
+[res_ssm]=ess_kernel(problem,sbl_config.modelDiscrimination.eSS,MODELS,compare_indices);
 
 x=res_ssm.xbest;
 
@@ -61,25 +61,30 @@ end
 end
 
 
-function [f,g,r]=SBL_discriminationFobj(x,MODELS)
+function [f,g,r]=SBL_discriminationFobj(x,MODELS,compare_indices)
 
 simulation={};
 counter=0;
 for i=1:length(MODELS)
+    
     if ~isempty(MODELS{i})
-        counter=counter+1;
-        inputs=MODELS{i}{1};
-        privstruct=MODELS{i}{2};
-        inputs.exps.u{1}=reshape(x,size(inputs.exps.u{1},1),size(inputs.exps.u{1},2));
-        privstruct.u{1}=reshape(x,size(inputs.exps.u{1},1),size(inputs.exps.u{1},2));
-        feval(inputs.model.mexfunction,'sim_CVODES');
-        simulation{counter}=outputs.simulation{1};
         
-        if outputs.sim_stats{1}.flag~=0
-            f=1e10;
-            r=outputs.simulation{1};
-            r(:)=1e10;
-            return;
+        if(any(compare_indices==i))
+            counter=counter+1;
+            inputs=MODELS{i}{1};
+            privstruct=MODELS{i}{2};
+            inputs.exps.u{1}=reshape(x,size(inputs.exps.u{1},1),size(inputs.exps.u{1},2));
+            privstruct.u{1}=reshape(x,size(inputs.exps.u{1},1),size(inputs.exps.u{1},2));
+            feval(inputs.model.mexfunction,'sim_CVODES');
+            simulation{counter}=outputs.simulation{1};
+            
+            if outputs.sim_stats{1}.flag~=0
+                f=1e10;
+                r=outputs.simulation{1};
+                r(:)=1e10;
+                return;
+            end
+            
         end
         
     end
