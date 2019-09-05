@@ -34,21 +34,6 @@ MODELS=SBL_gen_model_family(sbl_config);
 [~,index]=sort(AIC);
 OED4SBL(MODELS,sbl_config,index(1));
 
-%% Plot OED results
-% Optimal experimental design for model discrimination seeks to find the
-% experiment that maximizes the predicted different between the models.
-
-SBL_plotDiscriminationResult(modelsAfterOED);
-set(gcf, 'Units', 'Normalized', 'OuterPosition', [0, 0.04, 1, 0.96]);
-
-%% Generate new pseudo experimental data
-%
-
-SBL_workdir;
-data_file2_original=fullfile(SBL_work_dir,'Data','toggleSwitch_1.csv');
-data_file2_pseudo=fullfile(SBL_work_dir,'Data','toggleSwitch_1_OEDparEst.csv');
-noise_pseudo_data=0.05;
-add_pseudo_data(modelsAfterOED,noise_pseudo_data,data_file2_original,data_file2_pseudo,'model1');
 
 
 
