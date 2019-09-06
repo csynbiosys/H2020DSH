@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Optimal experimental design for model discrimination</title><meta name="generator" content="MATLAB 9.1"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-09-05"><meta name="DC.source" content="toggle_4_6.m"><style type="text/css">
+      --><title>Compute AIC and BIC</title><meta name="generator" content="MATLAB 9.1"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-09-06"><meta name="DC.source" content="toggle_4_4_4.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,45 +66,46 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>Optimal experimental design for model discrimination</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Load default setting and configure experimental data settings</a></li><li><a href="#2">Generate multiple models by enforcing different sparsity coeficients.</a></li><li><a href="#3">Generate and fit a family of models</a></li><li><a href="#4">Compute AIC for all models in the family</a></li><li><a href="#5">Execute OED for parameter estimation</a></li></ul></div><h2 id="1">Load default setting and configure experimental data settings</h2><pre class="codeinput">SBL_config_defaults;
+  </style></head><body><div class="content"><h1>Compute AIC and BIC</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Load default setting and configure experimental data</a></li><li><a href="#2">Generate multiple models by enforcing different sparsity coeficients.</a></li><li><a href="#3">Compute AIC and RANK parameters</a></li></ul></div><h2 id="1">Load default setting and configure experimental data</h2><pre class="codeinput">SBL_config_defaults;
 sbl_config.data_dir_name = pwd;
 sbl_config.data_file_name = <span class="string">'toggleSwitch_1.csv'</span>;
-sbl_config.exp_idx=1:5;
+sbl_config.exp_idx=1:3;
 </pre><h2 id="2">Generate multiple models by enforcing different sparsity coeficients.</h2><pre class="codeinput">sbl_config.sparsity_vec = [0.15 0.2 0.25 0.3];
-</pre><h2 id="3">Generate and fit a family of models</h2><pre class="codeinput">MODELS=SBL_gen_model_family(sbl_config);
-</pre><pre class="codeoutput">05-Sep-2019 09:53:30 | loop iter: 1, generating SBL data
-05-Sep-2019 09:53:30 | file: toggleSwitch_1.csv was successfully imported | 5  experiments was selected
-05-Sep-2019 09:53:30 | loop iter: 1, running SBL
+MODELS=SBL_gen_model_family(sbl_config);
+</pre><pre class="codeoutput">06-Sep-2019 14:21:30 | loop iter: 1, generating SBL data
+06-Sep-2019 14:21:30 | file: toggleSwitch_1.csv was successfully imported | 3  experiments was selected
+06-Sep-2019 14:21:30 | loop iter: 1, running SBL
 runnging sparsity case: 1/4
 runnging SBL on state: 1/2
-SBL iter: 1/10 took 3.57173 sec
-SBL iter: 2/10 took 3.21568 sec
-SBL iter: 3/10 took 3.24226 sec
-SBL iter: 4/10 took 3.58629 sec
-SBL iter: 5/10 took 3.40029 sec
-SBL iter: 6/10 took 3.2417 sec
-SBL iter: 7/10 took 3.25074 sec
-SBL iter: 8/10 took 3.72195 sec
-SBL iter: 9/10 took 3.39183 sec
-SBL iter: 10/10 took 3.43423 sec
+SBL iter: 1/10 took 2.42614 sec
+SBL iter: 2/10 took 5.37037 sec
+SBL iter: 3/10 took 3.75643 sec
+SBL iter: 4/10 took 9.11151 sec
+SBL iter: 5/10 took 6.98713 sec
+SBL iter: 6/10 took 6.18312 sec
+SBL iter: 7/10 took 5.71882 sec
+SBL iter: 8/10 took 4.78506 sec
+SBL iter: 9/10 took 6.1145 sec
+SBL iter: 10/10 took 4.54867 sec
 runnging SBL on state: 2/2
-SBL iter: 1/10 took 2.54596 sec
-SBL iter: 2/10 took 2.07673 sec
-SBL iter: 3/10 took 2.13326 sec
-SBL iter: 4/10 took 1.97883 sec
-SBL iter: 5/10 took 1.92974 sec
-SBL iter: 6/10 took 2.19771 sec
-SBL iter: 7/10 took 1.83242 sec
-SBL iter: 8/10 took 1.90848 sec
-SBL iter: 9/10 took 1.82885 sec
-SBL iter: 10/10 took 1.8335 sec
-Elapsed time is 1.936807 seconds.
-state: x_1 zero_th: 9.49847e-05 dict_num: 5 (0.311915%)
-state: x_2 zero_th: 9.49847e-05 dict_num: 7 (0.871731%)
+SBL iter: 1/10 took 1.35145 sec
+SBL iter: 2/10 took 0.981935 sec
+SBL iter: 3/10 took 0.915664 sec
+SBL iter: 4/10 took 0.886392 sec
+SBL iter: 5/10 took 0.94891 sec
+SBL iter: 6/10 took 0.868022 sec
+SBL iter: 7/10 took 0.914459 sec
+SBL iter: 8/10 took 0.876819 sec
+SBL iter: 9/10 took 0.889512 sec
+SBL iter: 10/10 took 0.866722 sec
+Elapsed time is 0.902744 seconds.
+state: x_1 zero_th: 9.49847e-05 dict_num: 6 (0.374298%)
+state: x_2 zero_th: 9.49847e-05 dict_num: 6 (0.747198%)
 ODE simulation OK
-...</pre><h2 id="4">Compute AIC for all models in the family</h2><pre class="codeinput">[AIC,BIC,Chi2,NDATA,NPARS]=SBL_get_AIC_BIC(MODELS);
-</pre><img vspace="5" hspace="5" src="toggle_4_6_01.png" alt=""> <h2 id="5">Execute OED for parameter estimation</h2><p>Optimal experimental design for paramter estimation. Chose model with lowest AIC</p><pre class="codeinput">[~,index]=sort(AIC);
-OED4SBL(MODELS,sbl_config,index(1));
+...</pre><h2 id="3">Compute AIC and RANK parameters</h2><p>Adjust the number of bootstrap rounds.</p><pre class="codeinput">[AIC,BIC,Chi2,NDATA,NPARS]=SBL_get_AIC_BIC(MODELS);
+[~,index]=sort(AIC);
+sbl_config.conf_ntrials=100;
+RIdent4SBL(MODELS,sbl_config,index(1))
 </pre><pre class="codeoutput">
 
 *********************************** 
@@ -112,7 +113,7 @@ OED4SBL(MODELS,sbl_config,index(1));
      AMIGO2_R2019a [March 2019]      
 *********************************** 
 
-*Date: 05-Sep-2019
+*Date: 06-Sep-2019
 
 ------&gt;Pre processing....this may take a few seconds.
 
@@ -135,50 +136,36 @@ C:\Program Files\MATLAB\R2016b/extern/include/mex.h:184:27: note: expected 'cons
                            ^
 
 D:\AMIGO2_R2019a\Kernel\IVP_solvers\cvodes\C_src4Amigo\src\src_interface\interface_with_matlab.c: In function 'mexFunction':
-...</pre><img vspace="5" hspace="5" src="toggle_4_6_02.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_6_03.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_6_04.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_6_05.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_6_06.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_6_07.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_6_08.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_6_09.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2016b</a><br></p></div><!--
+...</pre><img vspace="5" hspace="5" src="toggle_4_4_4_01.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_4_02.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_4_03.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_4_04.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_4_05.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_4_06.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_4_07.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_4_08.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_4_09.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_4_10.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_4_11.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_4_12.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2016b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
-%% Optimal experimental design for model discrimination
+%% Compute AIC and BIC
 % 
+%
 
-%% Load default setting and configure experimental data settings
+%% Load default setting and configure experimental data
 %  
 %
 
 SBL_config_defaults;
 sbl_config.data_dir_name = pwd;
 sbl_config.data_file_name = 'toggleSwitch_1.csv';
-sbl_config.exp_idx=1:5;
+sbl_config.exp_idx=1:3;
 
 %% Generate multiple models by enforcing different sparsity coeficients.
 % 
 %
 
 sbl_config.sparsity_vec = [0.15 0.2 0.25 0.3];
- 
-%% Generate and fit a family of models
-%
-
 MODELS=SBL_gen_model_family(sbl_config);
 
-%% Compute AIC for all models in the family
-%
+%% Compute AIC and RANK parameters 
+% Adjust the number of bootstrap rounds.
+% 
 
 [AIC,BIC,Chi2,NDATA,NPARS]=SBL_get_AIC_BIC(MODELS);
-
-%% Execute OED for parameter estimation
-% Optimal experimental design for paramter estimation. Chose model with
-% lowest AIC
-%
-
 [~,index]=sort(AIC);
-OED4SBL(MODELS,sbl_config,index(1));
-
-
-
-
-
-
-
+sbl_config.conf_ntrials=100;
+RIdent4SBL(MODELS,sbl_config,index(1))
 
 ##### SOURCE END #####
 --></body></html>

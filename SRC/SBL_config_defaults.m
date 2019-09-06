@@ -44,5 +44,5 @@ sbl_config.OED4est.duration=120;
 sbl_config.OED4est.stepDuration=30;
 sbl_config.OED4est.samplingTime=5;
 
-sbl_config.conf_ntrials=30;
+sbl_config.conf_ntrials=300;
 
