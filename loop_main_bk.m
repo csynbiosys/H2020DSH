@@ -13,7 +13,7 @@ fid = 1;
 do_struct_id_check = 0;
 
 %% SBL config
-sbl_config.display_plots  = 0;
+sbl_config.display_plots  = 1;
 sbl_config.save_results_to_mat = 0;
 
 %% generating different model structures
@@ -86,6 +86,7 @@ for loop = 1:loop_iter
             [inputs,privstruct,res_ssm]=fit_SBLModel(inputs,privstruct);
             
             %% Robust identifiability analysis before OED
+            logger(fid,sprintf('loop iter: %d, performing RIdent before OED',loop));
             resRIDENT1=RIdent4SBL(inputs,model_name);
             
             %% Step 6: Run OED
@@ -113,6 +114,7 @@ for loop = 1:loop_iter
             end
             
             %% Robust identifiability analysis after OED
+            logger(fid,sprintf('loop iter: %d, performing RIdent after OED',loop));
             resRIDENT2=RIdent4SBL(EXPOED,model_name);
             
             RES{loop}{sparsity_case}={inputs,privstruct,res_ssm,GRANK,resRIDENT1,resRIDENT2};

@@ -32,7 +32,7 @@ for sparsity_case=1:size(sparsity_vec,2)
             f = fit(input_data.tspan{exp_idx},y_tmp,'smoothingspline','SmoothingParam',0.00001);
             dydt(:,state) = differentiate(f,input_data.tspan{exp_idx});
             if config.display_plots
-                subplot(state_num,exp_num,sub2ind([state_num exp_num],state,exp_idxx))
+                subplot(state_num,exp_num,sub2ind([state_num exp_num],state,exp_idx))
                 plot(f,input_data.tspan{exp_idx},input_data.states{exp_idx}(:,state))
             end
         end
@@ -67,12 +67,7 @@ for sparsity_case=1:size(sparsity_vec,2)
     end % for each dataset
     %% generate nonneg constraints
     for state=1:state_num
-        constraint_idx= [];
-        for z=2:size(Phi{state},2)
-            if isempty(strfind(func2str(Phi{state}{z}),sprintf('x(:,%d)',state)))
-                constraint_idx = [constraint_idx; z];
-            end
-        end
+        constraint_idx = [setdiff(2:3,state+1) 4:size(Phi{state},2)];
         sbl_config(state).nonneg{1} = constraint_idx;
         % estimate only the selected states
         sbl_config(state).selected_states = 1:size(model.dydt,2);
