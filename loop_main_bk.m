@@ -13,7 +13,7 @@ fid = 1;
 do_struct_id_check = 0;
 
 %% SBL config
-sbl_config.display_plots  = 1;
+sbl_config.display_plots  = 0;
 sbl_config.save_results_to_mat = 0;
 
 %% generating different model structures
@@ -26,7 +26,8 @@ data_dir_name = 'Data';
 
 for loop = 1:loop_iter
     
-    data_file_name = ['experimental_data_loop_' num2str(loop) '.csv'];
+    %data_file_name = ['experimental_data_loop_' num2str(loop) '.csv'];
+    data_file_name = ['experimental_data_2_pseudo.csv'];
     
     %% Step 1: generate data for SBL
     logger(fid,sprintf('loop iter: %d, generating SBL data',loop))
@@ -70,7 +71,7 @@ for loop = 1:loop_iter
             %% Generate model and experiments
             model_name=['SBL' num2str(sparsity_case)];
             SBLModel = SBLModel2AMIGOModel(fit_res_diff(:,sparsity_case),Phi,model,model_name);
-            [inputs privstruct]=gen_AMIGOSetupFromSBL(SBLModel,data_file_name,'SBLModel');
+            [inputs privstruct]=gen_AMIGOSetupFromSBL(SBLModel,data_file_name,'SBLModel',exp_idx);
             
             imported_to_amigo = imported_to_amigo +1;
             

@@ -5,7 +5,7 @@ close all
 
 %% config
 % turn on/off plots
-display_plots  = 0;
+display_plots  = 1;
 % save results to a mat file
 save_results = 0;
 
@@ -14,14 +14,11 @@ export_to_amigo = 0;
 %% read data for the model
 
 dir_name  = 'Data';
-file_name = 'experimental_data_7exps_noise000.csv';
+file_name = 'experimental_data_2_pseudo.csv';
 
-exp_idx = [1];
+exp_idx = [1 2];
 fid =1;
 input_data = datareader_for_SBL(dir_name,file_name,exp_idx,fid);
-
-%% generating the dictionary functions
-Phi = build_toggle_switch_dict();
 
 state_num = input_data.state_num;
 exp_num = numel(exp_idx);
@@ -55,27 +52,21 @@ for sparsity_case=1:size(sparsity_vec,2)
         
         model.dydt{l} = dydt;
         model.variance{l} = sparsity_vec(sparsity_case);
-        model.tspan{l} = input_data.tspan{exp_id};
-        
+        model.tspan{l} = input_data.tspan{exp_id};       
         model.input{l} = input_data.inputs{exp_id};
         
-        %% evaluate dictionary
+        %% generating the dictionary functions and evaluating them
         
         x = [input_data.states{exp_id}  input_data.inputs{exp_id}];
         % extra (not estimated) parameters
         p = [];
-        % the dicionaries is evaluated for all states and datasets
-        Phi_val = cell(state_num,exp_num);
+        % the dicionaries are evaluated on all states and datasets        
+        [Phi,Phi_val{l}] = build_toggle_switch_dict(x);
         
-        
-        for state = 1:state_num
-            Phi_val{state,l} = cell2mat(cellfun(@(f) f(x,p),Phi{state},'UniformOutput',false));
-        end
-        
-        %% build a linear regression struct, i.e. y = A*x for each states and data sets
+        %% build a linear regression struct, i.e. y = A*x for each states and datasets
         for k=1:state_num
             sbl_diff(k).name = sprintf('diff_%s',model.state_names{k});
-            sbl_diff(k).A{l} = Phi_val{k,l};
+            sbl_diff(k).A{l} = Phi_val{l}{k};
             sbl_diff(k).y{l} = model.dydt{l}(:,k);
             sbl_diff(k).std{l} = model.variance{l};
         end
@@ -84,12 +75,7 @@ for sparsity_case=1:size(sparsity_vec,2)
     
     %% generate nonneg constraints
     for k=1:state_num
-        constraint_idx= [];
-        for z=2:size(Phi{k},2)
-            if isempty(strfind(func2str(Phi{k}{z}),sprintf('x(:,%d)',k)))
-                constraint_idx = [constraint_idx; z];
-            end
-        end
+        constraint_idx = [setdiff(2:3,k+1) 4:size(Phi{k},2)];
         sbl_config(k).nonneg{1} = constraint_idx;
         % estimate only the selected states
         sbl_config(k).selected_states = 1:size(model.dydt,2);

@@ -29,27 +29,33 @@ input = [];
 ode_solver_opts= [];
 
 %% run ODE solver
+
+% check model
+if any(cellfun(@(x) isempty(x{1}), {fit_results.non_zero_dict}) == true)
+    valid_model = false;
+    return
+end
+
 for z = 1:experiment_num
     %     [t_orig,x_orig] = CRN_Simulate_M(M,Y,t_span,x0_vec(z,:));
     %     x_orig_sum = [ x_orig_sum; x_orig];
-    p =[];
-    for k = 1:experiment_num
-        try
-            [t_sbl,x_sbl]   = ode15s(@ode_rhs_from_phi,t_span,x0_vec(z,:),ode_solver_opts,Phi,fit_results,model);
-            x_sbl_sum   = [ x_sbl_sum;   x_sbl];
-            
-             [warnMsg, warnId] = lastwarn;
-             if strcmp(warnId,'MATLAB:ode15s:IntegrationTolNotMet')
-                 error('integration error')
-             end
-               fprintf('ODE simulation OK\n')
-
-        catch ME
-            fprintf('reconstracted ODE integration failed\n');
-            valid_model = false;
-        end
+    
+    try
+        [t_sbl,x_sbl]   = ode15s(@ode_rhs_from_phi,t_span,x0_vec(z,:),ode_solver_opts,Phi,fit_results,model);
+        x_sbl_sum   = [ x_sbl_sum;   x_sbl];
         
+        [warnMsg, warnId] = lastwarn;
+        if strcmp(warnId,'MATLAB:ode15s:IntegrationTolNotMet')
+            error('integration error')
+        end
+        fprintf('ODE simulation OK\n')
+        
+    catch ME
+        fprintf('reconstracted ODE integration failed\n');
+        valid_model = false;
     end
+    
+    
 end
 
 %% generate report
