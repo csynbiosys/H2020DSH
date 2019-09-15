@@ -51,6 +51,7 @@ for z = 1:experiment_num
         fprintf('ODE simulation OK\n')
         
     catch ME
+        ME
         fprintf('reconstracted ODE integration failed\n');
         valid_model = false;
     end
@@ -59,19 +60,20 @@ for z = 1:experiment_num
 end
 
 %% generate report
-if display_plots
-    for k = 1:state_num
-        figure('Name',sprintf('ODE simulation x_%d',k))
-        %plot(x_orig_sum(:,k),'LineWidth',1.5)
-        hold on
-        plot(x_sbl_sum(:,k),'LineWidth',1.5)
-        %         traj_diff(k) = norm(x_orig_sum(:,k) - x_sbl_sum(:,k))/size(x_sbl_sum,1);
-        %         title(sprintf('||x_{orig} - x_{sbl}||_2= %g',traj_diff(k)))
-        %legend(sprintf('%s_{orig}',model.state_names{k}),sprintf('%s_{sbl}',model.state_names{k}),'Location','Best')
-        xlabel('Time [min]')
+if valid_model
+    if display_plots
+        for k = 1:state_num
+            figure('Name',sprintf('ODE simulation x_%d',k))
+            %plot(x_orig_sum(:,k),'LineWidth',1.5)
+            hold on
+            plot(x_sbl_sum(:,k),'LineWidth',1.5)
+            %         traj_diff(k) = norm(x_orig_sum(:,k) - x_sbl_sum(:,k))/size(x_sbl_sum,1);
+            %         title(sprintf('||x_{orig} - x_{sbl}||_2= %g',traj_diff(k)))
+            %legend(sprintf('%s_{orig}',model.state_names{k}),sprintf('%s_{sbl}',model.state_names{k}),'Location','Best')
+            xlabel('Time [min]')
+        end
     end
 end
-
 
 
 

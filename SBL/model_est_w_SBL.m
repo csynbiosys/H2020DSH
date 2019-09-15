@@ -1,4 +1,4 @@
-function [Phi,fit_res_diff,model,input_data] = toggle_switch_SBL(input_data,config)
+function [Phi,fit_res_diff,model,input_data] = model_est_w_SBL(input_data,config)
 
 state_num = input_data.state_num;
 exp_num = size(input_data.tspan,2);
@@ -46,7 +46,7 @@ for sparsity_case=1:size(sparsity_vec,2)
         % extra (not estimated) parameters
         p = [];
         % the dicionaries are evaluated on all states and datasets        
-        [Phi,Phi_val{exp_idx}] = build_toggle_switch_dict(x,u);
+        [Phi,Phi_val{exp_idx}] = config.dict_generator(x,u);
         
         %% buiexp_idxd a exp_idxinear regression struct, i.e. y = A*x for each states and data sets
         for state=1:state_num
@@ -79,12 +79,12 @@ for sparsity_case=1:size(sparsity_vec,2)
         % use manual threshold
         zero_th = 1e-4;
         model_num = 1;
-        % seexp_idxect non zero dictionaries
+        % select non zero dictionaries
         fit_res_diff(state,sparsity_case) = calc_zero_th(fit_res_diff(state,sparsity_case),zero_th,config.display_plots,state,model_num);
         % report signal fit
         signal_fit_error_diff(state,sparsity_case) = fit_report(fit_res_diff(state,sparsity_case),config.display_plots);
     end
-    %% simuexp_idxate the reconstructed ODE
+    %% simulate the reconstructed ODE
     
     % zero out the constant term
     for state=1:state_num

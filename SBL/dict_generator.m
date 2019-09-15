@@ -1,4 +1,4 @@
-function [Phi,dict] = dict_generator(x,kinetics)
+function [Phi,dict] = dict_generator(x,u,kinetics)
 
 kin_num = size(kinetics,1);
 
@@ -20,7 +20,7 @@ for k=1:kin_num
         for z=1:p_num
             p.(f_names{z}) = p_values{z}(idx_cell{z}); 
         end
-        Phi(:,l) = kinetics(k).formula(x,p);
+        Phi(:,l) = kinetics(k).formula(x,u,p);
         dict(l).formula = replace_parameters(f_names,kinetics(k).formula,p);
         dict(l).p = p;
     end

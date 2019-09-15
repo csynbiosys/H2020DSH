@@ -19,7 +19,7 @@ param_str = 'p%d_%d';
 for k=1:state_num
     
     % converting dictionary function to model string
-    dict_str  = cellfun(@(x) replace(func2str(x),{'@(x,p)ones(size(x,1),1)','@(x,u)ones(size(x,1),1)','@(x,u)','@(x,p)','@(x)'},{'1','1','','',''}),Phi{k},'UniformOutput',false)';
+    dict_str  = cellfun(@(x) replace(func2str(x),{'@(x,p)ones(size(x,1),1)','@(x,u)ones(size(x,1),1)','@(x,u,p)','@(x,p)','@(x)'},{'1','1','','',''}),Phi{k},'UniformOutput',false)';
     dict_str  = cellfun(@(x) regexprep(x,{'x\(:,(\d)\)','u\(:,(\d)\)'},{'x$1','u$1'}),dict_str,'UniformOutput',false);
     % removing matlab operators
     dict_str  = regexprep(dict_str,{'.\^','.\*','./'},{'\^','\*','/'});
@@ -36,10 +36,16 @@ for k=1:state_num
         
         rhs_str = sprintf('d%s=',model.state_names{k});
         % replace the variable names in the equations as well
-        for z=1:state_num    
+        for z=1:state_num
             dict_str = strrep(dict_str,sprintf('x%d',z),model.state_names{z});
-            dict_str = strrep(dict_str,sprintf('x%d',z+2),model.input_names{z});
         end
+        if ~isempty(model.input_names)
+            input_num = size(model.input_names,2);
+            for z=1:input_num
+                dict_str = strrep(dict_str,sprintf('u%d',z),model.input_names{z});
+            end
+        end
+        
     end
     
     

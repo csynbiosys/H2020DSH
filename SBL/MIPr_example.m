@@ -14,7 +14,7 @@ export_to_amigo = 0;
 %% read data for the model
 
 dir_name  = 'Data';
-file_name = 'experimental_data_2_pseudo.csv';
+file_name = ['exp_data_induciblePromoter_1.csv'];
 
 exp_idx = [1 2];
 fid =1;
@@ -42,7 +42,7 @@ for sparsity_case=1:size(sparsity_vec,2)
         dydt =[];
         for k = 1:state_num
             y_tmp = input_data.states{exp_id}(:,k);
-            f = fit(input_data.tspan{exp_id},y_tmp,'smoothingspline','SmoothingParam',0.00001);
+            f = fit(input_data.tspan{exp_id},y_tmp,'smoothingspline','SmoothingParam',1e-7);
             dydt(:,k) = differentiate(f,input_data.tspan{exp_id});
             if display_plots
                 subplot(state_num,exp_num,sub2ind([state_num exp_num],k,l))
@@ -61,7 +61,7 @@ for sparsity_case=1:size(sparsity_vec,2)
         % extra (not estimated) parameters
         p = [];
         % the dicionaries are evaluated on all states and datasets        
-        [Phi,Phi_val{l}] = build_toggle_switch_dict(x);
+        [Phi,Phi_val{l}] = build_MIPr_dict(x);
         
         %% build a linear regression struct, i.e. y = A*x for each states and datasets
         for k=1:state_num
