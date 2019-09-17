@@ -26,7 +26,8 @@ data_dir_name = 'Data';
 
 for loop = 1:loop_iter
     
-    data_file_name = ['experimental_data_loop_' num2str(loop) '.csv'];
+    %data_file_name = ['experimental_data_loop_' num2str(loop) '.csv'];
+    data_file_name = ['experimental_data_2_pseudo.csv'];
     
     %% Step 1: generate data for SBL
     logger(fid,sprintf('loop iter: %d, generating SBL data',loop))
@@ -70,7 +71,7 @@ for loop = 1:loop_iter
             %% Generate model and experiments
             model_name=['SBL' num2str(sparsity_case)];
             SBLModel = SBLModel2AMIGOModel(fit_res_diff(:,sparsity_case),Phi,model,model_name);
-            [inputs privstruct]=gen_AMIGOSetupFromSBL(SBLModel,data_file_name,'SBLModel');
+            [inputs privstruct]=gen_AMIGOSetupFromSBL(SBLModel,data_file_name,'SBLModel',exp_idx);
             
             imported_to_amigo = imported_to_amigo +1;
             
@@ -86,6 +87,7 @@ for loop = 1:loop_iter
             [inputs,privstruct,res_ssm]=fit_SBLModel(inputs,privstruct);
             
             %% Robust identifiability analysis before OED
+            logger(fid,sprintf('loop iter: %d, performing RIdent before OED',loop));
             resRIDENT1=RIdent4SBL(inputs,model_name);
             
             %% Step 6: Run OED
@@ -113,6 +115,7 @@ for loop = 1:loop_iter
             end
             
             %% Robust identifiability analysis after OED
+            logger(fid,sprintf('loop iter: %d, performing RIdent after OED',loop));
             resRIDENT2=RIdent4SBL(EXPOED,model_name);
             
             RES{loop}{sparsity_case}={inputs,privstruct,res_ssm,GRANK,resRIDENT1,resRIDENT2};

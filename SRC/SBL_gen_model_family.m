@@ -14,7 +14,7 @@ input_data = datareader_for_SBL(sbl_config.data_dir_name,sbl_config.data_file_na
 
 %% Step 2: Run SBL
 logger(sbl_config.fid,sprintf('loop iter: %d, running SBL',loop))
-[Phi,fit_res_diff,model]  = toggle_switch_SBL(input_data,sbl_config);
+[Phi,fit_res_diff,model]  = model_est_w_SBL(input_data,sbl_config);
 
 
 %% Step 4: Build an Amigo model

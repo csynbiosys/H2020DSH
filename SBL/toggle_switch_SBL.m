@@ -1,8 +1,5 @@
 function [Phi,fit_res_diff,model,input_data] = toggle_switch_SBL(input_data,config)
 
-% generating the dictionary functions
-Phi = build_toggle_switch_dict();
-
 state_num = input_data.state_num;
 exp_num = size(input_data.tspan,2);
 
@@ -32,7 +29,7 @@ for sparsity_case=1:size(sparsity_vec,2)
             f = fit(input_data.tspan{exp_idx},y_tmp,'smoothingspline','SmoothingParam',0.00001);
             dydt(:,state) = differentiate(f,input_data.tspan{exp_idx});
             if config.display_plots
-                subplot(state_num,exp_num,sub2ind([state_num exp_num],state,exp_idxx))
+                subplot(state_num,exp_num,sub2ind([state_num exp_num],state,exp_idx))
                 plot(f,input_data.tspan{exp_idx},input_data.states{exp_idx}(:,state))
             end
         end
@@ -40,26 +37,21 @@ for sparsity_case=1:size(sparsity_vec,2)
         model.dydt{exp_idx} = dydt;
         model.variance{exp_idx} = sparsity_vec(sparsity_case);
         model.tspan{exp_idx} = input_data.tspan{exp_idx};
-        
         model.input{exp_idx} = input_data.inputs{exp_idx};
         
-        %% evaexp_idxuate dictionary
+        %% generating the dictionary functions
         
-        x = [input_data.states{exp_idx}  input_data.inputs{exp_idx}];
+        x = input_data.states{exp_idx};
+        u = input_data.inputs{exp_idx};
         % extra (not estimated) parameters
         p = [];
-        % the dicionaries is evaluated for all states and datasets
-        Phi_val = cell(state_num,exp_num);
-        
-        
-        for state = 1:state_num
-            Phi_val{state,exp_idx} = cell2mat(cellfun(@(f) f(x,p),Phi{state},'UniformOutput',false));
-        end
+        % the dicionaries are evaluated on all states and datasets        
+        [Phi,Phi_val{exp_idx}] = build_toggle_switch_dict(x,u);
         
         %% buiexp_idxd a exp_idxinear regression struct, i.e. y = A*x for each states and data sets
         for state=1:state_num
             sbl_diff(state).name = sprintf('diff_%s',model.state_names{state});
-            sbl_diff(state).A{exp_idx} = Phi_val{state,exp_idx};
+            sbl_diff(state).A{exp_idx} = Phi_val{exp_idx}{state};
             sbl_diff(state).y{exp_idx} = model.dydt{exp_idx}(:,state);
             sbl_diff(state).std{exp_idx} = model.variance{exp_idx};
         end
@@ -67,12 +59,7 @@ for sparsity_case=1:size(sparsity_vec,2)
     end % for each dataset
     %% generate nonneg constraints
     for state=1:state_num
-        constraint_idx= [];
-        for z=2:size(Phi{state},2)
-            if isempty(strfind(func2str(Phi{state}{z}),sprintf('x(:,%d)',state)))
-                constraint_idx = [constraint_idx; z];
-            end
-        end
+        constraint_idx = [setdiff(2:3,state+1) 4:size(Phi{state},2)];
         sbl_config(state).nonneg{1} = constraint_idx;
         % estimate only the selected states
         sbl_config(state).selected_states = 1:size(model.dydt,2);

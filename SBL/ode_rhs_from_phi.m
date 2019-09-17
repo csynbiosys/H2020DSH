@@ -15,8 +15,6 @@ function dy = ode_rhs_from_phi(t,y,Phi,fit_results,model)
 
 u = model.input{1}(idx,:);
 
-y_ext = [y;u'];
-
 state_num =  size(model.state_names,2);
 
 dy = zeros(state_num,1);
@@ -26,7 +24,7 @@ for state = 1: state_num
     w = fit_results(state).sbl_param;
     non_zero = fit_results(state).non_zero_dict{1};
     
-    dy_tmp = dy_tmp + cell2mat(cellfun(@(f) f(y_ext'),Phi{state}(non_zero),'UniformOutput',false))*w{1}(non_zero);
+    dy_tmp = dy_tmp + cell2mat(cellfun(@(f) f(y',u),Phi{state}(non_zero),'UniformOutput',false))*w{1}(non_zero);
     if isnan(dy_tmp)
         fprintf('state: %d, dy_tmp: %g\n',state,dy_tmp);
         error('NaN')

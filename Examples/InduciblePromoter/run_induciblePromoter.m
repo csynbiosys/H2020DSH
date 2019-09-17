@@ -23,6 +23,7 @@ noise_pseudo_data=0.05;
 SBL_config_defaults;
 sbl_config.data_dir_name = fullfile(SBL_work_dir,'Data');
 sbl_config.data_file_name = ['exp_data_induciblePromoter_1.csv'];
+sbl_config.dict_generator = str2func('build_MIPr_dict');
 %%
 % As example we modify sbl_config.exp_idx for considering only experiments 1
 % and 2.
