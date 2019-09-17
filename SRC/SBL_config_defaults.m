@@ -10,6 +10,8 @@ sbl_config.exp_idx=1;
 sbl_config.display_plots  = 0;
 sbl_config.save_results_to_mat = 0;
 
+sbl_config.estimate_structure_only = 0;
+
 %% generating different model structures
 sbl_config.sparsity_vec = [0.15 0.2 0.25 0.3];
 

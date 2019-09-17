@@ -9,8 +9,8 @@ kinetics.p.c = 2;
 x = rand(10,2);
 u = 2*rand(10,1);
 
-[Phi,dict] = dict_generator(x,u,kinetics);
+[Phi_val,Phi] = dict_generator(x,u,kinetics);
 
-assert(size(x,1) == size(Phi,1))
+assert(size(x,1) == size(Phi_val,1))
 
 disp('test was successful')

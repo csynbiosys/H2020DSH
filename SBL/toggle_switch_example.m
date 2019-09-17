@@ -5,11 +5,13 @@ close all
 
 %% config
 % turn on/off plots
-display_plots  = 1;
+display_plots  = 0;
 % save results to a mat file
 save_results = 0;
 
 export_to_amigo = 0;
+
+estimate_structure_only = 0;
 
 %% read data for the model
 
@@ -27,7 +29,7 @@ model.experiment_num = numel(exp_idx);
 model.state_names = input_data.state_names;
 model.input_names = input_data.input_names;
 
-sparsity_vec = [0.02 0.2 2];
+sparsity_vec = [0.002 ];% 0.02 0.2 2
 
 %% for each sparsity
 for sparsity_case=1:size(sparsity_vec,2)
@@ -62,7 +64,7 @@ for sparsity_case=1:size(sparsity_vec,2)
         % extra (not estimated) parameters
         p = [];
         % the dicionaries are evaluated on all states and datasets        
-        [Phi,Phi_val{l}] = build_toggle_switch_dict(x,u);
+        [Phi,Phi_val{l},dict_data] = build_toggle_switch_dict(x,u);
         
         %% build a linear regression struct, i.e. y = A*x for each states and datasets
         for k=1:state_num
@@ -112,6 +114,14 @@ for sparsity_case=1:size(sparsity_vec,2)
     end
     
     simulateSBLresults(Phi,fit_res_diff(:,sparsity_case),model,display_plots);
+    
+    
+    %% merge the same dictionary functions families into one function
+    if estimate_structure_only 
+        fit_res_diff(:,sparsity_case) = merge_dict_fun(dict_data,fit_res_diff);
+    end
+    
+    
     %% save results
     if save_results
         save([dir_name '/toggle_switch_sbl_output'],'Phi','fit_res_diff','model','input_data');
@@ -129,7 +139,7 @@ if export_to_amigo
         
         SBLModel = SBLModel2AMIGOModel(fit_res_diff(:,sparsity_case),Phi,model,['SBL' num2str(sparsity_case)]);
         
-        [inputs privstruct]=gen_AMIGOSetupFromSBL(SBLModel,'experimental_data_exp1to1_noise000.csv','SBLModel');
+        [inputs privstruct]=gen_AMIGOSetupFromSBL(SBLModel,file_name,'SBLModel',exp_idx);
         
         [inputs,privstruct,res_ssm]=fit_SBLModel(inputs,privstruct);
         

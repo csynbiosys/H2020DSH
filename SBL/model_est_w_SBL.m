@@ -46,7 +46,7 @@ for sparsity_case=1:size(sparsity_vec,2)
         % extra (not estimated) parameters
         p = [];
         % the dicionaries are evaluated on all states and datasets        
-        [Phi,Phi_val{exp_idx}] = config.dict_generator(x,u);
+        [Phi,Phi_val{exp_idx},dict_data] = config.dict_generator(x,u);
         
         %% buiexp_idxd a exp_idxinear regression struct, i.e. y = A*x for each states and data sets
         for state=1:state_num
@@ -98,6 +98,12 @@ for sparsity_case=1:size(sparsity_vec,2)
     for state=1:state_num
         fit_res_diff(state,sparsity_case).valid_model = valid_model;
     end
+    
+    %% merge the same dictionary functions families into one function
+    if config.estimate_structure_only 
+        fit_res_diff(:,sparsity_case) = merge_dict_fun(dict_data,fit_res_diff);
+    end
+    
     
 end % for each sparsity case
 

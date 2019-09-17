@@ -31,7 +31,6 @@ sbl_config.data_file_name = 'toggleSwitch_1.csv';
 sbl_config.exp_idx=1:3;
 sbl_config.dict_generator = str2func('build_toggle_switch_dict');
 
- 
 %% Generate and fit a family of models
 
 %%
