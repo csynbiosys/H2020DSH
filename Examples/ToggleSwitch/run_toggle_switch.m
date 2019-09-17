@@ -26,7 +26,10 @@ SBL_config_defaults;
 % As example we modify sbl_config.exp_idx for considering only experiments 1
 % and 2.
 
+sbl_config.data_dir_name = pwd;
+sbl_config.data_file_name = 'toggleSwitch_1.csv';
 sbl_config.exp_idx=1:3;
+
  
 %% Generate and fit a family of models
 
@@ -53,15 +56,16 @@ set(gcf, 'Units', 'Normalized', 'OuterPosition', [0, 0.04, 1, 0.96]);
 
 %% Generate new pseudo experimental data
 SBL_workdir;
-data_file2_original=fullfile(SBL_work_dir,'Data',['experimental_data_loop_' num2str(1) '.csv']);
-data_file2_pseudo=fullfile(SBL_work_dir,'Data','experimental_data_2_pseudo.csv');
+data_file2_original=fullfile(pwd,'toggleSwitch_1.csv');
+data_file2_pseudo=fullfile(pwd,'Data','experimental_data_2_pseudo.csv');
 add_pseudo_data(modelsAfterOED,noise_pseudo_data,data_file2_original,data_file2_pseudo,'model1');
 
 %% Second iteration: generate and fit a family of models
 sbl_config.exp_idx=[1 2 3 8];
-% %% Generate and fit a new family of models
-sbl_config.data_dir_name = fullfile(SBL_work_dir,'Data');
-sbl_config.data_file_name = 'experimental_data_2_pseudo.csv';
+
+%% Generate and fit a new family of models
+sbl_config.data_dir_name = fullfile(pwd,'Data');
+sbl_config.data_file_name = 'toggleSwitch_1.csv';
 MODELS=SBL_gen_model_family(sbl_config);
 SBL_plotFamilyFit(MODELS);
 set(gcf, 'Units', 'Normalized', 'OuterPosition', [0, 0.04, 1, 0.96]);
