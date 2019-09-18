@@ -4,20 +4,20 @@ function input_data = datareader_for_SBL(dir_name,file_name,selected_experiments
 %% read into a table
 T = readtable([dir_name filesep file_name]);
 % capitalize variable names
-T.Properties.VariableNames = upper(T.Properties.VariableNames);
+T.Properties.VariableNames = T.Properties.VariableNames;
 % find the columnds
-exp_id_vec = ~cellfun(@isempty,regexp(T.Properties.VariableNames,'^EXPERIMENT'));
-input_idx_vec = ~cellfun(@isempty,regexp(T.Properties.VariableNames,'^TR_\w+'));
-output_idx_vec = ~cellfun(@isempty,regexp(T.Properties.VariableNames,'^READOUT_\w+'));
-time_idx_vec = ~cellfun(@isempty,regexp(T.Properties.VariableNames,'^TIME'));
-std_idx_vec  = ~cellfun(@isempty,regexp(T.Properties.VariableNames,'^STD_\w+'));
+exp_id_vec = ~cellfun(@isempty,regexpi(T.Properties.VariableNames,'^EXPERIMENT'));
+input_idx_vec = ~cellfun(@isempty,regexpi(T.Properties.VariableNames,'^TR_\w+'));
+output_idx_vec = ~cellfun(@isempty,regexpi(T.Properties.VariableNames,'^READOUT_\w+'));
+time_idx_vec = ~cellfun(@isempty,regexpi(T.Properties.VariableNames,'^TIME'));
+std_idx_vec  = ~cellfun(@isempty,regexpi(T.Properties.VariableNames,'^STD_\w+'));
 
 
 %% get the input/output names
-token_input = regexp(T.Properties.VariableNames,'^TR_(\w+)','once','tokens');
+token_input = regexpi(T.Properties.VariableNames,'^TR_(\w+)','once','tokens');
 input_data.input_names = [token_input{input_idx_vec}];
 
-token_state = regexp(T.Properties.VariableNames,'^READOUT_(\w+)','once','tokens');
+token_state = regexpi(T.Properties.VariableNames,'^READOUT_(\w+)','once','tokens');
 input_data.state_names = [token_state{output_idx_vec}];
 
 %% finding the column indices
