@@ -21,7 +21,9 @@ sbl_config.data_dir_name = pwd;
 sbl_config.data_file_name = 'toggleSwitch_1.csv';
 sbl_config.exp_idx=1:3;
 sbl_config.dict_generator = str2func('build_toggle_switch_dict');
+
 sbl_config.estimate_structure_only=1; 
+
 
 %% Generate multiple models by enforcing different sparsity coeficients.
 % 

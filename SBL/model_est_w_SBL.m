@@ -76,11 +76,10 @@ for sparsity_case=1:size(sparsity_vec,2)
     toc;
     %% reporting
     for state=1:state_num
-        % use manual threshold
-        zero_th = 1e-4;
+        
         model_num = 1;
         % select non zero dictionaries
-        fit_res_diff(state,sparsity_case) = calc_zero_th(fit_res_diff(state,sparsity_case),zero_th,config.display_plots,state,model_num);
+        fit_res_diff(state,sparsity_case) = calc_zero_th(fit_res_diff(state,sparsity_case),config.zero_th,config.display_plots,state,model_num);
         % report signal fit
         signal_fit_error_diff(state,sparsity_case) = fit_report(fit_res_diff(state,sparsity_case),config.display_plots);
     end

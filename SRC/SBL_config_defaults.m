@@ -9,9 +9,14 @@ sbl_config.exp_idx=1;
 %% SBL config
 sbl_config.display_plots  = 0;
 sbl_config.save_results_to_mat = 0;
-
-sbl_config.estimate_structure_only = 0;
-
+% estimate the structure only: multiple instances of the same family is
+% merged 
+sbl_config.estimate_structure_only = 1;
+% set the zero threshold for the dictionary functions
+% zero_th = 1e-4 - manual thresholding
+% zero_th = []  - automatic thresholding, based on the bigest jump in
+% residual error
+sbl_config.zero_th = [];
 %% generating different model structures
 sbl_config.sparsity_vec = [0.15 0.2 0.25 0.3];
 
