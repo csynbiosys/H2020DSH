@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>toggle_4_3</title><meta name="generator" content="MATLAB 9.1"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-09-03"><meta name="DC.source" content="toggle_4_3.m"><style type="text/css">
+      --><title>toggle_4_3</title><meta name="generator" content="MATLAB 9.1"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-09-25"><meta name="DC.source" content="toggle_4_3.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -74,37 +74,39 @@ noise_pseudo_data=0.05;
 </pre><h2 id="3">Configure experimental data</h2><pre class="codeinput">sbl_config.data_dir_name = pwd;
 sbl_config.data_file_name = <span class="string">'toggleSwitch_1.csv'</span>;
 sbl_config.exp_idx=1:3;
-</pre><h2 id="4">Generate multiple models by enforcing different sparsity coeficients.</h2><pre class="codeinput">sbl_config.sparsity_vec = [0.15 0.2 0.25 0.3];
+sbl_config.dict_generator = str2func(<span class="string">'build_toggle_switch_dict'</span>);
+sbl_config.estimate_structure_only=0;
+</pre><h2 id="4">Generate multiple models by enforcing different sparsity coeficients.</h2><pre class="codeinput">sbl_config.sparsity_vec = [0.05 0.1 0.15 0.2 ];
 </pre><h2 id="5">Generate and fit a family of models</h2><p>We generate a family of models with SBL and fit with AMIGO+scatter search</p><pre class="codeinput">MODELS=SBL_gen_model_family(sbl_config);
-</pre><pre class="codeoutput">03-Sep-2019 11:23:18 | loop iter: 1, generating SBL data
-03-Sep-2019 11:23:18 | file: toggleSwitch_1.csv was successfully imported | 3  experiments was selected
-03-Sep-2019 11:23:18 | loop iter: 1, running SBL
+</pre><pre class="codeoutput">25-Sep-2019 15:52:28 | loop iter: 1, generating SBL data
+25-Sep-2019 15:52:28 | file: toggleSwitch_1.csv was successfully imported | 3  experiments was selected
+25-Sep-2019 15:52:28 | loop iter: 1, running SBL
 runnging sparsity case: 1/4
 runnging SBL on state: 1/2
-SBL iter: 1/10 took 1.90461 sec
-SBL iter: 2/10 took 5.43475 sec
-SBL iter: 3/10 took 3.58758 sec
-SBL iter: 4/10 took 8.94788 sec
-SBL iter: 5/10 took 6.46408 sec
-SBL iter: 6/10 took 5.1619 sec
-SBL iter: 7/10 took 4.83261 sec
-SBL iter: 8/10 took 3.82861 sec
-SBL iter: 9/10 took 5.2295 sec
-SBL iter: 10/10 took 3.66573 sec
+SBL iter: 1/10 took 2.32575 sec
+SBL iter: 2/10 took 1.45077 sec
+SBL iter: 3/10 took 0.999079 sec
+SBL iter: 4/10 took 1.41834 sec
+SBL iter: 5/10 took 1.52586 sec
+SBL iter: 6/10 took 0.751677 sec
+SBL iter: 7/10 took 1.78155 sec
+SBL iter: 8/10 took 1.53489 sec
+SBL iter: 9/10 took 0.685124 sec
+SBL iter: 10/10 took 0.699559 sec
 runnging SBL on state: 2/2
-SBL iter: 1/10 took 0.986343 sec
-SBL iter: 2/10 took 0.811668 sec
-SBL iter: 3/10 took 0.797799 sec
-SBL iter: 4/10 took 0.787172 sec
-SBL iter: 5/10 took 0.825256 sec
-SBL iter: 6/10 took 0.798743 sec
-SBL iter: 7/10 took 0.8043 sec
-SBL iter: 8/10 took 0.78707 sec
-SBL iter: 9/10 took 0.808969 sec
-SBL iter: 10/10 took 0.829289 sec
-Elapsed time is 0.868184 seconds.
-state: x_1 zero_th: 9.49847e-05 dict_num: 6 (0.374298%)
-state: x_2 zero_th: 9.49847e-05 dict_num: 6 (0.747198%)
+SBL iter: 1/10 took 0.741988 sec
+SBL iter: 2/10 took 0.715639 sec
+SBL iter: 3/10 took 0.807706 sec
+SBL iter: 4/10 took 0.727714 sec
+SBL iter: 5/10 took 0.863354 sec
+SBL iter: 6/10 took 0.758296 sec
+SBL iter: 7/10 took 0.829248 sec
+SBL iter: 8/10 took 0.791958 sec
+SBL iter: 9/10 took 0.742573 sec
+SBL iter: 10/10 took 0.743287 sec
+Elapsed time is 0.791566 seconds.
+state: x_1 zero_th: 0.00386004 dict_num: 5 (0.55371%)
+state: x_2 zero_th: 0.00715729 dict_num: 5 (0.55371%)
 ODE simulation OK
 ...</pre><h2 id="6">Plot the optimization results and trajectories from the generated model family</h2><p>The convergence curves are given scatter search. Time courses for each modeled observable are also ploted along with the experimental data.</p><pre class="codeinput">SBL_plotFamilyFit(MODELS);
 set(gcf, <span class="string">'Units'</span>, <span class="string">'Normalized'</span>, <span class="string">'OuterPosition'</span>, [0, 0.04, 1, 0.96]);
@@ -132,12 +134,15 @@ SBL_config_defaults;
 sbl_config.data_dir_name = pwd;
 sbl_config.data_file_name = 'toggleSwitch_1.csv';
 sbl_config.exp_idx=1:3;
+sbl_config.dict_generator = str2func('build_toggle_switch_dict');
+sbl_config.estimate_structure_only=0; 
+
 
 %% Generate multiple models by enforcing different sparsity coeficients.
 % 
 %
 
-sbl_config.sparsity_vec = [0.15 0.2 0.25 0.3];
+sbl_config.sparsity_vec = [0.05 0.1 0.15 0.2 ];
  
 %% Generate and fit a family of models
 % We generate a family of models with SBL and fit with AMIGO+scatter search
