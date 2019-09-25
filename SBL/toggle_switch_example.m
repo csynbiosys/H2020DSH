@@ -5,7 +5,7 @@ close all
 
 %% config
 % turn on/off plots
-display_plots  = 0;
+display_plots  = 1;
 % save results to a mat file
 save_results = 0;
 
@@ -18,7 +18,7 @@ estimate_structure_only = 0;
 dir_name  = 'Data';
 file_name = 'experimental_data_2_pseudo.csv';
 
-exp_idx = [1 2];
+exp_idx = [1 2 3];
 fid =1;
 input_data = datareader_for_SBL(dir_name,file_name,exp_idx,fid);
 
@@ -29,16 +29,17 @@ model.experiment_num = numel(exp_idx);
 model.state_names = input_data.state_names;
 model.input_names = input_data.input_names;
 
-sparsity_vec = [0.002 ];% 0.02 0.2 2
+sparsity_vec = [0.02];
 
 %% for each sparsity
 for sparsity_case=1:size(sparsity_vec,2)
     fprintf('runnging sparsity case: %d/%d\n',sparsity_case,size(sparsity_vec,2))
     %% for each dataset
+    if display_plots
+        figure('name','datafit')
+    end
     for l=1:exp_num
-        if display_plots
-            figure('name','datafit')
-        end
+        
         exp_id = exp_idx(l);
         % step differeniate the signal
         dydt =[];
@@ -54,8 +55,9 @@ for sparsity_case=1:size(sparsity_vec,2)
         
         model.dydt{l} = dydt;
         model.variance{l} = sparsity_vec(sparsity_case);
-        model.tspan{l} = input_data.tspan{exp_id};       
+        model.tspan{l} = input_data.tspan{exp_id};
         model.input{l} = input_data.inputs{exp_id};
+        model.output{l} = input_data.states{exp_id};
         
         %% generating the dictionary functions and evaluating them
         
@@ -63,12 +65,12 @@ for sparsity_case=1:size(sparsity_vec,2)
         u = input_data.inputs{exp_id};
         % extra (not estimated) parameters
         p = [];
-        % the dicionaries are evaluated on all states and datasets        
+        % the dicionaries are evaluated on all states and datasets
         [Phi,Phi_val{l},dict_data] = build_toggle_switch_dict(x,u);
         
         %% build a linear regression struct, i.e. y = A*x for each states and datasets
         for k=1:state_num
-            sbl_diff(k).name = sprintf('diff_%s',model.state_names{k});
+            sbl_diff(k).name = sprintf('diff_{%s}',model.state_names{k});
             sbl_diff(k).A{l} = Phi_val{l}{k};
             sbl_diff(k).y{l} = model.dydt{l}(:,k);
             sbl_diff(k).std{l} = model.variance{l};
@@ -88,7 +90,7 @@ for sparsity_case=1:size(sparsity_vec,2)
     tic;
     for k=1:state_num
         fprintf('runnging SBL on state: %d/%d\n',k,state_num)
-        sbl_config(k).max_iter = 10;
+        sbl_config(k).max_iter = 12;
         sbl_config(k).mode = 'SMV';
         fit_res_diff(k,sparsity_case) = vec_sbl(sbl_diff(k),sbl_config(k),model);
     end
@@ -96,7 +98,7 @@ for sparsity_case=1:size(sparsity_vec,2)
     %% reporting
     for k=1:state_num
         % use manual tresholding
-        zero_th = 1e-4;
+        zero_th = [];
         model_num = 1;
         % select non zero dictionaries
         fit_res_diff(k,sparsity_case) = calc_zero_th(fit_res_diff(k,sparsity_case),zero_th,display_plots,k,model_num);
@@ -117,7 +119,7 @@ for sparsity_case=1:size(sparsity_vec,2)
     
     
     %% merge the same dictionary functions families into one function
-    if estimate_structure_only 
+    if estimate_structure_only
         fit_res_diff(:,sparsity_case) = merge_dict_fun(dict_data,fit_res_diff);
     end
     
@@ -145,5 +147,5 @@ if export_to_amigo
         
         RES={inputs,privstruct,res_ssm};
     end
-   
+    
 end
