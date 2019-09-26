@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Compute AIC and BIC</title><meta name="generator" content="MATLAB 9.1"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-09-25"><meta name="DC.source" content="toggle_4_4_3.m"><style type="text/css">
+      --><title>Compute AIC and BIC</title><meta name="generator" content="MATLAB 9.1"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-09-25"><meta name="DC.source" content="toggle_4_4_4.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,48 +66,48 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>Compute AIC and BIC</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Load default setting and configure experimental data</a></li><li><a href="#2">Generate multiple models by enforcing different sparsity coeficients.</a></li><li><a href="#3">Compute AIC and RANK parameters according sensitivities</a></li></ul></div><h2 id="1">Load default setting and configure experimental data</h2><pre class="codeinput">SBL_config_defaults;
+  </style></head><body><div class="content"><h1>Compute AIC and BIC</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Load default setting and configure experimental data</a></li><li><a href="#2">Generate multiple models by enforcing different sparsity coeficients.</a></li><li><a href="#3">Compute AIC and RANK parameters</a></li></ul></div><h2 id="1">Load default setting and configure experimental data</h2><pre class="codeinput">SBL_config_defaults;
 sbl_config.data_dir_name = pwd;
 sbl_config.data_file_name = <span class="string">'toggleSwitch_1.csv'</span>;
 sbl_config.exp_idx=1:3;
 sbl_config.dict_generator = str2func(<span class="string">'build_toggle_switch_dict'</span>);
 sbl_config.estimate_structure_only=0;
 </pre><h2 id="2">Generate multiple models by enforcing different sparsity coeficients.</h2><pre class="codeinput">sbl_config.sparsity_vec = [0.05 0.1 0.15 0.2 ];
-
 MODELS=SBL_gen_model_family(sbl_config);
-</pre><pre class="codeoutput">25-Sep-2019 20:51:14 | loop iter: 1, generating SBL data
-25-Sep-2019 20:51:14 | file: toggleSwitch_1.csv was successfully imported | 3  experiments was selected
-25-Sep-2019 20:51:14 | loop iter: 1, running SBL
+</pre><pre class="codeoutput">25-Sep-2019 20:56:46 | loop iter: 1, generating SBL data
+25-Sep-2019 20:56:46 | file: toggleSwitch_1.csv was successfully imported | 3  experiments was selected
+25-Sep-2019 20:56:46 | loop iter: 1, running SBL
 runnging sparsity case: 1/4
 runnging SBL on state: 1/2
-SBL iter: 1/10 took 2.47014 sec
-SBL iter: 2/10 took 1.4914 sec
-SBL iter: 3/10 took 1.09483 sec
-SBL iter: 4/10 took 1.42816 sec
-SBL iter: 5/10 took 1.54445 sec
-SBL iter: 6/10 took 0.810691 sec
-SBL iter: 7/10 took 2.07612 sec
-SBL iter: 8/10 took 1.71155 sec
-SBL iter: 9/10 took 0.746932 sec
-SBL iter: 10/10 took 0.738287 sec
+SBL iter: 1/10 took 2.41589 sec
+SBL iter: 2/10 took 1.55526 sec
+SBL iter: 3/10 took 1.12121 sec
+SBL iter: 4/10 took 1.41586 sec
+SBL iter: 5/10 took 1.62876 sec
+SBL iter: 6/10 took 0.784505 sec
+SBL iter: 7/10 took 1.94391 sec
+SBL iter: 8/10 took 1.736 sec
+SBL iter: 9/10 took 0.719302 sec
+SBL iter: 10/10 took 0.743301 sec
 runnging SBL on state: 2/2
-SBL iter: 1/10 took 0.781764 sec
-SBL iter: 2/10 took 0.786496 sec
-SBL iter: 3/10 took 0.862091 sec
-SBL iter: 4/10 took 0.790703 sec
-SBL iter: 5/10 took 0.845232 sec
-SBL iter: 6/10 took 0.80795 sec
-SBL iter: 7/10 took 0.872035 sec
-SBL iter: 8/10 took 0.828759 sec
-SBL iter: 9/10 took 0.788266 sec
-SBL iter: 10/10 took 0.788181 sec
-Elapsed time is 0.839159 seconds.
+SBL iter: 1/10 took 0.777009 sec
+SBL iter: 2/10 took 0.769495 sec
+SBL iter: 3/10 took 0.858944 sec
+SBL iter: 4/10 took 0.772168 sec
+SBL iter: 5/10 took 0.827744 sec
+SBL iter: 6/10 took 0.79711 sec
+SBL iter: 7/10 took 0.864116 sec
+SBL iter: 8/10 took 0.827546 sec
+SBL iter: 9/10 took 0.773599 sec
+SBL iter: 10/10 took 0.7969 sec
+Elapsed time is 0.844489 seconds.
 state: x_1 zero_th: 0.00386004 dict_num: 5 (0.55371%)
 state: x_2 zero_th: 0.00715729 dict_num: 5 (0.55371%)
 ODE simulation OK
-...</pre><h2 id="3">Compute AIC and RANK parameters according sensitivities</h2><pre class="codeinput">[AIC,BIC,Chi2,NDATA,NPARS]=SBL_get_AIC_BIC(MODELS);
+...</pre><h2 id="3">Compute AIC and RANK parameters</h2><p>Adjust the number of bootstrap rounds.</p><pre class="codeinput">[AIC,BIC,Chi2,NDATA,NPARS]=SBL_get_AIC_BIC(MODELS);
 [~,index]=sort(AIC);
-LRANK4SBL(MODELS,sbl_config,index(1))
+sbl_config.conf_ntrials=100;
+RIdent4SBL(MODELS,sbl_config,index(1))
 </pre><pre class="codeoutput">
 
 *********************************** 
@@ -138,7 +138,7 @@ exp_data
 missing_data
 nanfilter
 u_interp
-...</pre><img vspace="5" hspace="5" src="toggle_4_4_3_01.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_02.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_03.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_04.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_05.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_06.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_07.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_08.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_09.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_10.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_11.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_12.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_13.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_14.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_15.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_16.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_17.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_18.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_19.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_20.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_21.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_22.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_23.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_24.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_25.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_26.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_27.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_28.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_29.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_30.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_31.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_32.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_33.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_34.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_35.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_36.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_37.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_38.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_39.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_40.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_41.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_42.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_43.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_3_44.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2016b</a><br></p></div><!--
+...</pre><img vspace="5" hspace="5" src="toggle_4_4_4_01.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_4_02.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_4_03.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_4_04.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_4_05.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_4_06.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_4_07.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_4_08.png" alt=""> <img vspace="5" hspace="5" src="toggle_4_4_4_09.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2016b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% Compute AIC and BIC
 % 
@@ -160,15 +160,16 @@ sbl_config.estimate_structure_only=0;
 %
 
 sbl_config.sparsity_vec = [0.05 0.1 0.15 0.2 ];
-
 MODELS=SBL_gen_model_family(sbl_config);
 
-%% Compute AIC and RANK parameters according sensitivities
-%
+%% Compute AIC and RANK parameters 
+% Adjust the number of bootstrap rounds.
+% 
 
 [AIC,BIC,Chi2,NDATA,NPARS]=SBL_get_AIC_BIC(MODELS);
 [~,index]=sort(AIC);
-LRANK4SBL(MODELS,sbl_config,index(1))
+sbl_config.conf_ntrials=100;
+RIdent4SBL(MODELS,sbl_config,index(1))
 
 ##### SOURCE END #####
 --></body></html>
