@@ -1,4 +1,4 @@
-%% Optimal experimental design for model discrimination
+%% Optimal experimental design for parameter estimation
 % 
 
 %% Load default setting and configure experimental data settings
