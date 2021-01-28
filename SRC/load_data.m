@@ -2,11 +2,12 @@ function [exps] = load_data(file,exp_idx)
 
 DATA = importdata(file);
 
-EXPERIMENT_COL=find(startsWith(DATA.textdata,'Experiment'));
-TIME_COL=find(startsWith(DATA.textdata,'Time'));
-STIMULI_COLS=find(startsWith(DATA.textdata,'TR_'));
-READOUT_COLS=find(startsWith(DATA.textdata,'READOUT_'));
-STD_COLS=find(startsWith(DATA.textdata,'STD_'));
+EXPERIMENT_COL = find_column(DATA.textdata,'Experiment', file);
+TIME_COL = find_column(DATA.textdata,'Time', file);
+STIMULI_COLS = find_column(DATA.textdata,'TR_', file);
+READOUT_COLS = find_column(DATA.textdata,'READOUT_', file);
+STD_COLS = find_column(DATA.textdata,'STD_', file);
+
 EXPERIMENTS=unique(sort(DATA.data(:,EXPERIMENT_COL)));
 N_EXPERIMENTS=length(EXPERIMENTS);
 
@@ -55,4 +56,14 @@ end
 exps.n_exp=counter;
 
 end
+
+function column_idx = find_column(data,column_name,file)
+    column_idx = find(startsWith(data,column_name));
+    if isempty(column_idx)
+        warning(strcat('Column: ',column_name,' was not found in ', file))
+    end
+    
+    return
+end
+
 
