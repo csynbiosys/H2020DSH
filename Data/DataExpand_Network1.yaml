@@ -1,0 +1,18 @@
+# @package _group_
+states:
+    x1: 'Observable 1 mean'
+    x2: 'Observable 2 mean'
+    x3: 'Observable 3 mean'
+    x4: 'Observable 4 mean'
+measurement_error:
+    x1: 'Observable 1 sd'
+    x2: 'Observable 2 sd'
+    x3: 'Observable 3 sd'
+    x4: 'Observable 4 sd'
+inputs:
+    u1: 'Input 1'
+    u2: 'Input 2'
+measurement_time:
+    t: 'Time(min)'
+experiment_id:
+    exp_id: 'Experiment'
