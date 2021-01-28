@@ -1,4 +1,4 @@
-function[inputs,privstruct,res_ssm]=fit_SBLModel(inputs,privstruct,sbl_config)
+function[inputs,privstruct,res_ssm]=SBL_fitModel(inputs,privstruct,sbl_config)
 
 problem.x_U=inputs.PEsol.global_theta_max;
 problem.x_L=inputs.PEsol.global_theta_min;
