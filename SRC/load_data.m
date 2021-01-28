@@ -1,12 +1,27 @@
-function [exps] = load_data(file,exp_idx)
+function [exps] = load_data(file,exp_idx,column_config)
+
+% default column config
+if nargin == 2
+    column_config.experiment_id = 'Experiment';
+    column_config.experiment_time = 'Time';
+    column_config.stimulus_columns = 'TR_';
+    column_config.readout_columns = 'READOUT_';
+    column_config.readout_std_columns = 'STD_';
+    column_config.lookup_mode = 'find';
+end
+
+
 
 DATA = importdata(file);
+% trim whitespaces
+DATA.textdata = cellfun(@(a)strtrim(a),DATA.textdata,'Uniformoutput',false);
 
-EXPERIMENT_COL = find_column(DATA.textdata,'Experiment', file);
-TIME_COL = find_column(DATA.textdata,'Time', file);
-STIMULI_COLS = find_column(DATA.textdata,'TR_', file);
-READOUT_COLS = find_column(DATA.textdata,'READOUT_', file);
-STD_COLS = find_column(DATA.textdata,'STD_', file);
+
+EXPERIMENT_COL = find_column(DATA.textdata,column_config.experiment_id, file,'find');
+TIME_COL = find_column(DATA.textdata,column_config.experiment_time, file,'find');
+STIMULI_COLS = find_column(DATA.textdata,column_config.stimulus_columns, file,column_config.lookup_mode);
+READOUT_COLS = find_column(DATA.textdata,column_config.readout_columns, file, column_config.lookup_mode);
+STD_COLS = find_column(DATA.textdata,column_config.readout_std_columns, file, column_config.lookup_mode);
 
 EXPERIMENTS=unique(sort(DATA.data(:,EXPERIMENT_COL)));
 N_EXPERIMENTS=length(EXPERIMENTS);
@@ -22,8 +37,8 @@ for iexp=1:N_EXPERIMENTS
         exps.n_obs{counter} = length(READOUT_COLS);
         exps.exp_type{counter} = 'fixed';
         
-        st_names=regexprep(DATA.textdata(READOUT_COLS),'READOUT_','');
-        obs_names = regexprep(DATA.textdata(READOUT_COLS),'READOUT_','');
+        st_names=regexprep(DATA.textdata(READOUT_COLS),column_config.readout_columns,'');
+        obs_names = regexprep(DATA.textdata(READOUT_COLS),column_config.readout_columns,'');
         
         for jobs=1:length(obs_names)
             obs_names{jobs}=[obs_names{jobs} '_o'];
@@ -57,13 +72,22 @@ exps.n_exp=counter;
 
 end
 
-function column_idx = find_column(data,column_name,file)
+function column_idx = find_column(data,column_name,file,lookup_mode)
+
+if strcmp(lookup_mode,'find')
     column_idx = find(startsWith(data,column_name));
     if isempty(column_idx)
         warning(strcat('Column: ',column_name,' was not found in ', file))
     end
+elseif strcmp(lookup_mode,'exact')
+    l = cellfun(@(c)strcmp(c,data),column_name,'UniformOutput',false);
+    column_idx = cellfun(@(a) find(a),l);
+else
+    error('Not supported lookup_mode: %s',lookup_mode)
     
-    return
+end
+
+return
 end
 
 
