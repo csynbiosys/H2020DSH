@@ -7,8 +7,10 @@ H2020DSH
 - change the SBL_workdir.m to a valid path of your working dir
 - run SBL_init
 
+%%%%%% Notes
+#,## Action now condensed in initialise_path function
 
-# Test out SBLyaml_to_amigo
+## Test out SBLyaml_to_amigo
 
 - SBL/SBLyaml_to_Amigo
 
