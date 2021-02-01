@@ -19,6 +19,7 @@ DATA.textdata = cellfun(@(a)strtrim(a),DATA.textdata,'Uniformoutput',false);
 
 EXPERIMENT_COL = find_column(DATA.textdata,column_config.experiment_id, file,'find');
 TIME_COL = find_column(DATA.textdata,column_config.experiment_time, file,'find');
+STIMULI_PRE = find_column(DATA.textdata,column_config.stimulus_pre, file,column_config.lookup_mode);
 STIMULI_COLS = find_column(DATA.textdata,column_config.stimulus_columns, file,column_config.lookup_mode);
 READOUT_COLS = find_column(DATA.textdata,column_config.readout_columns, file, column_config.lookup_mode);
 STD_COLS = find_column(DATA.textdata,column_config.readout_std_columns, file, column_config.lookup_mode);
@@ -57,12 +58,13 @@ for iexp=1:N_EXPERIMENTS
         exps.u_interp{counter} = 'step';
         exps.t_con{counter} = TIME';
         exps.n_steps{counter} = length(TIME)-1;
+        exps.u_0{counter} = unique(DATA.data(index,STIMULI_PRE));
         exps.u{counter} = DATA.data(index,STIMULI_COLS)';
-        exps.data_type = 'real';
-        exps.noise_type = 'homo';
+        exps.data_type = 'pseudo';
+        exps.noise_type = 'hetero_proportional';
         exps.exp_data{counter} = DATA.data(index,READOUT_COLS);
         exps.error_data{counter} = DATA.data(index,STD_COLS);
-        exps.exp_y0{counter} = exps.exp_data{counter}(1,:);
+        exps.exp_y0{counter} = exps.exp_data{counter}(1,:); % note: currently set to the initial value in the experiment
         
     end
     

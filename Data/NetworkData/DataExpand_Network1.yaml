@@ -9,6 +9,9 @@ measurement_error:
     x2: 'Observable 2 sd'
     x3: 'Observable 3 sd'
     x4: 'Observable 4 sd'
+inputs_pre:
+    u1_0: 'Input 1 Pre'
+    u2_0: 'Input 2 Pre'
 inputs:
     u1: 'Input 1'
     u2: 'Input 2'

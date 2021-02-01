@@ -11,7 +11,7 @@ function [] = initialise_path()
     % Add folders to path 
     addpath([pwd '/AMIGOScripts'])
     addpath([pwd '/Data'])
-    addpath(fullfile(pwd,'NetworkData'))
+    addpath(fullfile(pwd,'Data','NetworkData'))
     %addpath(genpath([pwd '/Examples']))
     %addpath([pwd '/ModelCheck'])
     %addpath(fullfile(pwd,'ModelCheck','STRIKE-GOLDD','models'))
