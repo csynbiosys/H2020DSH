@@ -12,6 +12,6 @@ function [data_inputs] = SBLyaml_to_AMIGO_exps(network_name,exps_indexes)
     column_config.lookup_mode = 'exact';
     
     data_inputs.exps= load_data(strcat('./Data/NetworkData/',network_name,'.csv'),exps_indexes,column_config);
- 
+     
 end
 

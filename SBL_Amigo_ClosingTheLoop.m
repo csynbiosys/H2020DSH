@@ -14,3 +14,5 @@ exps_indexes = union(models(1).model.exp_training_idx,models(1).model.exp_test_i
 experimental_data = SBLyaml_to_AMIGO_exps(network_name,exps_indexes);
 
 %% Run Model inference on each of the identified structures
+
+fit_res = FitModels(models, experimental_data);

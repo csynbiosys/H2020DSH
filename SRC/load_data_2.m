@@ -35,8 +35,8 @@ for iexp=1:N_EXPERIMENTS
         counter=counter+1;
         index=DATA.data(:,EXPERIMENT_COL)==EXPERIMENTS(iexp);
         TIME=DATA.data(index,TIME_COL);
-        exps.n_obs{counter} = length(READOUT_COLS);
-        exps.exp_type{counter} = 'fixed';
+        exps{counter}.n_obs = length(READOUT_COLS);
+        exps{counter}.exp_type = 'fixed';
         
         st_names=regexprep(DATA.textdata(READOUT_COLS),column_config.readout_columns,'');
         obs_names = regexprep(DATA.textdata(READOUT_COLS),column_config.readout_columns,'');
@@ -45,31 +45,31 @@ for iexp=1:N_EXPERIMENTS
             obs_names{jobs}=[obs_names{jobs} '_o'];
         end
         
-        exps.obs_names{counter}=char(obs_names);
-        exps.obs{counter}=[];
+        exps{counter}.obs_names=char(obs_names);
+        exps{counter}.obs=[];
         
-        for jobs=1:exps.n_obs{counter}
-            exps.obs{counter} =[exps.obs{counter}; [obs_names{jobs} '=' st_names{jobs}]];
+        for jobs=1:exps{counter}.n_obs
+            exps{counter}.obs =[exps{counter}.obs; [obs_names{jobs} '=' st_names{jobs}]];
         end
 
-        exps.t_f{counter} = TIME(end);
-        exps.n_s{counter} = length(TIME);
-        exps.t_s{counter} = TIME';
-        exps.u_interp{counter} = 'step';
-        exps.t_con{counter} = TIME';
-        exps.n_steps{counter} = length(TIME)-1;
-        exps.u_0{counter} = unique(DATA.data(index,STIMULI_PRE));
-        exps.u{counter} = DATA.data(index,STIMULI_COLS)';
-        exps.data_type = 'pseudo';
-        exps.noise_type = 'hetero_proportional';
-        exps.exp_data{counter} = DATA.data(index,READOUT_COLS);
-        exps.error_data{counter} = DATA.data(index,STD_COLS);
-        exps.exp_y0{counter} = exps.exp_data{counter}(1,:); % note: currently set to the initial value in the experiment
+        exps{counter}.t_f = TIME(end);
+        exps{counter}.n_s = length(TIME);
+        exps{counter}.t_s = TIME';
+        exps{counter}.u_interp = 'step';
+        exps{counter}.t_con = TIME';
+        exps{counter}.n_steps = length(TIME)-1;
+        exps{counter}.u_0 = unique(DATA.data(index,STIMULI_PRE));
+        exps{counter}.u = DATA.data(index,STIMULI_COLS)';
+        exps{counter}.data_type = 'pseudo';
+        exps{counter}.noise_type = 'hetero_proportional';
+        exps{counter}.exp_data = DATA.data(index,READOUT_COLS);
+        exps{counter}.error_data = DATA.data(index,STD_COLS);
+        exps{counter}.exp_y0 = exps{counter}.exp_data(1,:); % note: currently set to the initial value in the experiment
     end
     
 end
 
-exps.n_exp=counter;
+%exps.n_exp=counter;
 
 end
 
