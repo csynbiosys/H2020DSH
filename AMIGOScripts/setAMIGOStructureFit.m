@@ -32,9 +32,9 @@ function [fit_res] = setAMIGOStructureFit(fit_res, model,experimental_data)
     % Inference is run on the training set, the best parameter value
     % selected according to the performance on the test set
     exps_indexTraining = model.model.exp_training_idx;
-    fit_res.inputs.exps.nexp = length(exps_indexTraining);
+    fit_res.inputs.exps.n_exp = length(exps_indexTraining);
     
-    for iexp = 1:length(fit_res.inputs.exps.nexp)
+    for iexp = 1:fit_res.inputs.exps.n_exp
         exp_indexData = exps_indexTraining(iexp);
         fit_res.inputs.exps.exp_type{iexp} = experimental_data.exps.exp_type{1,exp_indexData}; 
         fit_res.inputs.exps.n_obs{iexp} = experimental_data.exps.n_obs{1,exp_indexData}; 
@@ -55,6 +55,7 @@ function [fit_res] = setAMIGOStructureFit(fit_res, model,experimental_data)
                                                                         fit_res.inputs.exps.exp_data{iexp}(1,:),...
                                                                         experimental_data.exps.u_0{1,exp_indexData});
     end
+
     
     fit_res.inputs.exps.data_type= experimental_data.exps.data_type;
     fit_res.inputs.exps.noise_type= experimental_data.exps.noise_type;

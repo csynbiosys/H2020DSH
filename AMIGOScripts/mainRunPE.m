@@ -17,7 +17,7 @@ function [peRes] = mainRunPE(fit_res,tmpth,exps_indexTraining,model_id,nguess)
 
     peRes = AMIGO_PE(fit_res.inputs);
 
-    save(strjoin([".\Results\PE_", model_id,"\Run_", nguess, ".mat"], ""), "peRes")
+    save(strjoin([".\AMIGOScripts\Results\PE_", model_id,"\Run_", nguess, ".mat"], ""), "peRes")
 
 
 

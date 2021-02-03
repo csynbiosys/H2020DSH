@@ -10,6 +10,9 @@ function [] = initialise_path()
 
     % Add folders to path 
     addpath([pwd '/AMIGOScripts'])
+    addpath(fullfile(pwd,'AMIGOScripts','OEDms'))
+    addpath(fullfile(pwd,'AMIGOScripts','ParameterEstimation'))
+    addpath(fullfile(pwd,'AMIGOScripts','Results'))
     addpath([pwd '/Data'])
     addpath(fullfile(pwd,'Data','NetworkData'))
     %addpath(genpath([pwd '/Examples']))
