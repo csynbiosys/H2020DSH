@@ -64,15 +64,17 @@ function [fit_res] = setAMIGOStructureFit(fit_res, model,experimental_data)
     
     % GLOBAL UNKNOWNS for PE
     boundperIter = setGuessAndBounds(fit_res.inputs.model.par,model.model.name);
-    % struct --> nIter --> nModel --> max; min; guess;
-    boundperIter_iter = boundperIter.(string(fieldnames(boundperIter)));
-    boundperIter_model = boundperIter_iter.(string(fieldnames(boundperIter_iter))); 
+%     boundperIter_iter = boundperIter.(string(fieldnames(boundperIter)));
+%     boundperIter_model = boundperIter_iter.(string(fieldnames(boundperIter_iter))); 
     
-    fit_res.global_theta_guess = boundperIter_model.guess;
-    fit_res.inputs.PEsol.global_theta_max = boundperIter_model.max;  % Maximum allowed values for the parameters
-    fit_res.inputs.PEsol.global_theta_min = boundperIter_model.min;  % Minimum allowed values for the parameters
-    
-    
+%     fit_res.global_theta_guess = boundperIter_model.guess;
+%     fit_res.inputs.PEsol.global_theta_max = boundperIter_model.max;  % Maximum allowed values for the parameters
+%     fit_res.inputs.PEsol.global_theta_min = boundperIter_model.min;  % Minimum allowed values for the parameters
+   
+    fit_res.global_theta_guess = boundperIter.guess;
+    fit_res.inputs.PEsol.global_theta_max = boundperIter.max;  % Maximum allowed values for the parameters
+    fit_res.inputs.PEsol.global_theta_min = boundperIter.min;  % Minimum allowed values for the parameters
+   
     
     
 end
