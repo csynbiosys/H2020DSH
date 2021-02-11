@@ -20,9 +20,15 @@ function [fit_res_bestSim] = PlotFunction(fit_res,model_id,models,model_idx,expe
     inputs.model.par = fit_res.results{1,fit_res.best_idx}.fit.thetabest'; 
     inputs.pathd = fit_res.inputs.pathd;
     inputs.exps.n_exp = fit_res.exps.n_exp;
+    
+    results_folder = strcat(model_id,convertStringsToChars('_simulation_'),datestr(now,'yyyy-mm-dd'));
+    short_name = strcat(model_id,convertStringsToChars('_simulation_'));
+    inputs.pathd.results_folder = results_folder;                        
+    inputs.pathd.short_name     = short_name;
+    inputs.pathd.runident       = 'initial_simulation';
 
     
-    for iexp = 1:fit_res.inputs.exps.n_exp
+    for iexp = 1:fit_res.exps.n_exp
         exp_indexData = iexp;
         inputs.exps.exp_type{iexp} = experimental_data.exps.exp_type{1,exp_indexData}; 
         inputs.exps.n_obs{iexp} = experimental_data.exps.n_obs{1,exp_indexData}; 

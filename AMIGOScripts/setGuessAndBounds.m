@@ -5,7 +5,7 @@ function [boundperIter_return] = setGuessAndBounds(params,model_id)
     nModel = compName{end-1,:};     % string: model identifier
     
     % patch to account for negative parameter values
-    params_matrix = [100.*params;0.01.*params];
+    params_matrix = [10.*params;0.1.*params];
     for c=1:size(params_matrix,2)
         if params_matrix(1,c)<0
             params_matrix_flipped(:,c) = flip(params_matrix(:,c));

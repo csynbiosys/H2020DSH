@@ -7,7 +7,7 @@ function [fit_res_testSet] = setAMIGOStructureTestSet(fit_res_testSet, model,exp
     fit_res_testSet.inputs.ivpsol.atol=1.0D-13;
     fit_res_testSet.inputs.plotd.plotlevel='noplot';
         
-    results_folder = strcat(model.model.name,'testSet',datestr(now,'yyyy-mm-dd'));
+    results_folder = strcat(model.model.name,'_testSet_',datestr(now,'yyyy-mm-dd'));
     short_name = strcat(model.model.name,'_inference_testSet');
     fit_res_testSet.inputs.pathd.results_folder = results_folder;                        
     fit_res_testSet.inputs.pathd.short_name     = short_name;
