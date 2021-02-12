@@ -9,7 +9,7 @@ function [fit_res] = setAMIGOStructureFit(fit_res, model,experimental_data)
     
     %COST FUNCTION RELATED DATA
     fit_res.inputs.PEsol.PEcost_type='llk';                       % 'lsq' (weighted least squares default) | 'llk' (log likelihood) | 'user_PEcost'
-    fit_res.inputs.PEsol.lsq_type='hetero';                      % [] To be defined for llk function, 'homo' | 'homo_var' | 'hetero'
+    fit_res.inputs.PEsol.llk_type='hetero';                      % [] To be defined for llk function, 'homo' | 'homo_var' | 'hetero'
 
     %OPTIMIZATION
     fit_res.inputs.nlpsol.nlpsolver='eSS';

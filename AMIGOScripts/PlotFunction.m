@@ -64,9 +64,9 @@ function [fit_res_bestSim] = PlotFunction(fit_res,model_id,models,model_idx,expe
                                                             i,...
                                                             inputs.exps.exp_data{i}(1,:),...
                                                             fit_res.exps.u_0{1,i});
-       simRes = AMIGO_SModel_NoVer(inputs);
-       fit_res.bestSimul{i} = simRes;
     end
+    simRes = AMIGO_SModel_NoVer(inputs);
+    fit_res.bestSimul = simRes;
     fit_res_bestSim = fit_res.bestSimul;
     % Best simulations against data
      for i = 1:fit_res.exps.n_exp
