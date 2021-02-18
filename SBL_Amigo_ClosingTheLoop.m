@@ -15,7 +15,7 @@ models = SBLyaml_to_AMIGO_models(network_name);
 
 %% Run Model inference on each of the identified structures
 fit_results = {};
-for model_idx=1%:2%length(models)
+for model_idx=3%:2%length(models)
     disp(strcat(['Model being fitted: ',int2str(model_idx)]))
     exps_indexes = union(models(model_idx).model.exp_training_idx,models(model_idx).model.exp_test_idx);
     experimental_data = SBLyaml_to_AMIGO_exps(network_name,exps_indexes);

@@ -15,6 +15,7 @@ for model_idx=1:length(models)
     disp(strcat(['Model being tested: ',int2str(model_idx)]))
     exps_indexes = union(models(model_idx).model.exp_training_idx,models(model_idx).model.exp_test_idx);
     experimental_data = SBLyaml_to_AMIGO_exps(network_name,exps_indexes);
-    experimental_data_scaled = SBL_scaled_data(experimental_data,exps_indexes);
-    sim_results{model_idx} = SimModels(models, experimental_data_scaled,model_idx);
+    %experimental_data_scaled = SBL_scaled_data(experimental_data,exps_indexes);
+    %sim_results{model_idx} = SimModels(models, experimental_data_scaled,model_idx);
+    sim_results{model_idx} = SimModels(models, experimental_data,model_idx);
 end

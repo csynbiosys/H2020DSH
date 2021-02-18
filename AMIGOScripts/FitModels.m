@@ -27,11 +27,7 @@ function [fit_res] = FitModels(models, experimental_data, model_idx)
     [k,~] = size(fit_res.global_theta_guess);
     tmpmat = fit_res.global_theta_guess;
     results = cell(1,k);
-    
-%     fit_res.inputs.nlpsol.eSS.maxeval = 200000;
-%     fit_res.inputs.nlpsol.eSS.maxtime = 5000;
-    fit_res.inputs.nlpsol.eSS.maxeval = 200;
-    fit_res.inputs.nlpsol.eSS.maxtime = 50;
+
      
  
 %     if isfile(strjoin([".\Results\PE_Results_",fit_res.system, "_Model", fit_dat.model, "_GenIter", fit_dat.iter,"_", date, "_", flag, ".mat"],""))
