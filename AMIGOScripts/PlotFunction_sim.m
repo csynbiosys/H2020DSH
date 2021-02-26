@@ -2,7 +2,7 @@ function [sim_res_bestSim] = PlotFunction_sim(sim_res,model_id,models,model_idx,
 
     inputs = {};
     inputs.model = sim_res.inputs.model; 
-    inputs.model.par = sim_res.inputs.model.par.*10; 
+    inputs.model.par = sim_res.inputs.model.par; 
     inputs.exps.n_exp = sim_res.exps.n_exp;
     
     results_folder = strcat(model_id,convertStringsToChars('_simulation_'),datestr(now,'yyyy-mm-dd'));

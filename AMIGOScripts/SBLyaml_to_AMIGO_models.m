@@ -14,8 +14,12 @@ function [model_inputs] = SBLyaml_to_AMIGO_models(network_name)
         fileNames = [fileNames;string(modelFiles(iFiles).name);];    
     end
     fileNames_components = split(fileNames,'_');
-    nIter_max = max(str2double(fileNames_components(:,4))); % breaks if only one file is found!
-
+    if length(modelFiles)==1
+        nIter_max = str2double(fileNames_components(4,1));
+    else
+        nIter_max = max(str2double(fileNames_components(:,4)));
+    end
+    
     modelFiles_selected = modelFiles(cellfun(@(x) contains(x,['_',num2str(nIter_max),'_amigo_config.yaml']),{modelFiles.name}));
 
 %% Build AMIGO model structures

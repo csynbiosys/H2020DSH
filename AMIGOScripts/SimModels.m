@@ -16,11 +16,11 @@ function [sim_res] = SimModels(models, experimental_data_scaled,model_idx)
     sim_res.inputs.model = ExtractModelToFit(models(model_idx));
 
     %% Plot generation
-    if ~isfolder(strjoin([".\AMIGOScripts\Results\TestSim_Unnormalised_100p",string(model_id)],''))
-        mkdir(strjoin([".\AMIGOScripts\Results\TestSim_Unnormalised_100p",string(model_id)],''))
+    if ~isfolder(strjoin([".\AMIGOScripts\Results\TestSim",string(model_id)],''))
+        mkdir(strjoin([".\AMIGOScripts\Results\TestSim",string(model_id)],''))
     end
     
     sim_res.best_sim = PlotFunction_sim(sim_res,model_id,models,model_idx,experimental_data_scaled);
-    save(strjoin([".\AMIGOScripts\Results\TestSim_Unnormalised_100p",string(model_id),"\sim_result.mat"],""), "sim_res")
+    save(strjoin([".\AMIGOScripts\Results\TestSim",string(model_id),"\sim_result.mat"],""), "sim_res")
 
 end
