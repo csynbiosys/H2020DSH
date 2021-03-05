@@ -1,8 +1,12 @@
 function [sim_res_bestSim] = PlotFunction_sim(sim_res,model_id,models,model_idx,experimental_data)
 
     inputs = {};
-    inputs.model = sim_res.inputs.model; 
-    inputs.model.par = sim_res.inputs.model.par; 
+    inputs.model = sim_res.inputs.model;
+    % load results lsq_small [1/100; 100]
+    load('DataExpand_Network1_Run100_lsq_02-Mar-2021_fit_results_all.mat');
+    
+    inputs.model.par = fit_results{1,1}.results{1,12}.fit.thetabest';
+    %sim_res.inputs.model.par; 
     inputs.exps.n_exp = sim_res.exps.n_exp;
     
     results_folder = strcat(model_id,convertStringsToChars('_simulation_'),datestr(now,'yyyy-mm-dd'));
@@ -41,6 +45,14 @@ function [sim_res_bestSim] = PlotFunction_sim(sim_res,model_id,models,model_idx,
     
     AMIGO_Prep(inputs);
     
+    for i=1:inputs.exps.n_exp
+       inputs.exps.exp_y0{i} = ModelComputeInitialCondition(inputs,...
+                                                            inputs.model.par,...
+                                                            i,...
+                                                            inputs.exps.exp_data{i}(1,:),...
+                                                            experimental_data.exps.u_0{1,i});
+    end
+    
 
     simRes = AMIGO_SModel_NoVer(inputs);
     sim_res.bestSimul = simRes;
@@ -57,7 +69,7 @@ function [sim_res_bestSim] = PlotFunction_sim(sim_res,model_id,models,model_idx,
             subplot((inputs.model.n_st + inputs.model.n_stimulus),1,o)
             hold on
             % plot experimental data
-            plot(sim_res.exps.t_s{1,i},sim_res.exps.exp_data{1,i}(:,o)');
+            errorbar(sim_res.exps.t_s{1,i},sim_res.exps.exp_data{1,i}(:,o)',sim_res.exps.error_data{1,i}(:,o)');
             plot(simRes.sim.tsim{1,i},simRes.sim.states{1,i}(:,o));
             xlabel('time [min]');
             ylabel(strcat(convertCharsToStrings(obs_names(o,:)),' (A.U.)'))
@@ -76,7 +88,7 @@ function [sim_res_bestSim] = PlotFunction_sim(sim_res,model_id,models,model_idx,
             xlabel('time [min]');
             ylabel(strcat(convertCharsToStrings(stim_names(2,:))));
         
-        saveas(h, strjoin([".\AMIGOScripts\Results\TestSim_",string(model_id),"\TestSBLInference_",string(model_id),"_Experiment_",int2str(i),"_",date(),".png"],""))
+        saveas(h, strjoin([".\AMIGOScripts\Results\TestSim_Run100_lsq_",string(model_id),"\TestSim_Run100_lsq_",string(model_id),"_TestInference_",string(model_id),"_Experiment_",int2str(i),"_",date(),".png"],""))
 
      end
 

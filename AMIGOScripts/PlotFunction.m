@@ -1,4 +1,4 @@
-function [fit_res_bestSim] = PlotFunction(fit_res,model_id,models,model_idx,experimental_data)
+function [fit_res_bestSim] = PlotFunction(fit_res,model_id,models,model_idx,experimental_data,label)
 
     % Convergence curve
     cc = figure();
@@ -9,10 +9,11 @@ function [fit_res_bestSim] = PlotFunction(fit_res,model_id,models,model_idx,expe
         catch
         end
     end
-    xlabel("# fuinction evaluations");
+    xlabel("# function evaluations");
     ylabel("cost function")
     title("Covergence curve")
-    saveas(cc, strjoin([".\AMIGOScripts\Results\PE_",string(model_id),"_ConvergenceCurve_",date(),".png"],""))
+    %saveas(cc, strjoin([".\AMIGOScripts\Results\PE_",string(model_id),'_',date(),"_ConvergenceCurve_",date(),".png"],""))
+    saveas(cc, strjoin([".\AMIGOScripts\Results\PE_BestFit_",string(model_id),'_',label,"\",string(model_id),"_ConvergenceCurve_",date(),".png"],""))
 
 %%
     inputs = {};
@@ -21,8 +22,8 @@ function [fit_res_bestSim] = PlotFunction(fit_res,model_id,models,model_idx,expe
     inputs.pathd = fit_res.inputs.pathd;
     inputs.exps.n_exp = fit_res.exps.n_exp;
     
-    results_folder = strcat(model_id,convertStringsToChars('_simulation_'),datestr(now,'yyyy-mm-dd'));
-    short_name = strcat(model_id,convertStringsToChars('_simulation_'));
+    results_folder = strcat(model_id,convertStringsToChars('_simulation1_'),datestr(now,'yyyy-mm-dd'));
+    short_name = strcat(model_id,convertStringsToChars('_simulation1'));
     inputs.pathd.results_folder = results_folder;                        
     inputs.pathd.short_name     = short_name;
     inputs.pathd.runident       = 'initial_simulation';
@@ -53,8 +54,7 @@ function [fit_res_bestSim] = PlotFunction(fit_res,model_id,models,model_idx,expe
     
     inputs.ivpsol = fit_res.inputs.ivpsol;
     inputs.plotd = fit_res.inputs.plotd;
-    
-    fit_res.bestSimul = cell(1,inputs.exps.n_exp);
+
     
     AMIGO_Prep(inputs);
     
@@ -79,7 +79,7 @@ function [fit_res_bestSim] = PlotFunction(fit_res,model_id,models,model_idx,expe
             hold on
             % plot experimental data
             errorbar(fit_res.exps.t_s{1,i},fit_res.exps.exp_data{1,i}(:,o)',fit_res.exps.error_data{1,i}(:,o)');
-            plot(fit_res.bestSimul{1,i}.sim.tsim{1,1},fit_res.bestSimul{1,i}.sim.states{1,1}(:,o),'LineWidth',2);
+            plot(fit_res.bestSimul.sim.tsim{1,i},fit_res.bestSimul.sim.states{1,i}(:,o),'LineWidth',2);
             xlabel('time [min]');
             ylabel(strcat(convertCharsToStrings(obs_names(o,:)),' (A.U.)'))
             if o==1
@@ -88,17 +88,16 @@ function [fit_res_bestSim] = PlotFunction(fit_res,model_id,models,model_idx,expe
         end
         o = o+1;
         subplot((inputs.model.n_st + inputs.model.n_stimulus),1,o)
-            plot(inputs.exps.t_s{1,i},inputs.exps.u{1,1}(1,:));
+            plot(inputs.exps.t_s{1,i},inputs.exps.u{1,i}(1,:));
             xlabel('time [min]');
             ylabel(strcat(convertCharsToStrings(stim_names(1,:))))
         o = o+1;
         subplot((inputs.model.n_st + inputs.model.n_stimulus),1,o)
-            plot(inputs.exps.t_s{1,i},inputs.exps.u{1,1}(2,:));
+            plot(inputs.exps.t_s{1,i},inputs.exps.u{1,i}(2,:));
             xlabel('time [min]');
             ylabel(strcat(convertCharsToStrings(stim_names(2,:))));
         
-        saveas(h, strjoin([".\AMIGOScripts\Results\PE_BestFit_",string(model_id),"_Experiment_",int2str(i),"_",date(),".png"],""))
-
+        saveas(h, strjoin([".\AMIGOScripts\Results\PE_BestFit_",string(model_id),'_',label,"\",string(model_id),"_Experiment_",int2str(i),"_",date(),".png"],""))
      end
 
 end

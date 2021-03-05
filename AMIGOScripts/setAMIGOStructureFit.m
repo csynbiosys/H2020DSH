@@ -8,9 +8,12 @@ function [fit_res] = setAMIGOStructureFit(fit_res, model,experimental_data)
     fit_res.inputs.plotd.plotlevel='noplot';
     
     %COST FUNCTION RELATED DATA
-    fit_res.inputs.PEsol.PEcost_type='llk';                       % 'lsq' (weighted least squares default) | 'llk' (log likelihood) | 'user_PEcost'
-    fit_res.inputs.PEsol.llk_type='hetero';                      % [] To be defined for llk function, 'homo' | 'homo_var' | 'hetero'
+%     fit_res.inputs.PEsol.PEcost_type='llk';                       % 'lsq' (weighted least squares default) | 'llk' (log likelihood) | 'user_PEcost'
+%     fit_res.inputs.PEsol.llk_type='hetero';                      % [] To be defined for llk function, 'homo' | 'homo_var' | 'hetero'
 
+    fit_res.inputs.PEsol.PEcost_type='lsq';                       % 'lsq' (weighted least squares default) | 'llk' (log likelihood) | 'user_PEcost'
+    fit_res.inputs.PEsol.lsq_type='Q_expmax';   
+    
     %OPTIMIZATION
     fit_res.inputs.nlpsol.nlpsolver='eSS';
     fit_res.inputs.nlpsol.eSS.maxeval = 200000;
@@ -18,7 +21,7 @@ function [fit_res] = setAMIGOStructureFit(fit_res, model,experimental_data)
     fit_res.inputs.nlpsol.eSS.local.solver = 'lsqnonlin'; 
     fit_res.inputs.nlpsol.eSS.local.finish = 'lsqnonlin'; 
     
-    results_folder = strcat(model.model.name,datestr(now,'yyyy-mm-dd'));
+    results_folder = strcat(model.model.name,'_',datestr(now,'yyyy-mm-dd'));
     short_name = strcat(model.model.name,'_inference');
     fit_res.inputs.pathd.results_folder = results_folder;                        
     fit_res.inputs.pathd.short_name     = short_name;
@@ -74,7 +77,8 @@ function [fit_res] = setAMIGOStructureFit(fit_res, model,experimental_data)
     fit_res.global_theta_guess = boundperIter.guess;
     fit_res.inputs.PEsol.global_theta_max = boundperIter.max;  % Maximum allowed values for the parameters
     fit_res.inputs.PEsol.global_theta_min = boundperIter.min;  % Minimum allowed values for the parameters
-   
+
+ 
     
     
 end

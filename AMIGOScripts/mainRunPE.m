@@ -1,4 +1,4 @@
-function [peRes] = mainRunPE(fit_res,tmpth,exps_indexTraining,model_id,nguess)
+function [peRes] = mainRunPE(fit_res,tmpth,exps_indexTraining,model_id,nguess,label)
 
     fit_res.inputs.PEsol.global_theta_guess = tmpth;
     fit_res.inputs.model.par = tmpth;
@@ -17,7 +17,7 @@ function [peRes] = mainRunPE(fit_res,tmpth,exps_indexTraining,model_id,nguess)
 
     peRes = AMIGO_PE(fit_res.inputs);
 
-    save(strjoin([".\AMIGOScripts\Results\PE_",string(model_id),"\Run_", nguess, ".mat"],""), "peRes")
+    save(strjoin([".\AMIGOScripts\Results\PE_",string(model_id),'_',label,"\Run_", nguess, ".mat"],""), "peRes")
 
 
 

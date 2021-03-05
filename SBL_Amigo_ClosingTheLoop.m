@@ -14,11 +14,15 @@ models = SBLyaml_to_AMIGO_models(network_name);
 % experimental_data = SBLyaml_to_AMIGO_exps(network_name,exps_indexes);
 
 %% Run Model inference on each of the identified structures
+% specify label to add to the run
+label = "Run100_lsq_extFuncEval";
 fit_results = {};
-for model_idx=3%:2%length(models)
+for model_idx=1:length(models)
     disp(strcat(['Model being fitted: ',int2str(model_idx)]))
     exps_indexes = union(models(model_idx).model.exp_training_idx,models(model_idx).model.exp_test_idx);
     experimental_data = SBLyaml_to_AMIGO_exps(network_name,exps_indexes);
-    fit_results{model_idx} = FitModels(models, experimental_data,model_idx);
+    fit_results{model_idx} = FitModels(models, experimental_data,model_idx,label);
 end
-save(strjoin([".\AMIGOScripts\Results\",network_name,"_",date(),"_","fit_results_all.mat"],""), "fit_results")
+save(strjoin([".\AMIGOScripts\Results\",network_name,"_",label,"_",date(),"_","fit_results_all.mat"],""), "fit_results")
+
+
