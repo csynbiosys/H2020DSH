@@ -1,0 +1,106 @@
+dataset:
+  states:
+    x1: Observable 1 mean
+    x2: Observable 2 mean
+    x3: Observable 3 mean
+    x4: Observable 4 mean
+  measurement_error:
+    x1: Observable 1 sd
+    x2: Observable 2 sd
+    x3: Observable 3 sd
+    x4: Observable 4 sd
+  inputs:
+    u1: Input 1
+    u2: Input 2
+  measurement_time:
+    t: Time(min)
+  experiment_id:
+    exp_id: Experiment
+sbl:
+  problem_name: DataExpand_Network1
+  preprocessing:
+    data_labels:
+    - x1
+    - x2
+    - x3
+    - x4
+    preprocessor: SplineSignalPreprocessor
+    merge_mode: stacked
+    exp_id:
+    - 1
+    - 2
+    - 3
+    - 5
+    - 6
+    - 8
+    - 10
+    standardize: true
+  dictionary:
+    mak:
+      max_order: 2
+    hill_positive:
+      km_range:
+      - 0.5
+      - 1.0
+      cooperativity_range:
+      - 1
+      - 2
+    hill_negative:
+      km_range:
+      - 0.5
+      - 1.0
+      cooperativity_range:
+      - 1
+      - 2
+    neg_hill_of_neg_hill:
+      km1_range:
+      - 0.5
+      - 1.0
+      cooperativity1_range:
+      - 1
+      - 2
+      km2_range:
+      - 0.5
+      - 1.0
+      cooperativity2_range:
+      - 1
+      - 2
+  sbl_algo:
+    nonnegative: true
+    verbose: false
+    max_iter: 25
+    monitor_conv: true
+    solver:
+      name: GUROBI
+      show_time: true
+      settings:
+        NumericFocus: 1
+        BarQCPConvTol: 1.0e-08
+    lambda_param:
+      x1: 20000
+      x2: 10000
+      x3: 3000
+      x4: 20000
+  ode:
+    max_run_time: 180
+    zero_th: 1.0e-10
+    method: LSODA
+    use_jac: true
+    show_time: true
+  test:
+    exp_id:
+    - 4
+    - 7
+    - 9
+reporting:
+  show:
+    ode_model: true
+    ode_plot: true
+    parameter_table: false
+    performance: true
+  save:
+    ode_model_to_latex: true
+    ode_model_to_yaml: true
+    performance: false
+    simulation_figures: true
+operation: train_test
