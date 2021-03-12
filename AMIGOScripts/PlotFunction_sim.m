@@ -3,10 +3,11 @@ function [sim_res_bestSim] = PlotFunction_sim(sim_res,model_id,models,model_idx,
     inputs = {};
     inputs.model = sim_res.inputs.model;
     % load results lsq_small [1/100; 100]
-    load('DataExpand_Network1_Run100_lsq_02-Mar-2021_fit_results_all.mat');
+    %load('DataExpand_Network1_Run100_lsq_02-Mar-2021_fit_results_all.mat');
     
-    inputs.model.par = fit_results{1,1}.results{1,12}.fit.thetabest';
-    %sim_res.inputs.model.par; 
+    %inputs.model.par = fit_results{1,1}.results{1,12}.fit.thetabest';
+    %
+    inputs.model.par = sim_res.inputs.model.par; 
     inputs.exps.n_exp = sim_res.exps.n_exp;
     
     results_folder = strcat(model_id,convertStringsToChars('_simulation_'),datestr(now,'yyyy-mm-dd'));
@@ -88,7 +89,7 @@ function [sim_res_bestSim] = PlotFunction_sim(sim_res,model_id,models,model_idx,
             xlabel('time [min]');
             ylabel(strcat(convertCharsToStrings(stim_names(2,:))));
         
-        saveas(h, strjoin([".\AMIGOScripts\Results\TestSim_Run100_lsq_",string(model_id),"\TestSim_Run100_lsq_",string(model_id),"_TestInference_",string(model_id),"_Experiment_",int2str(i),"_",date(),".png"],""))
+        saveas(h, strjoin([".\AMIGOScripts\Results\TestSim_",string(model_id),"\TestSim_",string(model_id),"_TestInference_",string(model_id),"_Experiment_",int2str(i),"_",date(),".png"],""))
 
      end
 

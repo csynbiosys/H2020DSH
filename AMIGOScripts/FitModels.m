@@ -18,8 +18,8 @@ function [fit_res] = FitModels(models, experimental_data, model_idx,label)
     % all
     fit_res.exps = experimental_data.exps; 
     
-    fit_res.inputs.nlpsol.eSS.maxeval = 200;
-    fit_res.inputs.nlpsol.eSS.maxtime = 5000;
+%     fit_res.inputs.nlpsol.eSS.maxeval = 200;
+%     fit_res.inputs.nlpsol.eSS.maxtime = 5000;
   
 
     %% Run PE in a parfor for each initial guess
