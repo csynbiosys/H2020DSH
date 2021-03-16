@@ -28,8 +28,11 @@ function [f,g,h] = OEDModelSelectionCost(od,inputs,results,privstruct)
 
     newExps.u_interp{1}='step';                                % Interpolating function for the input
     newExps.n_steps{1}=inputs.exps.n_steps{1}+1;                  % Number of steps in the input
-    newExps.u{1}= [[0, od(1:inputs.exps.n_steps{1})]; [0,od(inputs.exps.n_steps{1}+1:end)]]+1e-7;                                     % IPTG and aTc values for the input
+    %newExps.u{1}= [[0, od(1:inputs.exps.n_steps{1})]; [100,od(inputs.exps.n_steps{1}+1:end)]]+1e-7;                                     % IPTG and aTc values for the input
+    newExps.u{1}= [[1, od(1:inputs.exps.n_steps{1})]; [0,od(inputs.exps.n_steps{1}+1:end)]]+1e-7;                                     % IPTG and aTc values for the input
+    
     newExps.t_con{1}=[inputs.exps.t_con{1}, inputs.exps.t_f{1}+180-5];                     % Switching times
+    
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % Mock the experiment
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -54,6 +57,7 @@ function [f,g,h] = OEDModelSelectionCost(od,inputs,results,privstruct)
 
     % Cost function
     f = -(f1_Ed_1*f2_Ed_2*f3_Ed_3*f4_Ed_4);
+    %f = -(f3_Ed_3*f4_Ed_4);
 	 h(1)=0;
 	 g(1)=0;
 

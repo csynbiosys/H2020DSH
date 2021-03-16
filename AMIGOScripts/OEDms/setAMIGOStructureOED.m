@@ -13,8 +13,8 @@ function [oed_res] = setAMIGOStructureOED(oed_res)
     %OPTIMIZATION
     oed_res.inputs.nlpsol.reopt='off'; 
     oed_res.inputs.nlpsol.nlpsolver='eSS';
-    oed_res.inputs.nlpsol.eSS.maxeval = 2000; %20000;%200000;
-    oed_res.inputs.nlpsol.eSS.maxtime = 500000;%5000000;
+    oed_res.inputs.nlpsol.eSS.maxeval = 20000; 
+    oed_res.inputs.nlpsol.eSS.maxtime = 5000000;
     oed_res.inputs.nlpsol.eSS.local.solver = 'fmincon'; 
     oed_res.inputs.nlpsol.eSS.local.finish = 'fmincon'; 
 
@@ -41,9 +41,13 @@ function [oed_res] = setAMIGOStructureOED(oed_res)
     % To compute y0
     AMIGO_Prep(oed_res.inputs)
     y0 = zeros(1,oed_res.inputs.model.n_st);
+%     y0(1,:) = M1vsM2_Compute_SteadyState_OverNight_ModelSelection(oed_res.inputs,...
+%                 repmat([1.06E-07,42.181,2967.6,147.44],1,2),...
+%                 [1e-7, 100]); % one dominant state
     y0(1,:) = M1vsM2_Compute_SteadyState_OverNight_ModelSelection(oed_res.inputs,...
-                repmat([1.06E-07,42.181,2967.6,147.44],1,2),...
-                [1e-7, 100]);
+            repmat([1.1397,3.83E-08,26.222,1489.2],1,2),...
+            [1, 1e-7]); % other dominant state
+        
     oed_res.inputs.DOsol.y0=y0;                               %Initial conditions
 
     oed_res.inputs.DOsol.N_DOcost = 1; % We could make it multi objsective selecting 2?

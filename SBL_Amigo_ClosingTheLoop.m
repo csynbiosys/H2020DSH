@@ -40,8 +40,9 @@ AICc = ComputeModelsAICc(models,fit_results);
 % bar([1,2,3],nRMSE)
 % xlabel('model #')
 % ylabel('nRMSE')
-label = "test";
+
 [~,idx_models] = sort(AICc);
+label = "Run_fluo_extended_SecondDominantState_All";
 oed_res = OEDModelSelection(fit_results, idx_models(1:2),network_name, label);
 
 
